@@ -1,13 +1,13 @@
-package com.group1.FMobile;
+package com.group1.fmobile;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(exclude = org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class)
-public class FMobileApplication {
+@SpringBootApplication
+public class FmobileApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FMobileApplication.class, args);
+		SpringApplication.run(FmobileApplication.class, args);
 	}
 
 }
