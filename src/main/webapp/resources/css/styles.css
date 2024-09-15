@@ -378,6 +378,7 @@ header {
     top: 50%;
     right: -12px;
     display: none;
+    user-select: none;
 }
 
 .icon-cart span.visible {
