@@ -1,4 +1,4 @@
-package com.group1.fmobile.controller.client;
+package com.group1.fmobile.controller.guest;
 
 
 import com.group1.fmobile.domain.Product;

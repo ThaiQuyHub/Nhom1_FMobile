@@ -23,23 +23,6 @@
 </head>
 
 <body class="">
-<div id="notification" style="
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 15px 20px;
-    border-radius: 5px;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    font-size: 16px;
-    text-align: center;
-    max-width: 80%;
-">
-</div>
 <!-- Nav -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
@@ -95,7 +78,7 @@
                 <form class="d-flex ml-5">
                     <div class="search-icon">
                         <input class="form-control search_nav" type="search" placeholder="Search"
-                               aria-label="Search" style="font-size: 1.5rem" />
+                               aria-label="Search"/>
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">

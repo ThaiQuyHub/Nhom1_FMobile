@@ -593,14 +593,12 @@ header {
     display: grid;
     grid-template-rows: 70px 1fr 30px 70px;
     transition: .5s;
+    z-index: 1000;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
 }
 
 body.showCart .cartTab {
     right: 0;
-}
-
-body.showCart .container {
-    transform: translateX(-250px);
 }
 
 .cartTab h1 {
