@@ -19,9 +19,10 @@
                         <div class="row brand-container">
                             <c:forEach items="${['iphone', 'samsung', 'oppo', 'xiaomi', 'vivo', 'realme', 'huawei']}" var="brand">
                                 <div class="col-4">
-                                    <button type="button" class="brand-button" data-brand="${brand}">
+                                    <label class="brand-label">
+                                        <input type="checkbox" class="brand-checkbox" name="brand" value="${brand}">
                                         <img src="images/product/${brand}.png" alt="${brand}">
-                                    </button>
+                                    </label>
                                 </div>
                             </c:forEach>
                         </div>
@@ -58,13 +59,6 @@
                             </c:forEach>
                         </div>
                     </div>
-
-                    <input type="hidden" name="brands" id="selectedBrands">
-                    <input type="hidden" name="minPrice" id="selectedMinPrice">
-                    <input type="hidden" name="maxPrice" id="selectedMaxPrice">
-                    <input type="hidden" name="rams" id="selectedRams">
-
-                    <button type="submit" class="btn btn-primary mt-3">Search</button>
                 </form>
             </div>
         </div>

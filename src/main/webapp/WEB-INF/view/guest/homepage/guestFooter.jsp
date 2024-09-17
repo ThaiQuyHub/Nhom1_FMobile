@@ -204,6 +204,7 @@
 </nav>
 <div class="cartTab">
     <h1>Shopping Cart</h1>
+    <form action = "/checkout" method = "post" id="cartForm">
     <div class="listCart">
 
     </div>
@@ -211,10 +212,12 @@
         <div class="totalText">Total:</div>
         <div class="totalAmount">$0.00</div>
     </div>
+        <input type="hidden" name="total_amount" id="total_amount" value="0.00">
     <div class="btn">
         <button class="close">CLOSE</button>
         <button class="checkOut">CHECK OUT</button>
     </div>
+    </form>
 </div>
 <script src="/js/cart.js"></script>
 <script src="/js/search.js"></script>
