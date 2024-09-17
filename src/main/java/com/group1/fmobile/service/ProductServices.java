@@ -21,6 +21,9 @@ public class ProductServices {
     }
     private final ProductRepository productRepository;
 
+    public Product getProductById(Long id){
+        return productRepository.findById(id).orElse(null);
+    }
     public List<Product> getNewestMobileProducts(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
         return productRepository.findAllMobileByOrderByCreatedAtDesc(pageable);

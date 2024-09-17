@@ -212,6 +212,9 @@
         <div class="totalText">Total:</div>
         <div class="totalAmount">$0.00</div>
     </div>
+        <div id="hiddenInputs">
+            <!-- Input ẩn sẽ được thêm vào đây bởi JavaScript -->
+        </div>
         <input type="hidden" name="total_amount" id="total_amount" value="0.00">
     <div class="btn">
         <button class="close">CLOSE</button>

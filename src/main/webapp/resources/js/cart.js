@@ -22,6 +22,45 @@ const initApp = () => {
     // Thêm sự kiện click cho các nút "Add To Cart"
     addEventToButtons();
 
+    // Thêm sự kiện cho nút thanh toán
+    const checkoutButton = document.querySelector('.checkOut');
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', () => {
+            if (cart.length > 0) {
+                prepareCartData();
+                document.getElementById('cartForm').submit();
+            } else {
+                showNotification("Giỏ hàng của bạn đang trống!", "#FFA500");
+            }
+        });
+    }
+
+}
+
+// Hàm chuẩn bị dữ liệu giỏ hàng để gửi đến controller
+const prepareCartData = () => {
+    const form = document.getElementById('cartForm');
+    const hiddenInputsContainer = document.getElementById('hiddenInputs');
+    hiddenInputsContainer.innerHTML = ''; // Xóa tất cả input ẩn hiện có
+
+    cart.forEach((item) => {
+        const info = findProductById(item.id);
+        if (info) {
+            hiddenInputsContainer.innerHTML += `
+                <input type="hidden" name="productId[]" value="${item.id}">
+                <input type="hidden" name="productQuantity[]" value="${item.quantity}">
+            `;
+        }
+    });
+
+    // Thêm tổng số tiền
+    const totalAmount = cart.reduce((sum, item) => {
+        const info = findProductById(item.id);
+        return sum + (info ? info.price * item.quantity : 0);
+    }, 0);
+    hiddenInputsContainer.innerHTML += `
+        <input type="hidden" name="totalAmount" value="${totalAmount.toFixed(2)}">
+    `;
 }
 
 const getProductsFromDOM = (selector) => {
@@ -67,10 +106,12 @@ const addToCart = (productId) => {
 }
 
 // Hàm cập nhật HTML của giỏ hàng
+// Hàm cập nhật HTML của giỏ hàng
 const updateCartHTML = () => {
     listCartHTML.innerHTML = '';
     let totalQuantity = 0;
     let totalAmount = 0;
+
     if (cart.length > 0) {
         cart.forEach(item => {
             totalQuantity += item.quantity;
@@ -132,6 +173,9 @@ const updateCartHTML = () => {
     updateCartDisplay(totalQuantity);
     // Update total amount
     document.querySelector('.totalAmount').innerText = `$${totalAmount.toFixed(2)}`;
+
+    // Cập nhật input ẩn
+    prepareCartData();
 }
 
 // Hàm cập nhật hiển thị số lượng giỏ hàng

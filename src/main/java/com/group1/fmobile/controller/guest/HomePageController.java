@@ -14,7 +14,11 @@ import java.util.List;
 public class HomePageController {
 
     @Autowired
-    ProductServices productServices;
+    public HomePageController(ProductServices productServices){
+        this.productServices = productServices;
+    }
+
+    private final ProductServices productServices;
 
     @GetMapping("/home")
     public String getHome(Model model) {

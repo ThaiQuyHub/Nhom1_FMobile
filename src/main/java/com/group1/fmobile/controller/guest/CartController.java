@@ -1,33 +1,44 @@
 package com.group1.fmobile.controller.guest;
 
 import com.group1.fmobile.domain.Product;
+import com.group1.fmobile.service.ProductServices;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 public class CartController {
+    @Autowired
+    public CartController(ProductServices productServices){
+        this.productServices = productServices;
+    }
+
+    private final ProductServices productServices;
+
     @PostMapping("/checkout")
-    public String checkout(HttpSession session, @RequestParam Map<String, String> formData) {
-        List<Product> cart = new ArrayList<>();
-
-        for (int i = 1; formData.containsKey("product_id_" + i); i++) {
-            Product item = new Product();
-            item.setId(Long.parseLong(formData.get("product_id_" + i)));
-            item.setProductName(formData.get("product_name_" + i));
-            item.setPrice(Double.parseDouble(formData.get("product_price_" + i)));
-            item.setQuantity(Integer.parseInt(formData.get("quantity_" + i)));
-            cart.add(item);
+    public String checkout(HttpSession session, @RequestParam("productId[]") String[] productIds,
+                           @RequestParam("productQuantity[]") String[] quantities,
+                           @RequestParam("totalAmount") String total) {
+        HashMap<Product, Long> cartProducts = new HashMap<Product, Long>();
+        Double totalAmount = Double.parseDouble(total);
+        for (int i = 0; i < productIds.length; i++) {
+            Long id = Long.parseLong(productIds[i]);
+            Long quantity = Long.parseLong(quantities[i]);
+            Product product = productServices.getProductById(id);
+            if (product != null) {
+                cartProducts.put(product, quantity);
+            }
         }
-        double totalAmount = Double.parseDouble(formData.get("total_amount"));
-        session.setAttribute("cart", cart);
+        session.setAttribute("cartProducts", cartProducts);
         session.setAttribute("totalAmount", totalAmount);
-
         return "redirect:/checkout-page";
     }
 }

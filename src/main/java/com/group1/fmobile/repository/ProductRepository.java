@@ -8,8 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ProductRepository extends JpaRepository <Product, Long> {
+    @Override
+    Optional<Product> findById(Long id);
+
     @Query("SELECT p FROM Product p WHERE p.productCategory.id = 1 ORDER BY p.createdAt DESC")
     List<Product> findAllMobileByOrderByCreatedAtDesc(Pageable pageable);
 
