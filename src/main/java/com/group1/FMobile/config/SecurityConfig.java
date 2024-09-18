@@ -17,11 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-<<<<<<< HEAD
-                        .anyRequest().permitAll()
-=======
                         .anyRequest().permitAll() // Cho phép tất cả các request
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
                 )
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
