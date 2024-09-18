@@ -99,7 +99,7 @@
         <div class="icon-user">
             <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />
         </div>
-        <button class="btn signin_btn" style="font-size: 1.3rem">
+        <button class="btn signin_btn" style="font-size: 1.3rem" onclick="window.location.href='/login'">
             Log In
         </button>
         <button class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">

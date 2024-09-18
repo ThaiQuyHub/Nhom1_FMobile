@@ -1,33 +1,38 @@
-package com.group1.FMobile;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "ORDERS_DETAIL")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrdersDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orders_detail_id", nullable = false)
-    private Long id;
+    Long id;
 
+    //LK Order
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    private Order order;
+    Orders orders;
 
+    //LK Product
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product product;
+    Product product;
 
     @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    Integer quantity;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    @Column(name = "price", nullable = false)
+    double price;
 
 }

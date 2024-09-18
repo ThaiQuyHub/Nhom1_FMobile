@@ -1,33 +1,33 @@
-package com.group1.FMobile;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "DISCOUNT")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "discount_id", nullable = false)
-    private Long id;
+    Long id;
 
     @Column(name = "discount_type")
-    private String discountType;
+    String discountType;
 
-    @Column(name = "discount_value", precision = 4, scale = 3)
-    private BigDecimal discountValue;
+    @Column(name = "discount_value")
+    double  discountValue;
 
     @Column(name = "min_purchase_amount")
-    private Long minPurchaseAmount;
+    Long minPurchaseAmount;
 
-    @OneToMany(mappedBy = "discount")
-    private Set<Order> orders = new LinkedHashSet<>();
+
 
 }

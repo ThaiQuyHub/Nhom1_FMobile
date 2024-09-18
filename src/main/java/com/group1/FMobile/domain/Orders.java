@@ -1,54 +1,62 @@
-package com.group1.FMobile.domain;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 @Table(name = "ORDERS")
-public class Order {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", nullable = false)
-    private Long id;
+    Long id;
 
     //LK User
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     //LK Discount
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "discount_id")
-    private Discount discount;
+    Discount discount;
 
     @Column(name = "total_payment", nullable = false)
-    private Long totalPayment;
+    Double totalPayment;
 
     @Column(name = "status", length = 50)
-    private String status;
+    String status;
 
     @Column(name = "order_date")
-    private Instant orderDate;
+    LocalDateTime orderDate;
 
     @Column(name = "shipping_address")
-    private String shippingAddress;
+    String shippingAddress;
 
-    //LK
-    @OneToMany(mappedBy = "order")
-    private Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
+    String phone;
 
-    @OneToMany(mappedBy = "order")
-    private Set<TransactionHistory> transactionHistories = new LinkedHashSet<>();
+    String fullName;
 
+    //LK Orders Detail
+    @OneToMany(mappedBy = "orders")
+    Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
+
+    // LK Transaction History
+    @OneToOne(mappedBy = "orders")
+    TransactionHistory transactionHistory;
+
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id")
+    private PaymentMethod paymentMethod;
 }

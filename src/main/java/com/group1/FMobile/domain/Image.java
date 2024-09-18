@@ -1,34 +1,33 @@
-package com.group1.FMobile.domain;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
-@Table(name = "ASSETS")
-public class Asset {
+@Table(name = "IMAGE")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", nullable = false)
-    private Long id;
+    Long id;
 
 
     //LK Product
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product product;
+    Product product;
 
     @Column(name = "type")
-    private String type;
+    String type;
 
     @Lob
     @Column(name = "URL")
-    private String url;
+    String url;
 
 }

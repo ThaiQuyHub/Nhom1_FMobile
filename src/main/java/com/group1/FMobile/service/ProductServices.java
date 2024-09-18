@@ -2,28 +2,26 @@ package com.group1.fmobile.service;
 
 import com.group1.fmobile.domain.Product;
 import com.group1.fmobile.repository.ProductRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ProductServices {
 
     @Autowired
-    public ProductServices(ProductRepository productRepository){
-        this.productRepository = productRepository;
-    }
-    private final ProductRepository productRepository;
+    private ProductRepository productRepository;
 
-    public Product getProductById(Long id){
+    public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
+
     public List<Product> getNewestMobileProducts(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
         return productRepository.findAllMobileByOrderByCreatedAtDesc(pageable);
@@ -34,7 +32,7 @@ public class ProductServices {
         return productRepository.findAllMobileByOrderBySoldDesc(pageable);
     }
 
-    public List<Product> getTabletProducts(int limit){
+    public List<Product> getTabletProducts(int limit) {
         Pageable pageable = PageRequest.of(0, limit);
         return productRepository.findAllTabletByOrderByPriceDesc(pageable);
     }
@@ -72,7 +70,7 @@ public class ProductServices {
         }
     }
 
-    public List<Product> filterProduct(List<String> brands, double minPrice, double maxPrice, List<String> rams){
+    public List<Product> filterProduct(List<String> brands, double minPrice, double maxPrice, List<String> rams) {
         return productRepository.findProductsByMultipleCriteria(brands, minPrice, maxPrice, rams);
     }
 }

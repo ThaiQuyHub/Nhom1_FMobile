@@ -1,37 +1,40 @@
-package com.group1.FMobile;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "TRANSACTION_HISTORY")
 public class TransactionHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transaction_id", nullable = false)
-    private Long id;
+    Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    //LK Orders
+    @OneToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    Orders orders;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_method_id")
-    private PaymentMethod paymentMethod;
+    //LK Payment Method
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id", referencedColumnName = "payment_method_id")
+    PaymentMethod paymentMethod;
 
     @Column(name = "transaction_date")
-    private Instant transactionDate;
+    LocalDateTime transactionDate;
 
     @Column(name = "status")
-    private String status;
+    String status;
 
 }

@@ -93,6 +93,4 @@
         </c:forEach>
     </div>
 </div>
-
-
 <jsp:include page="guestFooter.jsp"/>

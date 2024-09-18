@@ -111,51 +111,5 @@
         </div>
     </div>
 </nav>
-
+<div style="padding-top: 50px"></div>
 <!-- Header -->
-<div class="container">
-    <div class="row header">
-        <div class="col-md-6 header_baner">
-            <h1 style="font-size: 6rem">
-                Let's go to store. You have what you need.
-            </h1>
-            <a class="btn btn_header btn-primary">Get Started</a>
-        </div>
-        <!-- Anh truoc ngang -->
-        <div id="bannerCarousel" class="carousel slide col-md-6" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="/images/product/galaxy z fold 4.jpg" class="d-block w-100 img-fluid" alt="Galaxy Z Fold 4" />
-                </div>
-                <div class="carousel-item">
-                    <img src="/images/product/iphone-16-pro-fi.webp" class="d-block w-100 img-fluid" alt="Iphone 16" />
-                </div>
-                <div class="carousel-item">
-                    <img src="/images/product/huaweinew.png" class="d-block w-100 img-fluid" alt="Huawei" />
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
-                    data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
-                    data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-
-            <!-- Indicators -->
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-            </div>
-        </div>
-    </div>
-</div>
