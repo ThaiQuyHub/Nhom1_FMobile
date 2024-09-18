@@ -3,8 +3,12 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
+<<<<<<< HEAD
     <title>Login | FMOBILE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+=======
+    <title>Login Form Design | CodeLab</title>
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
         *{
@@ -137,28 +141,42 @@
         form .signup-link a:hover{
             text-decoration: underline;
         }
+<<<<<<< HEAD
         .error {
             color: red;
             font-size: 14px;
         }
+=======
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
     </style>
 </head>
 <body>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 <div class="wrapper">
     <div class="title">
         Login
     </div>
     <%--@elvariable id="login" type="com.group1.fmobile.domain.dto.LoginDTO"--%>
     <form:form action="/login" method="post" modelAttribute="login">
+<<<<<<< HEAD
         <div class="mb-4 field">
+=======
+        <div class="field">
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
             <form:input path="email" type="text" required="required" />
             <label for="email">Email Address</label>
             <form:errors path="email" cssClass="error" />
         </div>
+<<<<<<< HEAD
         <div class="mb-4 field">
+=======
+        <div class="field">
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
             <form:password path="password" required="required" />
             <label for="password">Password</label>
             <form:errors path="password" cssClass="error" />

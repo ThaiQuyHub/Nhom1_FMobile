@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -2082,3 +2083,8 @@
     </script>
   </body>
 </html>
+=======
+<jsp:include page="header.jsp"/>
+<h1>Hieu dep trai</h1>
+<jsp:include page="footer.jsp"/>
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0

@@ -28,6 +28,12 @@ public class Discount {
     @Column(name = "min_purchase_amount")
     Long minPurchaseAmount;
 
+<<<<<<< HEAD
 
+=======
+    //LK Order
+    @OneToOne(mappedBy = "discount")
+    Orders orders;
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 
 }

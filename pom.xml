@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.group1</groupId>
-	<artifactId>fmobile</artifactId>
+	<artifactId>FMOBILE</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>fmobile</name>
+	<name>FMOBILE</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -102,6 +102,12 @@
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
 			<version>4.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.1.0</version>
+
 		</dependency>
 	</dependencies>
 
