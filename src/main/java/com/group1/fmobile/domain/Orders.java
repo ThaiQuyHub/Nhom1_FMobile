@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -28,21 +29,13 @@ public class Orders {
     User user;
 
     //LK Discount
-<<<<<<< HEAD
     @ManyToOne
     @JoinColumn(name = "discount_id")
     Discount discount;
 
     @Column(name = "total_payment", nullable = false)
     Double totalPayment;
-=======
-    @OneToOne
-    @JoinColumn(name = "discount_id", referencedColumnName = "discount_id")
-    Discount discount;
 
-    @Column(name = "total_payment", nullable = false)
-    Long totalPayment;
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 
     @Column(name = "status", length = 50)
     String status;
@@ -53,13 +46,10 @@ public class Orders {
     @Column(name = "shipping_address")
     String shippingAddress;
 
-<<<<<<< HEAD
     String phone;
 
     String fullName;
 
-=======
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
     //LK Orders Detail
     @OneToMany(mappedBy = "orders")
     Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
@@ -68,10 +58,9 @@ public class Orders {
     @OneToOne(mappedBy = "orders")
     TransactionHistory transactionHistory;
 
-<<<<<<< HEAD
+
     @ManyToOne
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
-=======
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
+
 }

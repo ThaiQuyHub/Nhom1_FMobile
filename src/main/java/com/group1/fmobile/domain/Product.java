@@ -6,25 +6,19 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-=======
-import java.util.LinkedHashSet;
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
-import java.util.Set;
+
 
 @Entity
 @Table(name = "PRODUCT")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-<<<<<<< HEAD
+
 @Getter
 @Setter
-=======
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
     @Id
@@ -64,7 +58,6 @@ public class Product {
     @Column(name = "description")
     String description;
 
-<<<<<<< HEAD
     @Column(name = "created_at")
     LocalDateTime createdAt;
 
@@ -78,22 +71,5 @@ public class Product {
     // LK Orders Detail
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<OrdersDetail> ordersDetails = new ArrayList<>();
-=======
-    @Column(name = "created_product")
-    LocalDateTime createdProduct;
 
-    @Column(name = "updated_product")
-    LocalDateTime updatedProduct;
-
-    @Column(name = "image_url")
-    String imageUrl;
-
-    // LK Image
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Image> assets = new LinkedHashSet<>();
-
-    // LK Orders Detail
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 }

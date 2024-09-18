@@ -11,11 +11,9 @@ import java.time.LocalDate;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-<<<<<<< HEAD
-=======
 import java.util.LinkedHashSet;
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 import java.util.Set;
+
 
 @Entity
 @Table(name = "users")
@@ -43,14 +41,10 @@ public class User {
     )
     Set<Role> roles;
     boolean enabled = false;
-<<<<<<< HEAD
-=======
+
     @OneToMany(mappedBy = "user")
     Set<Orders> orders = new LinkedHashSet<>();
 
-
-
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 
 
 }

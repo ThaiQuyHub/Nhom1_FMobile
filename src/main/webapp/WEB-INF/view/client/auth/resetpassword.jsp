@@ -11,12 +11,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-<<<<<<< HEAD
     <title>Reset Password | FMOBILE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-=======
-    <title>Login Form Design | CodeLab</title>
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
         *{
@@ -149,7 +145,6 @@
         form .signup-link a:hover{
             text-decoration: underline;
         }
-<<<<<<< HEAD
         .error {
             color: red;
             font-size: 14px;
@@ -175,8 +170,6 @@
             color: gray;
         }
 
-=======
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -186,7 +179,6 @@
     <div class="title">
         Verify
     </div>
-<<<<<<< HEAD
     <%--@elvariable id="resetpassword" type="com.group1.fmobile.domain.dto.ResetPasswordDTO"--%>
     <form:form action="/reset-password" method="post" modelAttribute="resetpassword">
 
@@ -206,20 +198,6 @@
             <form:input type="password" path="confirmNewPassword" required="required" />
             <label for="confirmNewPassword">Confirm Password</label>
             <form:errors path="confirmNewPassword" cssClass="error" />
-=======
-    <form action="/reset-password" method="post">
-        <div class="field">
-            <input type="text" id="otp" name="otp" required>
-            <label for="otp">Verification code</label>
-        </div>
-        <div class="field">
-            <input type="password" id="newPassword" name="newPassword" required>
-            <label for="newPassword">Password</label>
-        </div>
-        <div class="field">
-            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
-            <label for="confirmNewPassword">Confirm Password</label>
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
         </div>
         <div class="field">
             <input type="submit" value="Submit">
@@ -227,7 +205,6 @@
         <div class="signup-link">
             back to login <a href="/login">login now</a>
         </div>
-<<<<<<< HEAD
     </form:form>
 </div>
 
@@ -257,9 +234,5 @@
         timerInterval = setInterval(updateTimer, 1000);
     });
 </script>
-=======
-    </form>
-</div>
->>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 </body>
 </html>
