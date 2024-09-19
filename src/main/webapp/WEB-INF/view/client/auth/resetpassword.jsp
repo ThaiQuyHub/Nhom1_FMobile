@@ -11,7 +11,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>Login Form Design | CodeLab</title>
+    <title>Reset Password | FMOBILE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
         *{
@@ -144,6 +145,31 @@
         form .signup-link a:hover{
             text-decoration: underline;
         }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        #timer {
+            font-size: 14px;
+            color: gray;
+        }
+        .field {
+            position: relative;
+        }
+
+        #otp-input {
+            padding-right: 50px; /* Để lại không gian bên phải cho đồng hồ đếm ngược */
+        }
+
+        #timer {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: gray;
+        }
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -153,18 +179,25 @@
     <div class="title">
         Verify
     </div>
-    <form action="/reset-password" method="post">
-        <div class="field">
-            <input type="text" id="otp" name="otp" required>
+    <%--@elvariable id="resetpassword" type="com.group1.fmobile.domain.dto.ResetPasswordDTO"--%>
+    <form:form action="/reset-password" method="post" modelAttribute="resetpassword">
+
+        <div class="mb-5 field">
+            <form:input type="text" required="required" path="otp" id="otp-input"/>
             <label for="otp">Verification code</label>
+            <form:errors path="otp" cssClass="error" />
+            <span id="timer" class="timer-right"></span>
+
         </div>
-        <div class="field">
-            <input type="password" id="newPassword" name="newPassword" required>
+        <div class="mb-5 field">
+            <form:input type="password" path="newPassword" required="required"/>
             <label for="newPassword">Password</label>
+            <form:errors path="newPassword" cssClass="error" />
         </div>
-        <div class="field">
-            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+        <div class="mb-5 field">
+            <form:input type="password" path="confirmNewPassword" required="required" />
             <label for="confirmNewPassword">Confirm Password</label>
+            <form:errors path="confirmNewPassword" cssClass="error" />
         </div>
         <div class="field">
             <input type="submit" value="Submit">
@@ -172,7 +205,34 @@
         <div class="signup-link">
             back to login <a href="/login">login now</a>
         </div>
-    </form>
+    </form:form>
 </div>
+
+<script>
+    $(document).ready(function() {
+        let timeLeft = 60;
+        let timerInterval;
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            $("#timer").text(minutes + ":" + seconds);
+
+            if (timeLeft === 0) {
+                clearInterval(timerInterval);
+                $("#timer").text("0:00");
+
+            } else {
+                timeLeft--;
+            }
+        }
+
+        // Start the timer when the page loads
+        timerInterval = setInterval(updateTimer, 1000);
+    });
+</script>
 </body>
 </html>

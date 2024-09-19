@@ -5,14 +5,12 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = RegisterValidator.class)
+@Documented
+@Constraint(validatedBy = VerifyValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface RegisterChecked {
-    String message() default "User register validation failed";
-
+public @interface VerifyChecked {
+    String message() default "Invalid OTP";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

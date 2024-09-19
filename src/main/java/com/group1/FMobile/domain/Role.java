@@ -1,4 +1,4 @@
-package com.group1.fmobile.domain;
+package com.group1.FMobile.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -24,6 +24,4 @@ public class Role {
     @Column(length = 20)
     RoleType name;
 
-    @ManyToMany(mappedBy = "roles")
-    Set<User> users;
 }

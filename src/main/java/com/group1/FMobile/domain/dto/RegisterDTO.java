@@ -1,6 +1,6 @@
-package com.group1.fmobile.domain.dto;
+package com.group1.FMobile.domain.dto;
 
-
+import com.group1.FMobile.service.validator.RegisterChecked;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
+@RegisterChecked
 public class RegisterDTO {
 
     @NotBlank(message = "Email là bắt buộc")

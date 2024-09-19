@@ -1,4 +1,4 @@
-package com.group1.fmobile;
+package com.group1.FMobile;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

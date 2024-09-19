@@ -11,7 +11,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>Login Form Design | CodeLab</title>
+    <title>Forgot Password | FMOBILE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
         *{
@@ -144,6 +145,10 @@
         form .signup-link a:hover{
             text-decoration: underline;
         }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -154,10 +159,11 @@
         Forgot password
     </div>
     <%--@elvariable id="forgotpassword" type="com.group1.fmobile.domain.dto.ForgotPasswordDTO"--%>
-    <form:form action="#" method="post" modelAttribute="forgotpassword"> <%-- Adjust 'action' and 'modelAttribute' as needed --%>
-        <div class="field">
+    <form:form action="/forgotpassword" method="post" modelAttribute="forgotpassword"> <%-- Adjust 'action' and 'modelAttribute' as needed --%>
+        <div class="mb-5 field">
             <form:input path="email" type="text" required="required" />
             <label for="email">Email Address</label>
+            <form:errors path="email" cssClass="error" />
         </div>
         <div class="field">
             <input type="submit" value="Send Verification Code">

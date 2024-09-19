@@ -5,14 +5,13 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = RegisterValidator.class)
+
+@Constraint(validatedBy = LoginValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface RegisterChecked {
-    String message() default "User register validation failed";
-
+public @interface LoginChecked {
+    String message() default "Invalid login credentials";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

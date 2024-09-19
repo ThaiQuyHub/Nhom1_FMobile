@@ -1,4 +1,4 @@
-package com.group1.fmobile.config;
+package com.group1.FMobile.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
