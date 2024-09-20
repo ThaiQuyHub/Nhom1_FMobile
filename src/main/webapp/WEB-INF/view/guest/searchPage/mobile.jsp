@@ -17,11 +17,12 @@
                     <div class="row">
                         <label>BRAND</label>
                         <div class="row brand-container">
-                            <c:forEach items="${['iphone', 'samsung', 'oppo', 'xiaomi', 'vivo', 'realme', 'huawei']}" var="brand">
+                            <c:forEach items="${['apple', 'samsung', 'oppo', 'xiaomi', 'vivo', 'realme', 'huawei']}" var="brand">
                                 <div class="col-4">
                                     <label class="brand-label">
                                         <input type="checkbox" class="brand-checkbox" name="brand" value="${brand}">
                                         <img src="images/product/${brand}.png" alt="${brand}">
+                                        </input>
                                     </label>
                                 </div>
                             </c:forEach>
@@ -54,18 +55,25 @@
                         <div class="row ram-container">
                             <c:forEach items="${['4GB', '6GB', '8GB', '12GB', '16GB', '18GB', '32GB', '64GB']}" var="ram">
                                 <div class="col-4">
-                                    <button type="button" class="ram-button" data-ram="${ram}">${ram}</button>
+                                    <label>
+                                        <input type="checkbox" class="ram-checkbox" value="${ram}">
+                                        <span>${ram}</span>
+                                    </label>
                                 </div>
                             </c:forEach>
                         </div>
                     </div>
+                    <input type="hidden" id="selectedBrands" name="selectedBrands">
+                    <input type="hidden" id="selectedMinPrice" name="selectedMinPrice">
+                    <input type="hidden" id="selectedMaxPrice" name="selectedMaxPrice">
+                    <input type="hidden" id="selectedRams" name="selectedRams">
                 </form>
             </div>
         </div>
         <div class="col-9">
             <div class="container">
                 <header>
-                    <div class="title">Kết quả tìm kiếm</div>
+                    <div class="title">Kết quả tìm kiếm: ${products.size()} result </div>
                 </header>
                 <div class="listProduct searchResults">
                     <c:forEach items="${products}" var="product">
@@ -93,68 +101,69 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('searchForm');
-        const brandButtons = document.querySelectorAll('.brand-button');
-        const priceButtons = document.querySelectorAll('.price-button');
-        const ramButtons = document.querySelectorAll('.ram-button');
+    document.addEventListener('DOMContentLoaded', function () {
+        const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+        const priceCheckboxes = document.querySelectorAll('.price-checkbox');
+        const ramCheckboxes = document.querySelectorAll('.ram-checkbox');
 
         const selectedBrands = new Set();
+        const selectedPriceRanges = new Set();
         const selectedRams = new Set();
-        let selectedMinPrice = null;
-        let selectedMaxPrice = null;
 
-        function updateHiddenInputs() {
-            document.getElementById('selectedBrands').value = Array.from(selectedBrands).join(',');
-            document.getElementById('selectedMinPrice').value = selectedMinPrice;
-            document.getElementById('selectedMaxPrice').value = selectedMaxPrice;
-            document.getElementById('selectedRams').value = Array.from(selectedRams).join(',');
+        // Hàm gửi AJAX tới controller
+        function sendFilterData() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/filter?brands=${Array.from(selectedBrands).join(',')}&priceRanges=${Array.from(selectedPriceRanges).join(',')}&rams=${Array.from(selectedRams).join(',')}`, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+
+                    // Xử lý kết quả trả về từ controller
+                    console.log('Response from server:', xhr.responseText);
+                    document.querySelector('.searchResults').innerHTML = xhr.responseText;
+                }
+            };
+
+            xhr.send();
         }
 
-        brandButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const brand = this.dataset.brand;
-                if (selectedBrands.has(brand)) {
-                    selectedBrands.delete(brand);
-                    this.classList.remove('active');
+        // Lắng nghe sự kiện thay đổi checkbox của thương hiệu
+        brandCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    selectedBrands.add(this.value);
                 } else {
-                    selectedBrands.add(brand);
-                    this.classList.add('active');
+                    selectedBrands.delete(this.value);
                 }
-                updateHiddenInputs();
+                sendFilterData();
             });
         });
 
-        priceButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                selectedMinPrice = this.dataset.min;
-                selectedMaxPrice = this.dataset.max;
-                priceButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                updateHiddenInputs();
-            });
-        });
-
-        ramButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const ram = this.dataset.ram;
-                if (selectedRams.has(ram)) {
-                    selectedRams.delete(ram);
-                    this.classList.remove('active');
+        // Lắng nghe sự kiện thay đổi checkbox của giá
+        priceCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    selectedPriceRanges.add(this.value);
                 } else {
-                    selectedRams.add(ram);
-                    this.classList.add('active');
+                    selectedPriceRanges.delete(this.value);
                 }
-                updateHiddenInputs();
+                sendFilterData();
             });
         });
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            updateHiddenInputs();
-            this.submit();
+        // Lắng nghe sự kiện thay đổi checkbox của RAM
+        ramCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    selectedRams.add(this.value);
+                } else {
+                    selectedRams.delete(this.value);
+                }
+                sendFilterData();
+            });
         });
     });
+
 </script>
 
-<jsp:include page="searchFooter.jsp" />
+<%--<jsp:include page="searchFooter.jsp" />--%>
