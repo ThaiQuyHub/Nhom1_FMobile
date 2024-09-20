@@ -4,6 +4,7 @@ import com.group1.fmobile.domain.*;
 import com.group1.fmobile.repository.*;
 import com.group1.fmobile.service.PaymentMethodService;
 import com.group1.fmobile.service.ProductServices;
+import com.group1.fmobile.service.RoleService;
 import com.group1.fmobile.service.account.MailService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.util.*;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Controller xử lý các quá trình thanh toán trong ứng dụng thương mại điện tử.
@@ -51,6 +55,9 @@ public class CheckOutController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     /**
      * Xử lý yêu cầu GET cho trang thanh toán.
      * Chuẩn bị dữ liệu cần thiết cho quá trình thanh toán bao gồm các mục trong giỏ hàng và tổng số tiền.
@@ -67,6 +74,8 @@ public class CheckOutController {
                            @RequestParam(value = "productId[]", required = false) String[] productIds,
                            @RequestParam(value = "productQuantity[]", required = false) String[] quantities,
                            @RequestParam(value = "totalAmount", required = false) String total,
+//                           @RequestParam(defaultValue = "0") int page,
+//                           @RequestParam(defaultValue = "5") int size,
                            Model model) {
         // Kiểm tra xem người dùng đã đăng nhập chưa và thêm thông tin người dùng vào model
         if(session.getAttribute("loggedInUser") != null){
@@ -96,7 +105,22 @@ public class CheckOutController {
                 cartProducts.put(product, quantity);
             }
         }
+//        List<Map.Entry<Product, Long>> cartList = new ArrayList<>(cartProducts.entrySet());
+//        int start = page * size;
+//        int end = Math.min((start + size), cartList.size());
+//        List<Map.Entry<Product, Long>> pagedCartList = cartList.subList(start, end);
+//        Page<Map.Entry<Product, Long>> pagedCart = new PageImpl<>(pagedCartList, PageRequest.of(page, size), cartList.size());
+//        model.addAttribute("pagedCart", pagedCart);
+        // Thêm logic áp dụng giảm giá
+        List<Discount> discounts = discountRepository.findByAmount(totalAmount);
+        if (!discounts.isEmpty()) {
+            Discount applicableDiscount = discounts.get(0);
+            model.addAttribute("discount", applicableDiscount);
 
+            // Tính toán số tiền sau khi áp dụng giảm giá
+            Double discountedAmount = totalAmount - applicableDiscount.getDiscountValue();
+            model.addAttribute("discountedAmount", discountedAmount);
+        }
         // Lưu dữ liệu giỏ hàng vào session và thêm vào model
         session.setAttribute("cartProducts", cartProducts);
         session.setAttribute("totalAmount", totalAmount);
@@ -149,6 +173,7 @@ public class CheckOutController {
         // Tạo và lưu chi tiết đơn hàng
         luuChiTietDonHang(result, cartProducts);
 
+        model.addAttribute("orderMessage", "Đặt hàng thành công! Cảm ơn bạn đã mua hàng.");
         // Gửi email xác nhận
         mailService.sendMail(user.getEmail(), "Thông báo đặt hàng thành công",
                 "Cảm ơn bạn đã đặt hàng của chúng tôi. Mã đơn hàng của bạn là: " + orders.getId());
@@ -180,17 +205,52 @@ public class CheckOutController {
         PaymentMethod paymentMethod = paymentMethodRepository.findById(payment).get();
         HashMap<Product, Long> cartProducts = (HashMap<Product, Long>) session.getAttribute("cartProducts");
 
-        // Kiểm tra xem giỏ hàng có trống không
-        if(cartProducts.size() == 0){
+        // Kiểm tra giỏ hàng có trống hay không
+        if (cartProducts.size() == 0) {
             model.addAttribute("errorQuantityCart", "Số lượng trong giỏ hàng phải > 0");
             return "guest/searchPage/checkout";
         }
 
-        // Tính tổng số tiền đơn hàng
+        // Tính tổng tiền đơn hàng
         Double total = tinhTongTien(cartProducts);
 
-        // Tạo và điền thông tin cho đối tượng đơn hàng của khách
-        Orders orders = taoDonHangKhach(paymentMethod, address, total, fullName, phone);
+        // Tạo đối tượng Đơn hàng
+        Orders orders;
+
+        // Kiểm tra nếu email được cung cấp và không trống
+        if (email != null && !email.isEmpty()) {
+            // Tìm xem người dùng với email này đã tồn tại trong hệ thống chưa
+            User existingUser = userRepository.findByEmail(email);
+
+            // Nếu người dùng chưa tồn tại, tạo tài khoản mới
+            if (existingUser == null) {
+                User newUser = new User();
+//                newUser.setEmail(email);  // Thiết lập email
+                newUser.setFullName(fullName);  // Thiết lập họ tên
+                newUser.setPhone(phone);  // Thiết lập số điện thoại
+                newUser.setAddress(address);// Thiết lập địa chỉ
+                newUser.setCreationDate(LocalDate.now()); // Thiết lập Tạo khi nào
+
+
+                newUser.setRoles(new HashSet<>(List.of(new Role(3,RoleType.GUEST))));
+
+
+
+
+
+                // Lưu người dùng mới vào cơ sở dữ liệu
+                userRepository.save(newUser);
+
+                // Sử dụng người dùng mới này để tạo đơn hàng
+                orders = taoDonHang(newUser, paymentMethod, address, total);
+            } else {
+                // Nếu người dùng đã tồn tại, liên kết đơn hàng với tài khoản này
+                orders = taoDonHang(existingUser, paymentMethod, address, total);
+            }
+        } else {
+            // Nếu không có email, tạo đơn hàng mà không cần tài khoản người dùng
+            orders = taoDonHangKhach(paymentMethod, address, total, fullName, phone);
+        }
 
         // Áp dụng giảm giá nếu có
         apDungGiamGia(orders, total);
@@ -201,6 +261,8 @@ public class CheckOutController {
         // Tạo và lưu chi tiết đơn hàng
         luuChiTietDonHang(result, cartProducts);
 
+        model.addAttribute("orderMessage", "Đặt hàng thành công! Cảm ơn bạn đã mua hàng.");
+
         // Gửi email xác nhận nếu có địa chỉ email
         if (email != null && !email.isEmpty()) {
             mailService.sendMail(email, "Thông báo đặt hàng thành công",
@@ -209,6 +271,7 @@ public class CheckOutController {
 
         return "redirect:/home";
     }
+
 
     /**
      * Tính tổng số tiền cho đơn hàng dựa trên nội dung giỏ hàng.

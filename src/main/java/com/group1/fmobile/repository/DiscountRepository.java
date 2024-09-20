@@ -1,6 +1,7 @@
 package com.group1.fmobile.repository;
 
 import com.group1.fmobile.domain.Discount;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

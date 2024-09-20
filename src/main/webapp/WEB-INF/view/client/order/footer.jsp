@@ -1,10 +1,10 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 16/09/2024
-  Time: 3:09 PM
-  To change this template use File | Settings | File Templates.
---%>
+
+<!-- Magazine -->
+
+<!-- Reviews -->
+
+<!-- Landing -->
+
 <!-- Footer -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-5">
     <div class="container-fluid">
@@ -66,7 +66,7 @@
 </nav>
 <div class="cartTab">
     <h1>Shopping Cart</h1>
-    <form id = "cartForm" action =/checkout" method="GET">
+    <form action = "/checkout" method = "get" id="cartForm">
     <div class="listCart">
 
     </div>
@@ -74,28 +74,16 @@
         <div class="totalText">Total:</div>
         <div class="totalAmount">$0.00</div>
     </div>
-    <div id="hiddenInputs">
-        <!-- JavaScript sẽ thêm các input ẩn vào đây -->
-    </div>
+        <div id="hiddenInputs">
+            <!-- Input ẩn sẽ được thêm vào đây bởi JavaScript -->
+        </div>
+        <input type="hidden" name="total_amount" id="total_amount" value="0.00">
     <div class="btn">
         <button class="close">CLOSE</button>
         <button class="checkOut">CHECK OUT</button>
     </div>
     </form>
 </div>
-<script>
-    // Định nghĩa biến allProducts ở đây nếu cần
-    var allProducts = [
-        <c:forEach items="${products}" var="product" varStatus="status">
-        {
-            id: ${product.id},
-            productName: "${product.name}",
-            price: ${product.price},
-            image: "${product.image}"
-        }<c:if test="${!status.last}">,</c:if>
-        </c:forEach>
-    ];
-</script>
 <script src="/js/cart.js"></script>
 <script src="/js/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

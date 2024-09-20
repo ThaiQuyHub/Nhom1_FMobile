@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,7 @@ public class OrderController {
      * @return Tên view để hiển thị danh sách đơn hàng hoặc chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
      */
     @GetMapping("/order")
-    public String orderPage(HttpSession session, Model model, Pageable pageable) {
+    public String orderPage(HttpSession session, Model model, @PageableDefault(size = 5) Pageable pageable) {
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if(session.getAttribute("loggedInUser") == null){
             return "redirect:/login";  // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
