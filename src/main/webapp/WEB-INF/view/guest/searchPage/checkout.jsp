@@ -148,13 +148,9 @@
 
             return isValid;
         }
-
-
-
     </script>
 </head>
 <body>
-<%-- Lấy header theo thằng ml mô đặt tên--%>
 <jsp:include page="header.jsp"/>
 
 <div class="container mt-5">
@@ -200,13 +196,13 @@
                                 <input value="${user.email}" readonly disabled class="form-control">
                                 <label class="lbform">Full Name</label>
                                 <input name="fullName" value="${user.fullName}" class="form-control">
-                                <div id="fullNameErrorLogin" class="text-danger"></div> <!-- Thẻ báo lỗi Full Name -->
+                                <div id="fullNameErrorLogin" class="text-danger"></div>
                                 <label class="lbform">Address</label>
                                 <input name="address" value="${user.address}" class="form-control">
-                                <div id="addressErrorLogin" class="text-danger"></div> <!-- Thẻ báo lỗi Address -->
+                                <div id="addressErrorLogin" class="text-danger"></div>
                                 <label class="lbform">Phone Number</label>
                                 <input name="phone" value="${user.phone}" class="form-control">
-                                <div id="phoneErrorLogin" class="text-danger"></div> <!-- Thẻ báo lỗi Phone -->
+                                <div id="phoneErrorLogin" class="text-danger"></div>
                             </div>
                             <div class="col-md-6">
                                 <label class="lbform">Payment Method</label>
@@ -224,19 +220,19 @@
                             <div class="col-md-6">
                                 <label class="lbform">Full Name</label>
                                 <input name="fullName" class="form-control">
-                                <div id="fullNameError" class="text-danger"></div> <!-- Thẻ báo lỗi Full Name -->
+                                <div id="fullNameError" class="text-danger"></div>
 
                                 <label class="lbform">Address</label>
                                 <input name="address" class="form-control">
-                                <div id="addressError" class="text-danger"></div> <!-- Thẻ báo lỗi Address -->
+                                <div id="addressError" class="text-danger"></div>
 
                                 <label class="lbform">Phone Number</label>
                                 <input name="phone" class="form-control">
-                                <div id="phoneError" class="text-danger"></div> <!-- Thẻ báo lỗi Phone -->
+                                <div id="phoneError" class="text-danger"></div>
 
                                 <label class="lbform">Email</label>
                                 <input name="email" class="form-control">
-                                <div id="emailError" class="text-danger"></div> <!-- Thẻ báo lỗi Email -->
+                                <div id="emailError" class="text-danger"></div>
                             </div>
                             <div class="col-md-6">
                                 <label class="lbform">Payment Method</label>
@@ -248,7 +244,6 @@
                                 <button class="btn btn-primary btn-lg w-100 mt-4">Place Order</button>
                             </div>
                         </form>
-
                     </c:if>
                 </div>
             </div>
@@ -261,7 +256,7 @@
                         <span>Subtotal:</span>
                         <span>$ ${totalAmount}</span>
                     </div>
-                    <c:if test="${discount != null}">
+                    <c:if test="${user != null && discount != null}">
                         <div class="d-flex justify-content-between mb-2 text-danger">
                             <span>Discount:</span>
                             <span class="text-danger">$ ${discount.discountValue}</span>
@@ -270,14 +265,28 @@
                     <hr>
                     <div class="d-flex justify-content-between mb-4">
                         <h5>Total:</h5>
-                        <h5>$ ${discountedAmount != null ? discountedAmount : totalAmount}</h5>
+                        <h5>
+                            <c:choose>
+                                <c:when test="${user != null && discountedAmount != null}">
+                                    $ ${discountedAmount}
+                                </c:when>
+                                <c:otherwise>
+                                    $ ${totalAmount}
+                                </c:otherwise>
+                            </c:choose>
+                        </h5>
                     </div>
+                    <c:if test="${user == null}">
+                        <div class="alert alert-info" role="alert">
+                            Log in to enjoy discounts on your order!
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<%-- Lấy footer theo thằng ml mô đặt tên--%>
+
 <jsp:include page="footer.jsp"/>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
