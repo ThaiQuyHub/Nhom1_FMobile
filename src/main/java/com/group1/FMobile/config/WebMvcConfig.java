@@ -1,5 +1,4 @@
-package com.group1.FMobile.config;
-
+package com.group1.fmobile.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +31,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
+        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/resources/imgages/");
         registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
+        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/product");
         registry.addResourceHandler("/client/**").addResourceLocations("/resources/client/");
-
     }
 
 }
