@@ -21,8 +21,7 @@ public class FilterController {
 
     private final ProductServices productServices;
     @GetMapping("/filter")
-    @ResponseBody
-    public List<Product> filterProducts(Model model,
+    public String filterProducts(Model model,
                                  @RequestParam(name ="selectedBrands", required = false) List<String> brands,
                                  @RequestParam(required = false) String minPrice,
                                  @RequestParam(required = false) String maxPrice,
@@ -43,12 +42,13 @@ public class FilterController {
         }
 
             List<Product> listProducts = productServices.filterProduct(brands,minPriceValue, maxPriceValue, rams);
-            List<Product> products = new ArrayList<>();
+            List<Product> listMobileProducts = new ArrayList<>();
         for (Product mobile: listProducts) {
             if(mobile.getProductCategory().getId() == 1){
-                products.add(mobile);
+                listMobileProducts.add(mobile);
             }
         }
-        return products;
+        model.addAttribute("products", listMobileProducts);
+        return "guest/searchPage/mobile";
     }
 }

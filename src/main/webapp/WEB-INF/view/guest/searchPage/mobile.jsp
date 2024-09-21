@@ -19,11 +19,9 @@
                         <div class="row brand-container">
                             <c:forEach items="${['apple', 'samsung', 'oppo', 'xiaomi', 'vivo', 'realme', 'huawei']}" var="brand">
                                 <div class="col-4">
-                                    <label class="brand-label">
-                                        <input type="checkbox" class="brand-checkbox" name="brand" value="${brand}">
-                                        <img src="images/product/${brand}.png" alt="${brand}">
-                                        </input>
-                                    </label>
+                                    <button type="radio" class="brand-checkbox" name="brand" value="${brand}" onclick="onsubmit()">
+                                    <img src="images/product/${brand}.png" alt="${brand}">
+                                    </button>
                                 </div>
                             </c:forEach>
                         </div>
@@ -101,68 +99,72 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
-        const priceCheckboxes = document.querySelectorAll('.price-checkbox');
-        const ramCheckboxes = document.querySelectorAll('.ram-checkbox');
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('searchForm');
+        const brandButton = document.querySelectorAll('.brand-button');
+        const priceButtons = document.querySelectorAll('.price-button');
+        const ramButtons = document.querySelectorAll('.ram-button');
 
         const selectedBrands = new Set();
-        const selectedPriceRanges = new Set();
         const selectedRams = new Set();
+        let selectedMinPrice = null;
+        let selectedMaxPrice = null;
 
-        // Hàm gửi AJAX tới controller
-        function sendFilterData() {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `/filter?brands=${Array.from(selectedBrands).join(',')}&priceRanges=${Array.from(selectedPriceRanges).join(',')}&rams=${Array.from(selectedRams).join(',')}`, true);
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-
-                    // Xử lý kết quả trả về từ controller
-                    console.log('Response from server:', xhr.responseText);
-                    document.querySelector('.searchResults').innerHTML = xhr.responseText;
-                }
-            };
-
-            xhr.send();
+        function updateHiddenInputs() {
+            document.getElementById('selectedBrands').value = Array.from(selectedBrands).join(',');
+            document.getElementById('selectedMinPrice').value = selectedMinPrice;
+            document.getElementById('selectedMaxPrice').value = selectedMaxPrice;
+            document.getElementById('selectedRams').value = Array.from(selectedRams).join(',');
         }
 
-        // Lắng nghe sự kiện thay đổi checkbox của thương hiệu
+        brandButton.addEventListener('click', function (){
+
+        }
+
+        // Thêm sự kiện change cho các checkbox của brand
         brandCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
+            checkbox.addEventListener('change', function() {
                 if (this.checked) {
                     selectedBrands.add(this.value);
                 } else {
                     selectedBrands.delete(this.value);
                 }
-                sendFilterData();
+                updateHiddenInputs();
+                form.submit(); // Tự động submit form khi thay đổi trạng thái của checkbox
             });
         });
 
-        // Lắng nghe sự kiện thay đổi checkbox của giá
-        priceCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    selectedPriceRanges.add(this.value);
-                } else {
-                    selectedPriceRanges.delete(this.value);
-                }
-                sendFilterData();
+        priceButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                selectedMinPrice = this.dataset.min;
+                selectedMaxPrice = this.dataset.max;
+                priceButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                updateHiddenInputs();
             });
         });
 
-        // Lắng nghe sự kiện thay đổi checkbox của RAM
-        ramCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    selectedRams.add(this.value);
+        ramButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const ram = this.dataset.ram;
+                if (selectedRams.has(ram)) {
+                    selectedRams.delete(ram);
+                    this.classList.remove('active');
                 } else {
-                    selectedRams.delete(this.value);
+                    selectedRams.add(ram);
+                    this.classList.add('active');
                 }
-                sendFilterData();
+                updateHiddenInputs();
             });
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateHiddenInputs();
+            this.submit();
         });
     });
+
 
 </script>
 

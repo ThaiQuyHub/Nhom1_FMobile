@@ -772,12 +772,10 @@ body.showCart .cartTab {
     max-width: 100%;
     height: auto;
 }
-
-.active-filter {
-    background-color: #0066cc;
-    color: white;
+.brand-container button{
+    background-color: #f2f4f7;
+    border-radius: 5px;
 }
-
 .pagination {
     display: flex;
     justify-content: center;
