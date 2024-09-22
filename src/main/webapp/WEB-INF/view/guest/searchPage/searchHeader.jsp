@@ -76,11 +76,11 @@
                     </svg>
                     <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form class="d-flex ml-5">
+                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/search" method="GET">
                     <div class="search-icon">
-                        <input class="form-control search_nav" type="search" placeholder="Search"
+                        <input class="form-control search_nav" type="search" name = "query" placeholder="Search"
                                aria-label="Search"/>
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                        <svg id="searchIcon" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"

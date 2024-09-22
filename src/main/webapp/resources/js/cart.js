@@ -6,8 +6,15 @@ let closeCart = document.querySelector('.close');
 let cart = [];
 let allProducts = [];
 
+// Lắng nghe sự kiện khi DOM đã tải xong
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+});
 iconCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
+    fetchProducts();
+    updateCartHTML();
+
 })
 closeCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
@@ -17,10 +24,16 @@ closeCart.addEventListener('click', () => {
 const initApp = () => {
 
     // Lấy dữ liệu sản phẩm từ DOM
-    allProducts = getProductsFromDOM('.item');
+    fetchProducts();
+
+    // Load giỏ hàng từ session
+    loadCartFromSession();
 
     // Thêm sự kiện click cho các nút "Add To Cart"
     addEventToButtons();
+
+    // Cập nhật hiển thị giỏ hàng
+    updateCartHTML();
 
     // Thêm sự kiện cho nút thanh toán
     const checkoutButton = document.querySelector('.checkOut');
@@ -35,6 +48,20 @@ const initApp = () => {
         });
     }
 
+}
+
+// Hàm lưu giỏ hàng vào sessionStorage
+const saveCartToSession = () => {
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+}
+
+
+// Hàm tải giỏ hàng từ sessionStorage
+const loadCartFromSession = () => {
+    const savedCart = sessionStorage.getItem('cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+    }
 }
 
 // Hàm chuẩn bị dữ liệu giỏ hàng để gửi đến controller
@@ -63,6 +90,12 @@ const prepareCartData = () => {
     `;
 }
 
+const fetchProducts = () => {
+    allProducts = getProductsFromDOM('.item');
+    console.log('Fetched products:', allProducts); // Debugging
+}
+
+
 const getProductsFromDOM = (selector) => {
     const productElements = document.querySelectorAll(selector);
     return Array.from(productElements).map(element => ({
@@ -73,18 +106,32 @@ const getProductsFromDOM = (selector) => {
     }));
 }
 
+
+
+// const addEventToButtons = () => {
+//     const addToCartButtons = document.querySelectorAll('.addCart');
+//     addToCartButtons.forEach(button => {
+//         button.addEventListener('click', () => {
+//             const productId = button.closest('.item').getAttribute('data-id');
+//             addToCart(productId);
+//         });
+//     });
+// }
+
 const addEventToButtons = () => {
-    const addToCartButtons = document.querySelectorAll('.addCart');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const productId = button.closest('.item').getAttribute('data-id');
+    // Sử dụng event delegation
+    document.body.addEventListener('click', (e) => {
+        if (e.target.classList.contains('addCart')) {
+            const productId = e.target.closest('.item').getAttribute('data-id');
             addToCart(productId);
-        });
+        }
     });
 }
 
 // Hàm thêm sản phẩm vào giỏ hàng
 const addToCart = (productId) => {
+    console.log('Adding product with ID:', productId); // Debugging
+    console.log('Current allProducts:', allProducts); // Debugging
     let product = findProductById(productId);
     if (product) {
         let existingItem = cart.find(item => item.id == productId);
@@ -100,12 +147,11 @@ const addToCart = (productId) => {
             showNotification("Sản phẩm đã được thêm vào giỏ hàng thành công", "#4CAF50"); // Màu xanh lá cho thông báo thành công
         }
     } else {
-        console.error('Product not found:', productId);
+        console.error('Product not found:', productId); // Debugging
         showNotification("Không tìm thấy sản phẩm", "#FF0000"); // Màu đỏ cho thông báo lỗi
     }
 }
 
-// Hàm cập nhật HTML của giỏ hàng
 // Hàm cập nhật HTML của giỏ hàng
 const updateCartHTML = () => {
     listCartHTML.innerHTML = '';
@@ -195,7 +241,11 @@ const updateCartDisplay = (totalQuantity) => {
 
 // Hàm tìm sản phẩm theo ID
 const findProductById = (id) => {
-    return allProducts.find(product => product.id == id);
+    console.log('Searching for product with ID:', id); // Debugging
+    console.log('Current allProducts:', allProducts); // Debugging
+    const product = allProducts.find(product => product.id == id);
+    console.log('Found product:', product); // Debugging
+    return product;
 }
 
 // Hàm xóa sản phẩm khỏi giỏ hàng
@@ -205,10 +255,7 @@ const removeFromCart = (productId) => {
     saveCartToSession();
 }
 
-// Hàm lưu giỏ hàng vào sessionStorage
-const saveCartToSession = () => {
-    sessionStorage.setItem('cart', JSON.stringify(cart));
-}
+
 
 // Hàm hiển thị thông báo
 const showNotification = (message, backgroundColor = "#4CAF50") => {
@@ -232,5 +279,16 @@ const showNotification = (message, backgroundColor = "#4CAF50") => {
     }, 1500);
 }
 
-// Khởi chạy ứng dụng khi trang đã tải xong
-document.addEventListener('DOMContentLoaded', initApp);
+// Hàm để cập nhật allProducts sau khi tải Ajax
+function updateProductList() {
+    fetchProducts();
+    console.log('Updated product list:', allProducts); // Debugging
+}
+
+// Export hàm này để có thể gọi từ bên ngoài sau khi tải Ajax
+window.updateProducts = updateProductList;
+
+// Thêm hàm này để tải lại danh sách sản phẩm sau khi trang đã tải xong
+window.addEventListener('load', () => {
+    setTimeout(updateProductList, 1000); // Đợi 1 giây sau khi trang đã tải xong
+});

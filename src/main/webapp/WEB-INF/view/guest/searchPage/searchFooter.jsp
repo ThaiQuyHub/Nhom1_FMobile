@@ -66,40 +66,30 @@
 </nav>
 <div class="cartTab">
     <h1>Shopping Cart</h1>
-    <form id = "cartForm" action =/checkout" method="post">
+    <form id = "cartForm" action ="/checkout" method="post">
     <div class="listCart">
 
     </div>
+
+    <div id="hiddenInputs">
+        <!-- JavaScript sẽ thêm các input ẩn vào đây -->
+    </div>
+    </form>
     <div class="cartTotal">
         <div class="totalText">Total:</div>
         <div class="totalAmount">$0.00</div>
-    </div>
-    <div id="hiddenInputs">
-        <!-- JavaScript sẽ thêm các input ẩn vào đây -->
     </div>
     <div class="btn">
         <button class="close">CLOSE</button>
         <button class="checkOut">CHECK OUT</button>
     </div>
-    </form>
+
 </div>
-<script>
-    // Định nghĩa biến allProducts ở đây nếu cần
-    var allProducts = [
-        <c:forEach items="${products}" var="product" varStatus="status">
-        {
-            id: ${product.id},
-            productName: "${product.name}",
-            price: ${product.price},
-            image: "${product.image}"
-        }<c:if test="${!status.last}">,</c:if>
-        </c:forEach>
-    ];
-</script>
+
 <script src="/js/cart.js"></script>
 <script src="/js/search.js"></script>
-<script src ="/js/pagination.js"></script>
-<script src = "/js/filter.js"></script>
+<script src="/js/pagination.js"></script>
+<script src="/js/filter.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const darkModeToggle = document.getElementById("darkModeToggle");

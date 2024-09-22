@@ -208,19 +208,20 @@
     <div class="listCart">
 
     </div>
-    <div class="cartTotal">
-        <div class="totalText">Total:</div>
-        <div class="totalAmount">$0.00</div>
-    </div>
+
         <div id="hiddenInputs">
             <!-- Input ẩn sẽ được thêm vào đây bởi JavaScript -->
         </div>
         <input type="hidden" name="total_amount" id="total_amount" value="0.00">
+    </form>
+    <div class="cartTotal">
+        <div class="totalText">Total:</div>
+        <div class="totalAmount">$0.00</div>
+    </div>
     <div class="btn">
         <button class="close">CLOSE</button>
         <button class="checkOut">CHECK OUT</button>
     </div>
-    </form>
 </div>
 <script src="/js/cart.js"></script>
 <script src="/js/search.js"></script>

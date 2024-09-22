@@ -740,6 +740,7 @@ body.showCart .cartTab {
     text-align: center;
     cursor: pointer;
     margin-bottom: 5px;
+    font-weight: lighter;
 }
 
 .filter-container button:hover,
