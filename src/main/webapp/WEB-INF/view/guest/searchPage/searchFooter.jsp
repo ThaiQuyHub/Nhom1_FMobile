@@ -98,6 +98,8 @@
 </script>
 <script src="/js/cart.js"></script>
 <script src="/js/search.js"></script>
+<script src ="/js/pagination.js"></script>
+<script src = "/js/filter.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const darkModeToggle = document.getElementById("darkModeToggle");

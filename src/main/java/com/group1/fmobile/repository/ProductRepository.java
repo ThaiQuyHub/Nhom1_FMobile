@@ -1,17 +1,29 @@
 package com.group1.fmobile.repository;
 
 import com.group1.fmobile.domain.Product;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository <Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
     @Override
     Optional<Product> findById(Long id);
 
@@ -32,15 +44,4 @@ public interface ProductRepository extends JpaRepository <Product, Long> {
             "OR LOWER(b.brandName) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Product> findProductsByQuery(@Param("query") String query);
 
-    @Query("SELECT DISTINCT p FROM Product p " +
-            "WHERE (:brands IS NULL OR p.brand.brandName IN :brands) " +
-            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
-            "AND (:maxPrice IS NULL OR p.price <= :maxPrice) " +
-            "AND (:rams IS NULL OR p.ram IN :rams)")
-    List<Product> findProductsByMultipleCriteria(
-            @Param("brands") List<String> brands,
-            @Param("minPrice") double minPrice,
-            @Param("maxPrice") double maxPrice,
-            @Param("rams") List<String> rams
-    );
 }
