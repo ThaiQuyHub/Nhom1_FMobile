@@ -1,29 +1,27 @@
 package com.group1.fmobile.controller.guest;
 
 import com.group1.fmobile.domain.*;
+import com.group1.fmobile.domain.dto.OrderDTO;
 import com.group1.fmobile.repository.*;
 import com.group1.fmobile.service.PaymentMethodService;
 import com.group1.fmobile.service.ProductServices;
-import com.group1.fmobile.service.RoleService;
 import com.group1.fmobile.service.account.MailService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
 import java.util.*;
 
-/**
- * Controller xử lý các quá trình thanh toán trong ứng dụng thương mại điện tử.
- * Bao gồm hiển thị trang thanh toán, tạo đơn hàng cho cả người dùng đã đăng nhập và khách.
- *
- * @author Nguyen Cong Dat
- */
 @Controller
 public class CheckOutController {
 
@@ -51,31 +49,18 @@ public class CheckOutController {
     @Autowired
     private MailService mailService;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
-    /**
-     * Xử lý yêu cầu GET cho trang thanh toán.
-     * Chuẩn bị dữ liệu cần thiết cho quá trình thanh toán bao gồm các mục trong giỏ hàng và tổng số tiền.
-     */
     @GetMapping("/checkout")
     public String checkout(HttpSession session,
                            @RequestParam(value = "productId[]", required = false) String[] productIds,
                            @RequestParam(value = "productQuantity[]", required = false) String[] quantities,
                            @RequestParam(value = "totalAmount", required = false) String total,
                            Model model) {
-        if(session.getAttribute("loggedInUser") != null){
-            String email = session.getAttribute("loggedInUser").toString();
-            User user = userRepository.findByEmail(email);
-            model.addAttribute("user", user);
-        }
-
-        if(productIds == null || productIds.length == 0){
-            model.addAttribute("error", "Giỏ hàng trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi thanh toán.");
+        if (productIds == null || productIds.length == 0) {
+            model.addAttribute("error", "Cart is empty. Please add products to cart before checkout.");
             return "redirect:/home";
         }
 
-        HashMap<Product, Long> cartProducts = new HashMap<Product, Long>();
+        HashMap<Product, Long> cartProducts = new HashMap<>();
         Double totalAmount = Double.parseDouble(total);
 
         for (int i = 0; i < productIds.length; i++) {
@@ -102,121 +87,174 @@ public class CheckOutController {
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("payment", paymentMethodService.findAll());
 
+        OrderDTO orderDTO = new OrderDTO();
+        if (session.getAttribute("loggedInUser") != null) {
+            String email = session.getAttribute("loggedInUser").toString();
+            User user = userRepository.findByEmail(email);
+            model.addAttribute("user", user);
+
+            orderDTO.setFullName(user.getFullName());
+            orderDTO.setAddress(user.getAddress());
+            orderDTO.setPhone(user.getPhone());
+            orderDTO.setEmail(user.getEmail());
+        }
+        model.addAttribute("orderDTO", orderDTO);
+
         return "guest/searchPage/checkout";
     }
 
-    /**
-     * Xử lý yêu cầu POST để tạo đơn hàng cho người dùng đã đăng nhập.
-     * Xử lý chi tiết đơn hàng, lưu đơn hàng và gửi email xác nhận.
-     */
     @PostMapping("/checkout")
-    public String createOrder(HttpSession session, Model model,
-                              @RequestParam(value = "payment") Long payment,
-                              @RequestParam(value = "address") String address){
-        String email = session.getAttribute("loggedInUser").toString();
-        User user = userRepository.findByEmail(email);
-        PaymentMethod paymentMethod = paymentMethodRepository.findById(payment).get();
-        HashMap<Product, Long> cartProducts = (HashMap<Product, Long>) session.getAttribute("cartProducts");
-
-        if(cartProducts.size() == 0){
-            model.addAttribute("errorQuantityCart", "Số lượng trong giỏ hàng phải > 0");
+    public String createOrder(@Valid @ModelAttribute("orderDTO") OrderDTO orderDTO, BindingResult bindingResult,
+                              HttpSession session, Model model) {
+        if (bindingResult.hasErrors()) {
+            addAttributesForCheckoutForm(model, session);
             return "guest/searchPage/checkout";
         }
 
-        Double total = tinhTongTien(cartProducts);
+        try {
+            String email = session.getAttribute("loggedInUser") != null ? session.getAttribute("loggedInUser").toString() : null;
+            User user = email != null ? userRepository.findByEmail(email) : null;
+            PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDTO.getPaymentId()).orElseThrow();
+            HashMap<Product, Long> cartProducts = (HashMap<Product, Long>) session.getAttribute("cartProducts");
 
-        Orders orders = taoDonHang(user, paymentMethod, address, total);
+            if (cartProducts.isEmpty()) {
+                model.addAttribute("errorQuantityCart", "Cart quantity must be > 0");
+                return "guest/searchPage/checkout";
+            }
 
-        apDungGiamGia(orders, total);
+            Double total = calculateTotal(cartProducts);
+            Orders orders;
 
-        Orders result = orderRepository.save(orders);
+            if (user != null) {
+                orders = createOrder(user, paymentMethod, orderDTO.getAddress(), total);
+                orders.setFullName(orderDTO.getFullName());
+                orders.setPhone(orderDTO.getPhone());
+            } else {
+                orders = createGuestOrder(paymentMethod, orderDTO.getAddress(), total, orderDTO.getFullName(), orderDTO.getPhone());
+            }
 
-        luuChiTietDonHang(result, cartProducts);
+            applyDiscount(orders, total);
+            Orders result = orderRepository.save(orders);
+            saveOrderDetails(result, cartProducts);
 
-        // Tính toán số tiền sau khi áp dụng giảm giá
-        double totalAfterDiscount = calculateTotalAfterDiscount(orders);
+            double totalAfterDiscount = calculateTotalAfterDiscount(orders);
+            if (user != null) {
+                user.setAmount(user.getAmount() + (long) totalAfterDiscount);
+                userRepository.save(user);
+            }
 
-        // Cập nhật số tiền của người dùng
-        user.setAmount(user.getAmount() + (long) totalAfterDiscount);
-        userRepository.save(user);
+            String emailContent = String.format(
+                    "Thank you for your order, %s.\n\nOrder Details:\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
+                    orders.getFullName(),
+                    orders.getId(),
+                    orders.getShippingAddress(),
+                    orders.getPhone()
+            );
 
-        model.addAttribute("orderMessage", "Đặt hàng thành công! Cảm ơn bạn đã mua hàng.");
-        mailService.sendMail(user.getEmail(), "Thông báo đặt hàng thành công",
-                "Cảm ơn bạn đã đặt hàng của chúng tôi. Mã đơn hàng của bạn là: " + orders.getId());
+            mailService.sendMail(user != null ? user.getEmail() : orderDTO.getEmail(), "Order Confirmation", emailContent);
+
+            model.addAttribute("orderSuccess", "Order placed successfully! Thank you for your purchase.");
+            session.setAttribute("orderSuccess", "Order placed successfully! Thank you for your purchase.");
+        } catch (Exception e) {
+            model.addAttribute("orderError", "An error occurred while processing your order. Please try again.");
+            session.setAttribute("orderError", "An error occurred while processing your order. Please try again.");
+            return "guest/searchPage/checkout";
+        }
 
         return "redirect:/order";
     }
 
-    /**
-     * Xử lý yêu cầu POST để tạo đơn hàng cho người dùng chưa đăng nhập (thanh toán khách).
-     * Xử lý chi tiết đơn hàng, lưu đơn hàng và gửi email xác nhận nếu có.
-     */
     @PostMapping("/checkout-not-login")
-    public String createOrderNotLogin(HttpSession session, Model model,
-                                      @RequestParam(value = "payment") Long payment,
-                                      @RequestParam(value = "phone") String phone,
-                                      @RequestParam(value = "address") String address,
-                                      @RequestParam(value = "fullName") String fullName,
-                                      @RequestParam(value = "email") String email) {
-        PaymentMethod paymentMethod = paymentMethodRepository.findById(payment).get();
-        HashMap<Product, Long> cartProducts = (HashMap<Product, Long>) session.getAttribute("cartProducts");
-
-        if (cartProducts.size() == 0) {
-            model.addAttribute("errorQuantityCart", "Số lượng trong giỏ hàng phải > 0");
+    public String createOrderNotLogin(@Valid @ModelAttribute("orderDTO") OrderDTO orderDTO, BindingResult bindingResult,
+                                      HttpSession session, Model model) {
+        if (bindingResult.hasErrors()) {
+            addAttributesForCheckoutForm(model, session);
             return "guest/searchPage/checkout";
         }
 
-        Double total = tinhTongTien(cartProducts);
+        try {
+            PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDTO.getPaymentId()).orElseThrow();
+            HashMap<Product, Long> cartProducts = (HashMap<Product, Long>) session.getAttribute("cartProducts");
 
-        Orders orders;
-
-        if (email != null && !email.isEmpty()) {
-            User existingUser = userRepository.findByEmail(email);
-
-            if (existingUser == null) {
-                User newUser = new User();
-                newUser.setFullName(fullName);
-                newUser.setPhone(phone);
-                newUser.setAddress(address);
-                newUser.setCreationDate(LocalDate.now());
-                newUser.setRoles(new HashSet<>(List.of(new Role(3,RoleType.GUEST))));
-                userRepository.save(newUser);
-
-                orders = taoDonHang(newUser, paymentMethod, address, total);
-            } else {
-                orders = taoDonHang(existingUser, paymentMethod, address, total);
+            if (cartProducts.isEmpty()) {
+                model.addAttribute("errorQuantityCart", "Cart quantity must be > 0");
+                return "guest/searchPage/checkout";
             }
-        } else {
-            orders = taoDonHangKhach(paymentMethod, address, total, fullName, phone);
-        }
 
-        Orders result = orderRepository.save(orders);
+            Double total = calculateTotal(cartProducts);
+            Orders orders;
 
-        luuChiTietDonHang(result, cartProducts);
+            if (orderDTO.getEmail() != null && !orderDTO.getEmail().isEmpty()) {
+                User existingUser = userRepository.findByEmail(orderDTO.getEmail());
 
-        model.addAttribute("orderMessage", "Đặt hàng thành công! Cảm ơn bạn đã mua hàng.");
+                if (existingUser != null) {
+                    model.addAttribute("emailError", "Email already exists in the system. Please log in or use a different email.");
+                    addAttributesForCheckoutForm(model, session);
+                    return "guest/searchPage/checkout";
+                }
 
-        if (email != null && !email.isEmpty()) {
-            mailService.sendMail(email, "Thông báo đặt hàng thành công",
-                    "Cảm ơn bạn đã đặt hàng của chúng tôi. Mã đơn hàng của bạn là: " + result.getId());
+                User newUser = createNewUser(orderDTO);
+                // Cộng dồn số tiền vào tài khoản của người dùng mới
+//                newUser.setAmount(newUser.getAmount() + (long) total);
+
+
+
+                userRepository.save(newUser);
+                orders = createOrder(newUser, paymentMethod, orderDTO.getAddress(), total);
+                orders.setFullName(orderDTO.getFullName());
+                orders.setPhone(orderDTO.getPhone());
+            } else {
+                orders = createGuestOrder(paymentMethod, orderDTO.getAddress(), total, orderDTO.getFullName(), orderDTO.getPhone());
+            }
+
+            Orders result = orderRepository.save(orders);
+            saveOrderDetails(result, cartProducts);
+
+            String emailContent = String.format(
+                    "Thank you for your order, %s.\n\nOrder Details:\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
+                    orders.getFullName(),
+                    orders.getId(),
+                    orders.getShippingAddress(),
+                    orders.getPhone()
+            );
+
+            mailService.sendMail(orderDTO.getEmail(), "Order Confirmation", emailContent);
+            model.addAttribute("orderSuccess", "Order placed successfully! Thank you for your purchase.");
+            session.setAttribute("orderSuccess", "Order placed successfully! Thank you for your purchase.");
+        } catch (Exception e) {
+            model.addAttribute("orderError", "An error occurred while processing your order. Please try again.");
+            session.setAttribute("orderError", "An error occurred while processing your order. Please try again.");
+            return "guest/searchPage/checkout";
         }
 
         return "redirect:/home";
     }
 
-    /**
-     * Tính tổng số tiền cho đơn hàng dựa trên nội dung giỏ hàng.
-     */
-    private Double tinhTongTien(HashMap<Product, Long> cartProducts) {
+    private void addAttributesForCheckoutForm(Model model, HttpSession session) {
+        model.addAttribute("cart", session.getAttribute("cartProducts"));
+        model.addAttribute("totalAmount", session.getAttribute("totalAmount"));
+        model.addAttribute("payment", paymentMethodService.findAll());
+    }
+
+    private User createNewUser(OrderDTO orderDTO) {
+        User newUser = new User();
+        newUser.setFullName(orderDTO.getFullName());
+        newUser.setPhone(orderDTO.getPhone());
+        newUser.setAddress(orderDTO.getAddress());
+        newUser.setEmail(orderDTO.getEmail());
+        newUser.setCreationDate(LocalDate.now());
+        newUser.setRoles(new HashSet<>(List.of(new Role(3, RoleType.GUEST))));
+        newUser.setAmount(0L);
+        return newUser;
+    }
+
+    private Double calculateTotal(HashMap<Product, Long> cartProducts) {
         return cartProducts.entrySet().stream()
                 .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
                 .sum();
     }
 
-    /**
-     * Tạo đối tượng Đơn hàng cho người dùng đã đăng nhập.
-     */
-    private Orders taoDonHang(User user, PaymentMethod paymentMethod, String address, Double total) {
+    private Orders createOrder(User user, PaymentMethod paymentMethod, String address, Double total) {
         Orders orders = new Orders();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = LocalDateTime.now().format(formatter);
@@ -229,10 +267,7 @@ public class CheckOutController {
         return orders;
     }
 
-    /**
-     * Tạo đối tượng Đơn hàng cho người dùng chưa đăng nhập (khách).
-     */
-    private Orders taoDonHangKhach(PaymentMethod paymentMethod, String address, Double total, String fullName, String phone) {
+    private Orders createGuestOrder(PaymentMethod paymentMethod, String address, Double total, String fullName, String phone) {
         Orders orders = new Orders();
         orders.setOrderDate(LocalDateTime.now());
         orders.setStatus("Waiting");
@@ -244,20 +279,14 @@ public class CheckOutController {
         return orders;
     }
 
-    /**
-     * Áp dụng giảm giá cho đơn hàng nếu có.
-     */
-    private void apDungGiamGia(Orders orders, Double total) {
+    private void applyDiscount(Orders orders, Double total) {
         List<Discount> discounts = discountRepository.findByAmount(total);
         if (!discounts.isEmpty()) {
             orders.setDiscount(discounts.get(0));
         }
     }
 
-    /**
-     * Lưu chi tiết đơn hàng cho từng sản phẩm trong giỏ hàng.
-     */
-    private void luuChiTietDonHang(Orders order, HashMap<Product, Long> cartProducts) {
+    private void saveOrderDetails(Orders order, HashMap<Product, Long> cartProducts) {
         for (Map.Entry<Product, Long> entry : cartProducts.entrySet()) {
             Product product = entry.getKey();
             Long quantity = entry.getValue();
@@ -272,9 +301,6 @@ public class CheckOutController {
         }
     }
 
-    /**
-     * Tính toán tổng số tiền sau khi áp dụng giảm giá.
-     */
     private double calculateTotalAfterDiscount(Orders order) {
         double totalBeforeDiscount = order.getTotalPayment();
         if (order.getDiscount() != null) {

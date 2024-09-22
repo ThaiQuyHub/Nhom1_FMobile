@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,92 +64,6 @@
             }
         }
     </style>
-    <script>
-        function validateFormGuest(form) {
-            // Reset lại thông báo lỗi trước mỗi lần submit
-            document.getElementById('fullNameError').innerHTML = '';
-            document.getElementById('addressError').innerHTML = '';
-            document.getElementById('phoneError').innerHTML = '';
-            document.getElementById('emailError').innerHTML = '';
-
-            let fullName = form.fullName.value.trim();
-            let address = form.address.value.trim();
-            let phone = form.phone.value.trim();
-            let email = form.email.value.trim();
-
-            let isValid = true;
-
-            // Validate Full Name
-            if (fullName === '') {
-                document.getElementById('fullNameError').innerHTML = 'Full Name is required.';
-                isValid = false;
-            }
-
-            // Validate Address
-            if (address === '') {
-                document.getElementById('addressError').innerHTML = 'Address is required.';
-                isValid = false;
-            }
-
-            // Validate Phone (10-11 số và bắt đầu bằng số 0)
-            const phonePattern = /^0\d{9,10}$/;
-            if (phone === '') {
-                document.getElementById('phoneError').innerHTML = 'Phone Number is required.';
-                isValid = false;
-            } else if (!phone.match(phonePattern)) {
-                document.getElementById('phoneError').innerHTML = 'Phone Number must be 10-11 digits and start with 0.';
-                isValid = false;
-            }
-
-            // Validate Email
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (email === '') {
-                document.getElementById('emailError').innerHTML = 'Email is required.';
-                isValid = false;
-            } else if (!email.match(emailPattern)) {
-                document.getElementById('emailError').innerHTML = 'Invalid Email format.';
-                isValid = false;
-            }
-
-            return isValid;
-        }
-        function validateFormUser(form) {
-            // Reset lại thông báo lỗi trước mỗi lần submit
-            document.getElementById('fullNameErrorLogin').innerHTML = '';
-            document.getElementById('addressErrorLogin').innerHTML = '';
-            document.getElementById('phoneErrorLogin').innerHTML = '';
-
-            let fullName = form.fullName.value.trim();
-            let address = form.address.value.trim();
-            let phone = form.phone.value.trim();
-
-            let isValid = true;
-
-            // Validate Full Name
-            if (fullName === '') {
-                document.getElementById('fullNameErrorLogin').innerHTML = 'Full Name is required.';
-                isValid = false;
-            }
-
-            // Validate Address
-            if (address === '') {
-                document.getElementById('addressErrorLogin').innerHTML = 'Address is required.';
-                isValid = false;
-            }
-
-            // Validate Phone
-            const phonePattern = /^0\d{9,10}$/;
-            if (phone === '') {
-                document.getElementById('phoneErrorLogin').innerHTML = 'Phone Number is required.';
-                isValid = false;
-            } else if (!phone.match(phonePattern)) {
-                document.getElementById('phoneErrorLogin').innerHTML = 'Phone Number must be 10-11 digits and start with 0.';
-                isValid = false;
-            }
-
-            return isValid;
-        }
-    </script>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
@@ -189,62 +104,74 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">Order Information</h2>
-                    <c:if test="${user != null}">
-                        <form method="post" action="/checkout" class="row" onsubmit="return validateFormUser(this);">
-                            <div class="col-md-6">
-                                <label class="lbform">Email</label>
-                                <input value="${user.email}" readonly disabled class="form-control">
-                                <label class="lbform">Full Name</label>
-                                <input name="fullName" value="${user.fullName}" class="form-control">
-                                <div id="fullNameErrorLogin" class="text-danger"></div>
-                                <label class="lbform">Address</label>
-                                <input name="address" value="${user.address}" class="form-control">
-                                <div id="addressErrorLogin" class="text-danger"></div>
-                                <label class="lbform">Phone Number</label>
-                                <input name="phone" value="${user.phone}" class="form-control">
-                                <div id="phoneErrorLogin" class="text-danger"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="lbform">Payment Method</label>
-                                <select name="payment" class="form-select">
-                                    <c:forEach items="${payment}" var="payment">
-                                        <option value="${payment.id}">${payment.paymentName}</option>
-                                    </c:forEach>
-                                </select>
-                                <button class="btn btn-primary btn-lg w-100 mt-4">Place Order</button>
-                            </div>
-                        </form>
+                    <c:if test="${not empty orderError}">
+                        <div class="alert alert-danger" role="alert">
+                                ${orderError}
+                        </div>
                     </c:if>
-                    <c:if test="${user == null}">
-                        <form method="post" action="/checkout-not-login" class="row" onsubmit="return validateFormGuest(this);">
-                            <div class="col-md-6">
-                                <label class="lbform">Full Name</label>
-                                <input name="fullName" class="form-control">
-                                <div id="fullNameError" class="text-danger"></div>
-
-                                <label class="lbform">Address</label>
-                                <input name="address" class="form-control">
-                                <div id="addressError" class="text-danger"></div>
-
-                                <label class="lbform">Phone Number</label>
-                                <input name="phone" class="form-control">
-                                <div id="phoneError" class="text-danger"></div>
-
-                                <label class="lbform">Email</label>
-                                <input name="email" class="form-control">
-                                <div id="emailError" class="text-danger"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="lbform">Payment Method</label>
-                                <select name="payment" class="form-select">
-                                    <c:forEach items="${payment}" var="payment">
-                                        <option value="${payment.id}">${payment.paymentName}</option>
-                                    </c:forEach>
-                                </select>
-                                <button class="btn btn-primary btn-lg w-100 mt-4">Place Order</button>
-                            </div>
-                        </form>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${user != null}">
+                            <form:form modelAttribute="orderDTO" method="post" action="/checkout" onsubmit="return validateFormUser(this);">
+                                <div class="col-md-6">
+                                    <label class="lbform">Email</label>
+                                    <input value="${user.email}" readonly disabled class="form-control">
+                                    <label class="lbform">Full Name</label>
+                                    <form:input path="fullName" class="form-control"/>
+                                    <form:errors path="fullName" cssClass="text-danger"/>
+                                    <div id="fullNameErrorLogin" class="text-danger"></div>
+                                    <label class="lbform">Address</label>
+                                    <form:input path="address" class="form-control"/>
+                                    <form:errors path="address" cssClass="text-danger"/>
+                                    <div id="addressErrorLogin" class="text-danger"></div>
+                                    <label class="lbform">Phone Number</label>
+                                    <form:input path="phone" class="form-control"/>
+                                    <form:errors path="phone" cssClass="text-danger"/>
+                                    <div id="phoneErrorLogin" class="text-danger"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="lbform">Payment Method</label>
+                                    <form:select path="paymentId" class="form-select">
+                                        <form:options items="${payment}" itemValue="id" itemLabel="paymentName"/>
+                                    </form:select>
+                                    <button class="btn btn-primary btn-lg w-100 mt-4">Place Order</button>
+                                </div>
+                            </form:form>
+                        </c:when>
+                        <c:otherwise>
+                            <form:form modelAttribute="orderDTO" method="post" action="/checkout-not-login" onsubmit="return validateFormGuest(this);">
+                                <div class="col-md-6">
+                                    <label class="lbform">Full Name</label>
+                                    <form:input path="fullName" class="form-control"/>
+                                    <form:errors path="fullName" cssClass="text-danger"/>
+                                    <div id="fullNameError" class="text-danger"></div>
+                                    <label class="lbform">Address</label>
+                                    <form:input path="address" class="form-control"/>
+                                    <form:errors path="address" cssClass="text-danger"/>
+                                    <div id="addressError" class="text-danger"></div>
+                                    <label class="lbform">Phone Number</label>
+                                    <form:input path="phone" class="form-control"/>
+                                    <form:errors path="phone" cssClass="text-danger"/>
+                                    <div id="phoneError" class="text-danger"></div>
+                                    <label class="lbform">Email</label>
+                                    <form:input path="email" class="form-control"/>
+                                    <form:errors path="email" cssClass="text-danger"/>
+                                    <div id="emailError" class="text-danger"></div>
+                                    <c:if test="${not empty emailError}">
+                                        <div class="alert alert-danger" role="alert">
+                                                ${emailError}
+                                        </div>
+                                    </c:if>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="lbform">Payment Method</label>
+                                    <form:select path="paymentId" class="form-select">
+                                        <form:options items="${payment}" itemValue="id" itemLabel="paymentName"/>
+                                    </form:select>
+                                    <button class="btn btn-primary btn-lg w-100 mt-4">Place Order</button>
+                                </div>
+                            </form:form>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
@@ -261,8 +188,8 @@
                             <span>Discount:</span>
                             <span class="text-danger">$ ${discount.discountValue}</span>
                         </div>
+                        <hr>
                     </c:if>
-                    <hr>
                     <div class="d-flex justify-content-between mb-4">
                         <h5>Total:</h5>
                         <h5>
@@ -277,7 +204,7 @@
                         </h5>
                     </div>
                     <c:if test="${user == null}">
-                        <div class="alert alert-info" role="alert">
+                        <div class="alert alert-danger" role="alert">
                             Log in to enjoy discounts on your order!
                         </div>
                     </c:if>
@@ -290,6 +217,79 @@
 <jsp:include page="footer.jsp"/>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function validateFormGuest(form) {
+        // Reset lại thông báo lỗi trước mỗi lần submit
+        document.getElementById('fullNameError').innerHTML = '';
+        document.getElementById('addressError').innerHTML = '';
+        document.getElementById('phoneError').innerHTML = '';
+        document.getElementById('emailError').innerHTML = '';
+        let fullName = form.fullName.value.trim();
+        let address = form.address.value.trim();
+        let phone = form.phone.value.trim();
+        let email = form.email.value.trim();
+        let isValid = true;
+        // Validate Full Name
+        if (fullName === '') {
+            document.getElementById('fullNameError').innerHTML = 'Full Name is required.';
+            isValid = false;
+        }
+        // Validate Address
+        if (address === '') {
+            document.getElementById('addressError').innerHTML = 'Address is required.';
+            isValid = false;
+        }
+        // Validate Phone (10-11 số và bắt đầu bằng số 0)
+        const phonePattern = /^0\d{9,10}$/;
+        if (phone === '') {
+            document.getElementById('phoneError').innerHTML = 'Phone Number is required.';
+            isValid = false;
+        } else if (!phone.match(phonePattern)) {
+            document.getElementById('phoneError').innerHTML = 'Phone Number must be 10-11 digits and start with 0.';
+            isValid = false;
+        }
+        // Validate Email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email === '') {
+            document.getElementById('emailError').innerHTML = 'Email is required.';
+            isValid = false;
+        } else if (!email.match(emailPattern)) {
+            document.getElementById('emailError').innerHTML = 'Invalid Email format.';
+            isValid = false;
+        }
+        return isValid;
+    }
+    function validateFormUser(form) {
+        // Reset lại thông báo lỗi trước mỗi lần submit
+        document.getElementById('fullNameErrorLogin').innerHTML = '';
+        document.getElementById('addressErrorLogin').innerHTML = '';
+        document.getElementById('phoneErrorLogin').innerHTML = '';
+        let fullName = form.fullName.value.trim();
+        let address = form.address.value.trim();
+        let phone = form.phone.value.trim();
+        let isValid = true;
+        // Validate Full Name
+        if (fullName === '') {
+            document.getElementById('fullNameErrorLogin').innerHTML = 'Full Name is required.';
+            isValid = false;
+        }
+        // Validate Address
+        if (address === '') {
+            document.getElementById('addressErrorLogin').innerHTML = 'Address is required.';
+            isValid = false;
+        }
+        // Validate Phone
+        const phonePattern = /^0\d{9,10}$/;
+        if (phone === '') {
+            document.getElementById('phoneErrorLogin').innerHTML = 'Phone Number is required.';
+            isValid = false;
+        } else if (!phone.match(phonePattern)) {
+            document.getElementById('phoneErrorLogin').innerHTML = 'Phone Number must be 10-11 digits and start with 0.';
+            isValid = false;
+        }
+        return isValid;
+    }
 
+</script>
 </body>
 </html>
