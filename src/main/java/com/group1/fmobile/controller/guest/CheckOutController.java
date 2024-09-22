@@ -194,8 +194,8 @@ public class CheckOutController {
                 }
 
                 User newUser = createNewUser(orderDTO);
-                // Cộng dồn số tiền vào tài khoản của người dùng mới
-//                newUser.setAmount(newUser.getAmount() + (long) total);
+                // Cộng dồn số tiền vào tài khoản của người không login ???
+
 
 
 
@@ -241,7 +241,7 @@ public class CheckOutController {
         newUser.setFullName(orderDTO.getFullName());
         newUser.setPhone(orderDTO.getPhone());
         newUser.setAddress(orderDTO.getAddress());
-        newUser.setEmail(orderDTO.getEmail());
+//        newUser.setEmail(orderDTO.getEmail());
         newUser.setCreationDate(LocalDate.now());
         newUser.setRoles(new HashSet<>(List.of(new Role(3, RoleType.GUEST))));
         newUser.setAmount(0L);
