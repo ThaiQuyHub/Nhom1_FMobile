@@ -59,6 +59,12 @@ public class Product {
     @Column(name = "updated_product")
     LocalDateTime updatedProduct;
 
+<<<<<<< HEAD
+=======
+    @Column(name = "image_url")
+    String imageUrl;
+
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
     // LK Image
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Image> assets = new LinkedHashSet<>();
@@ -66,6 +72,9 @@ public class Product {
     // LK Orders Detail
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 }

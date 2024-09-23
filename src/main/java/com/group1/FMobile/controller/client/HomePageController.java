@@ -12,9 +12,12 @@ public class HomePageController {
         return "client/homepage/index";
 
     }
+<<<<<<< HEAD
 
     @GetMapping("/UserPage")
     public String getUserPage() {
         return "client/homepage/userpage";
     }
+=======
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 }

@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+<<<<<<< HEAD
     <style>
         #guestButtons, #userInfo {
             display: none;
@@ -71,6 +72,8 @@
             document.documentElement.classList.add(isLoggedIn ? 'logged-in' : 'logged-out');
         })();
     </script>
+=======
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
 </head>
 
 <body class="">
@@ -157,13 +160,18 @@
                 </form>
             </ul>
         </div>
+<<<<<<< HEAD
         <div class="icon-cart mx-3">
+=======
+        <div class="icon-cart">
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
             </svg>
             <span>0</span>
         </div>
+<<<<<<< HEAD
         <div class="navbar-nav ms-auto">
             <div id="guestButtons" style="display: block">
                 <button class="btn btn-outline-primary me-2 btn_login" style="border: none; font-size: 15px;" onclick="login()">Login</button>
@@ -201,6 +209,17 @@
                 </div>
             </div>
         </div>
+=======
+        <div class="icon-user">
+            <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />
+        </div>
+        <button class="btn signin_btn" style="font-size: 1.3rem">
+            Log In
+        </button>
+        <button class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">
+            Register
+        </button>
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
         <div class="form-check form-switch dark-mode-toggle mx-5">
             <input class="form-check-input" type="checkbox" id="darkModeToggle" />
             <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
@@ -255,6 +274,7 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // ----------------------------------Log in-----------------------------------------
@@ -313,3 +333,5 @@
         }
     }
 </script>
+=======
+>>>>>>> d358adf7717c9801ffd85c751589b68374d3a4a0
