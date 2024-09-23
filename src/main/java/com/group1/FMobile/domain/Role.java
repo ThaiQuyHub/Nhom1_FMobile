@@ -1,29 +1,29 @@
-package com.group1.FMobile;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "ROLE")
+@Table(name = "roles")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id", nullable = false)
-    private Long id;
+    long id;
 
-    @Column(name = "role_name", nullable = false)
-    private String roleName;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    RoleType name;
 
-    @ManyToMany
-    @JoinTable(name = "USER_ROLE",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new LinkedHashSet<>();
-
+    @ManyToMany(mappedBy = "roles")
+    Set<User> users;
 }

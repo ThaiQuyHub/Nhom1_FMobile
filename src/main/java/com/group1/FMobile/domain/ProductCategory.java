@@ -1,26 +1,28 @@
-package com.group1.FMobile;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "PRODUCT_CATEGORY")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_category_id", nullable = false)
-    private Long id;
+    Long id;
 
     @Column(name = "category_name", nullable = false)
-    private String categoryName;
+    String categoryName;
 
-    @OneToMany(mappedBy = "productCategory")
-    private Set<Product> products = new LinkedHashSet<>();
-
+    // LK Product
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Product> products = new LinkedHashSet<>();
 }

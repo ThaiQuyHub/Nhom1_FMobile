@@ -1,67 +1,71 @@
-package com.group1.FMobile;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "PRODUCT")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id", nullable = false)
-    private Long id;
+    Long id;
 
+    // LK Brand
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
-    private Brand brand;
+    Brand brand;
 
+    // LK Product Category
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id")
-    private ProductCategory productCategory;
+    ProductCategory productCategory;
 
     @Column(name = "product_name", nullable = false)
-    private String productName;
+    String productName;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    @Column(name = "price", nullable = false)
+    double price;
 
     @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    int quantity;
 
     @Column(name = "sold")
-    private Integer sold;
+    int sold;
 
     @Column(name = "color")
-    private String color;
+    String color;
 
     @Column(name = "ram")
-    private String ram;
+    String ram;
 
     @Lob
     @Column(name = "description")
-    private String description;
+    String description;
 
     @Column(name = "created_product")
-    private Instant createdProduct;
+    LocalDateTime createdProduct;
 
-    @Column(name = "update_product")
-    private Instant updateProduct;
+    @Column(name = "updated_product")
+    LocalDateTime updatedProduct;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    // LK Image
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Image> assets = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "product")
-    private Set<Asset> assets = new LinkedHashSet<>();
+    // LK Orders Detail
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "product")
-    private Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
 
 }

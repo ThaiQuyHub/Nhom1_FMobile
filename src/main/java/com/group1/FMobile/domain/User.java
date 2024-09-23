@@ -1,60 +1,50 @@
-package com.group1.FMobile;
+package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
+import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "\"USER\"")
+@Table(name = "users")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
-    private Long id;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "full_name", nullable = false, length = 100)
-    private String fullName;
-
-    @Column(name = "phone", length = 20)
-    private String phone;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "created_at")
-    private Instant createdAt;
-
-    @Column(name = "updated_at")
-    private Instant updatedAt;
-
-    @Column(name = "total_purchase_amount")
-    private Long totalPurchaseAmount;
-
-    @Column(name = "isActive")
-    private Boolean isActive;
-
+    long id;
+    String password;
+    String email;
+    String fullName;
+    String phone;
+    String address;
+    LocalDate creationDate ;;
+    LocalDateTime updatedAt;
+    long amount;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    Set<Role> roles;
+    boolean enabled = false;
     @OneToMany(mappedBy = "user")
-    private Set<Order> orders = new LinkedHashSet<>();
+    Set<Orders> orders = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user")
-    private Set<TransactionHistory> transactionHistories = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "user")
-    private Set<Role> roles = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user")
-    private Set<VerifyAccount> verifyAccounts = new LinkedHashSet<>();
+
 
 }
