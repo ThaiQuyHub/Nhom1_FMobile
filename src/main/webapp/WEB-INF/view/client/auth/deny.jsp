@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Error Page</title>
+    <title>Error 403 - Forbidden</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -45,17 +45,15 @@
             background-size: cover;
             background-position: center;
         }
-
     </style>
 </head>
 <body>
 
 <div class="error-container">
-
     <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Error Icon" class="error-icon">
-    <div class="error-title">404</div>
-    <div class="error-message">Oops! Something went wrong.</div>
-    <p>The page you are looking for might have been removed or is temporarily unavailable.</p>
+    <div class="error-title">403</div>
+    <div class="error-message">Access Denied!</div>
+    <p>You do not have permission to access this resource. Please contact your administrator if you believe this is an error.</p>
     <a href="/" class="home-link">Go back to Home</a>
 </div>
 

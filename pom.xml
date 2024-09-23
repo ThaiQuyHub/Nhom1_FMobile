@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.group1</groupId>
-	<artifactId>fmobile</artifactId>
+	<artifactId>FMobile</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>fmobile</name>
+	<name>FMobile</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -113,6 +113,12 @@
 			<version>6.4.1.Final</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+			<version>3.1.6</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -7,11 +7,17 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * Dịch vụ gửi email.
+ * @author [Ha Van Dat]
+ */
 @Service
 public class MailService {
+
+    // Logger để ghi lại thông tin log
     private static final Logger logger = LoggerFactory.getLogger(MailService.class);
 
-
+    // Đối tượng JavaMailSender để gửi email
     private final JavaMailSender mailSender;
 
     @Autowired
@@ -19,12 +25,18 @@ public class MailService {
         this.mailSender = mailSender;
     }
 
+    /**
+     * Gửi email xác thực tài khoản chứa mã OTP.
+     *
+     * @param to  Địa chỉ email người nhận.
+     * @param otp Mã OTP để xác thực.
+     */
     public void sendVerificationEmail(String to, String otp) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(to);
             message.setSubject("Xác thực tài khoản");
-            message.setText("Mã OTP để xác thực tài khoản của bạn là: " + otp);
+            message.setText("Mã OTP để xác thực tài khoản của bạn là: " + otp + "\nMã có hiệu lực trong vòng 5 phút.");
             mailSender.send(message);
         } catch (Exception e) {
             logger.error("Lỗi khi gửi email xác thực: ", e);
@@ -32,6 +44,12 @@ public class MailService {
         }
     }
 
+    /**
+     * Gửi email đặt lại mật khẩu chứa mã OTP.
+     *
+     * @param to  Địa chỉ email người nhận.
+     * @param otp Mã OTP để đặt lại mật khẩu.
+     */
     public void sendPasswordResetEmail(String to, String otp) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

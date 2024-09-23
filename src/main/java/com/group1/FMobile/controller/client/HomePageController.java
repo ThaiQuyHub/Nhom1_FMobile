@@ -1,10 +1,6 @@
 package com.group1.fmobile.controller.client;
 
-
-import com.group1.fmobile.domain.dto.ForgotPasswordDTO;
-import com.group1.fmobile.domain.dto.RegisterDTO;
-import com.group1.fmobile.domain.dto.ResetPasswordDTO;
-import com.group1.fmobile.domain.dto.VerifyDTO;
+import com.group1.fmobile.domain.dto.*;
 import com.group1.fmobile.service.account.AccountService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -12,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+/**
+ * Bộ điều khiển (controller) cho các trang chính của ứng dụng, xử lý các yêu cầu liên quan đến
+ * đăng ký, đăng nhập, quên mật khẩu, và xác thực.
+ * @author [Ha Van Dat]
+ */
 @Controller
-//@RequestMapping("/user")
-//@PreAuthorize("hasRole('USER')")
 public class HomePageController {
     private final AccountService accountService;
 
@@ -27,17 +23,38 @@ public class HomePageController {
     public HomePageController(AccountService accountService) {
         this.accountService = accountService;
     }
+
+    /**
+     * Hiển thị trang chủ.
+     *
+     * @return Tên view của trang chủ.
+     */
     @GetMapping("/")
-    public String getHome(){
+    public String getHome() {
         return "client/homepage/index";
     }
 
+    /**
+     * Hiển thị trang đăng ký.
+     *
+     * @param model Đối tượng Model để truyền dữ liệu đến view.
+     * @return Tên view của trang đăng ký.
+     */
     @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("register", new RegisterDTO());
         return "client/auth/register";
     }
 
+    /**
+     * Xử lý yêu cầu đăng ký người dùng.
+     *
+     * @param registerDTO      DTO chứa thông tin đăng ký.
+     * @param bindingResult    Đối tượng BindingResult để kiểm tra lỗi ràng buộc dữ liệu.
+     * @param session          Đối tượng HttpSession để lưu trữ thông tin phiên làm việc.
+     * @param model            Đối tượng Model để truyền dữ liệu đến view.
+     * @return Chuyển hướng đến trang xác thực nếu đăng ký thành công, ngược lại quay về trang đăng ký với thông báo lỗi.
+     */
     @PostMapping("/register")
     public String registerPage(@ModelAttribute("register") @Valid RegisterDTO registerDTO,
                                BindingResult bindingResult,
@@ -46,7 +63,6 @@ public class HomePageController {
         if (bindingResult.hasErrors()) {
             return "client/auth/register";
         }
-
 
         try {
             accountService.registerUser(registerDTO);
@@ -58,51 +74,50 @@ public class HomePageController {
         }
     }
 
-
+    /**
+     * Hiển thị trang đăng nhập.
+     *
+     * @param model Đối tượng Model để truyền dữ liệu đến view.
+     * @return Tên view của trang đăng nhập.
+     */
     @GetMapping("/login")
     public String loginPage(Model model) {
-//        model.addAttribute("login", new LoginDTO());
         return "client/auth/login";
     }
 
-//    @PostMapping("/login")
-//    public String loginPage(@ModelAttribute("login") @Valid LoginDTO loginDTO, BindingResult bindingResult, HttpSession session, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            return "client/auth/login";
-//        }
-//
-//        try {
-//            accountService.authenticateUser(loginDTO.getEmail(), loginDTO.getPassword());
-//            session.setAttribute("loggedInUser", loginDTO.getEmail());
-//            return "client/auth/dashboard";
-//        } catch (RuntimeException e){
-//            model.addAttribute("error", e.getMessage());
-//            return "client/auth/login";
-//        }
-//    }
-
+    /**
+     * Hiển thị trang chính sau khi đăng nhập thành công.
+     *
+     * @param session Đối tượng HttpSession để lấy thông tin phiên làm việc.
+     * @param model   Đối tượng Model để truyền dữ liệu đến view.
+     * @return Tên view của trang chính hoặc trang quản trị (nếu người dùng có quyền ADMIN).
+     */
     @GetMapping("/home")
     public String homePage(HttpSession session, Model model) {
-
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))){
-//            return "admin/dashboard/show";
-//        }
-
-
         return "client/homepage/index";
-
-
     }
 
+    /**
+     * Hiển thị trang quên mật khẩu.
+     *
+     * @param model Đối tượng Model để truyền dữ liệu đến view.
+     * @return Tên view của trang quên mật khẩu.
+     */
     @GetMapping("/forgotpassword")
     public String forgotPasswordPage(Model model) {
         model.addAttribute("forgotpassword", new ForgotPasswordDTO());
         return "client/auth/forgotpassword";
     }
 
-
+    /**
+     * Xử lý yêu cầu quên mật khẩu.
+     *
+     * @param forgotPasswordDTO DTO chứa địa chỉ email để đặt lại mật khẩu.
+     * @param bindingResult     Đối tượng BindingResult để kiểm tra lỗi ràng buộc dữ liệu.
+     * @param httpSession       Đối tượng HttpSession để lưu trữ thông tin phiên làm việc.
+     * @param model             Đối tượng Model để truyền dữ liệu đến view.
+     * @return Chuyển hướng đến trang đặt lại mật khẩu nếu email hợp lệ, ngược lại quay về trang quên mật khẩu với thông báo lỗi.
+     */
     @PostMapping("/forgotpassword")
     public String forgotPasswordPage(@ModelAttribute("forgotpassword") @Valid ForgotPasswordDTO forgotPasswordDTO,
                                      BindingResult bindingResult,
@@ -122,12 +137,26 @@ public class HomePageController {
         }
     }
 
+    /**
+     * Hiển thị trang xác thực tài khoản.
+     *
+     * @param model Đối tượng Model để truyền dữ liệu đến view.
+     * @return Tên view của trang xác thực.
+     */
     @GetMapping("/verify")
     public String verifyPage(Model model) {
         model.addAttribute("verify", new VerifyDTO());
         return "client/auth/verify";
     }
 
+    /**
+     * Xử lý yêu cầu xác thực tài khoản bằng OTP.
+     *
+     * @param verifyDTO    DTO chứa mã OTP.
+     * @param bindingResult Đối tượng BindingResult để kiểm tra lỗi ràng buộc dữ liệu.
+     * @param httpSession   Đối tượng HttpSession để lấy thông tin phiên làm việc.
+     * @return Chuyển hướng đến trang đăng nhập nếu xác thực thành công, ngược lại quay về trang xác thực với thông báo lỗi.
+     */
     @PostMapping("/verify")
     public String verifyPage(@Valid @ModelAttribute("verify") VerifyDTO verifyDTO,
                              BindingResult bindingResult,
@@ -144,6 +173,12 @@ public class HomePageController {
         return "redirect:/verify?error";
     }
 
+    /**
+     * Gửi lại mã OTP xác thực.
+     *
+     * @param httpSession Đối tượng HttpSession để lấy thông tin phiên làm việc.
+     * @return Thông báo cho biết OTP đã được gửi lại hoặc không tìm thấy email đã đăng ký.
+     */
     @PostMapping("/resend-otp")
     @ResponseBody
     public String resendOTP(HttpSession httpSession) {
@@ -155,12 +190,27 @@ public class HomePageController {
         return "Registered email address not found.";
     }
 
+    /**
+     * Hiển thị trang đặt lại mật khẩu.
+     *
+     * @param model Đối tượng Model để truyền dữ liệu đến view.
+     * @return Tên view của trang đặt lại mật khẩu.
+     */
     @GetMapping("/reset-password")
     public String resetPassword(Model model) {
-        model.addAttribute("resetpassword",new ResetPasswordDTO());
+        model.addAttribute("resetpassword", new ResetPasswordDTO());
         return "client/auth/resetpassword";
     }
 
+    /**
+     * Xử lý yêu cầu đặt lại mật khẩu.
+     *
+     * @param resetPasswordDTO DTO chứa thông tin đặt lại mật khẩu (OTP, mật khẩu mới, xác nhận mật khẩu mới).
+     * @param bindingResult     Đối tượng BindingResult để kiểm tra lỗi ràng buộc dữ liệu.
+     * @param httpSession       Đối tượng HttpSession để lấy thông tin phiên làm việc.
+     * @param model             Đối tượng Model để truyền dữ liệu đến view.
+     * @return Chuyển hướng đến trang đăng nhập nếu đặt lại mật khẩu thành công, ngược lại quay về trang đặt lại mật khẩu với thông báo lỗi.
+     */
     @PostMapping("/reset-password")
     public String resetPassword(@ModelAttribute("resetpassword") @Valid ResetPasswordDTO resetPasswordDTO,
                                 BindingResult bindingResult,
@@ -171,11 +221,6 @@ public class HomePageController {
         }
 
         String email = (String) httpSession.getAttribute("resetEmail");
-
-//        if (email == null) {
-//            model.addAttribute("error", "Không tìm thấy email để khôi phục mật khẩu.");
-//            return "client/auth/resetpassword";
-//        }
 
         try {
             if (accountService.resetPassword(email, resetPasswordDTO.getOtp(), resetPasswordDTO.getNewPassword())) {
@@ -190,10 +235,15 @@ public class HomePageController {
             return "client/auth/resetpassword";
         }
     }
+
+    /**
+     * Hiển thị trang bị từ chối truy cập (access denied).
+     *
+     * @param model Đối tượng Model để truyền dữ liệu đến view (nếu cần).
+     * @return Tên view của trang bị từ chối truy cập.
+     */
     @GetMapping("/access-deny")
     public String getDenyPage(Model model) {
-
         return "client/auth/deny";
     }
-
 }

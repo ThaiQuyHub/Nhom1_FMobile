@@ -1,60 +1,66 @@
 package com.group1.fmobile.service.account;
 
 
-import org.springframework.stereotype.Service;
 
+import org.springframework.stereotype.Service;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+/**
+ * Dịch vụ tạo otp.
+ * @author [Ha Van Dat]
+ */
 @Service
 public class OtpService {
 
-    private static final Logger logger = LoggerFactory.getLogger(OtpService.class);
+    // Cấu hình Cache sử dụng Caffeine
+    private final Cache<String, String> otpCache = Caffeine.newBuilder()
+            .expireAfterWrite(5, TimeUnit.MINUTES)
+            .build();
 
-
-    private final ConcurrentHashMap<String, CacheEntry> otpCache = new ConcurrentHashMap<>();
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-    public OtpService() {
-        scheduler.scheduleAtFixedRate(this::removeExpiredEntries, 1, 1, TimeUnit.MINUTES);
-    }
+    /**
+     * Tạo một mã OTP mới gồm 6 chữ số.
+     *
+     * @return Mã OTP mới được tạo.
+     */
 
     public String generateOTP() {
         return String.format("%06d", new Random().nextInt(999999));
     }
 
-    public void saveOtp(String key, String otp, long expirationTimeInMillis) {
-        otpCache.put(key, new CacheEntry(otp, System.currentTimeMillis() + expirationTimeInMillis));
+    /**
+     * Lưu trữ mã OTP vào Caffeine Cache.
+     *
+     * @param key Khóa để truy cập mã OTP.
+     * @param otp Mã OTP cần lưu trữ.
+     */
+    public void saveOtp(String key, String otp) {
+        otpCache.put(key, otp);
     }
 
+    /**
+     * Xác minh mã OTP với khóa và mã OTP cung cấp.
+     *
+     * @param key  Khóa để truy cập mã OTP.
+     * @param otp  Mã OTP cần xác minh.
+     * @return true nếu mã OTP hợp lệ và chưa hết hạn, false nếu không.
+     */
     public boolean verifyOtp(String key, String otp) {
-        CacheEntry entry = otpCache.get(key);
-        return entry != null && entry.otp.equals(otp) && System.currentTimeMillis() < entry.expirationTime;
+        String cachedOtp = otpCache.getIfPresent(key);
+        return cachedOtp != null && cachedOtp.equals(otp);
     }
 
+    /**
+     * Xóa mã OTP khỏi bộ nhớ đệm.
+     *
+     * @param key Khóa để truy cập mã OTP.
+     */
     public void removeOtp(String key) {
-        otpCache.remove(key);
-    }
-
-    private void removeExpiredEntries() {
-        long now = System.currentTimeMillis();
-        otpCache.entrySet().removeIf(entry -> now > entry.getValue().expirationTime);
-    }
-
-
-    private static class CacheEntry {
-        String otp;
-        long expirationTime;
-
-        CacheEntry(String otp, long expirationTime) {
-            this.otp = otp;
-            this.expirationTime = expirationTime;
-        }
+        otpCache.invalidate(key);
     }
 }

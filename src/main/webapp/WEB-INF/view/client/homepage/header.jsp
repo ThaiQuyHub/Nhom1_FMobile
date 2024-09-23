@@ -214,11 +214,11 @@
                 </div>
             </div>
         </div>
-        </div>
-        <div class="form-check form-switch dark-mode-toggle mx-5">
-            <input class="form-check-input" type="checkbox" id="darkModeToggle" />
-            <label class="form-check-label" style="width: 100px" for="darkModeToggle">Dark Mode</label>
-        </div>
+    </div>
+    <div class="form-check form-switch dark-mode-toggle mx-5">
+        <input class="form-check-input" type="checkbox" id="darkModeToggle" />
+        <label class="form-check-label" style="width: 100px" for="darkModeToggle">Dark Mode</label>
+    </div>
     </div>
 </nav>
 

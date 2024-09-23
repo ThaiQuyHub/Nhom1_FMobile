@@ -16,6 +16,10 @@
         </head>
 
         <body class="sb-nav-fixed">
+        <span style="color: white;">Welcome,
+                    <%=request.getUserPrincipal().getName().toString()%>
+
+                </span>
             <jsp:include page="../layout/header.jsp" />
             <div id="layoutSidenav">
                 <jsp:include page="../layout/sidebar.jsp" />
@@ -59,10 +63,14 @@
                                 </div>
 
                             </div>
-
+                            <form method="post" action="/logout">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <button class="dropdown-item">Logout</button>
+                            </form>
                         </div>
                     </main>
                     <jsp:include page="../layout/footer.jsp" />
+
                 </div>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"

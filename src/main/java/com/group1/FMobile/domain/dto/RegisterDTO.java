@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 @RegisterChecked
 public class RegisterDTO {
 
+
     @NotBlank(message = "Email là bắt buộc")
     @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     String email;
@@ -33,7 +34,9 @@ public class RegisterDTO {
     @Size(min = 6, message = "Mật khẩu phải chứa ít nhất 6 ký tự")
     String password;
 
-    @NotBlank(message = "Xác nhận mật khẩu là bắt buộc")
+
+    @NotBlank(message = "Password confirmation is required")
+
     String confirmPassword;
 
 
