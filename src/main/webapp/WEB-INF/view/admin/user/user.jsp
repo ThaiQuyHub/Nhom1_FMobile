@@ -51,15 +51,6 @@
 </head>
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
-    <!-- Spinner Start -->
-    <div id="spinner"
-         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
 
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
@@ -108,10 +99,8 @@
                         <span class="d-none d-lg-inline-flex">Fmobile</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">My Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
                         <form method="post" action="/logout">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <button class="dropdown-item">Logout</button>
                         </form>
                     </div>
@@ -176,8 +165,8 @@
             </div>
             <div class="col-md-6">
                 <button style="margin-top: 10px" type="submit" class="btn btn-primary">Add New User</button>
-                </form:form>
             </div>
+            </form:form>
 
         </div>
         <br>
@@ -190,8 +179,10 @@
                     <h6 class="mb-4" style="font-size: 25px">User List</h6>
                 </div>
                 <div class="col-3">
-                    <form action="${pageContext.request.contextPath}/admin/user" method="GET" class="d-none d-md-flex ms-4">
-                        <input class="form-control border-0" type="search" placeholder="Search by Full Name" name="search"
+                    <form action="${pageContext.request.contextPath}/admin/user" method="GET"
+                          class="d-none d-md-flex ms-4">
+                        <input class="form-control border-0" type="search" placeholder="Search by Full Name"
+                               name="search"
                                value="${search}" style="background-color: gainsboro">
                     </form>
                 </div>

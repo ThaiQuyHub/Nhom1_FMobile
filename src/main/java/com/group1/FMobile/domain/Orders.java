@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class Orders {
     String status;
 
     @Column(name = "order_date")
-    LocalDateTime orderDate;
+    LocalDate orderDate;
 
     @Column(name = "shipping_address")
     String shippingAddress;
@@ -54,7 +55,7 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(Long id, User user, Discount discount, Long totalPayment, String status, LocalDateTime orderDate,
+    public Orders(Long id, User user, Discount discount, Long totalPayment, String status, LocalDate orderDate,
                   String shippingAddress, TransactionHistory transactionHistory) {
         this.id = id;
         this.user = user;
@@ -106,11 +107,11 @@ public class Orders {
         this.status = status;
     }
 
-    public LocalDateTime getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 

@@ -45,15 +45,6 @@
 
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
-    <!-- Spinner Start -->
-    <div id="spinner"
-         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
-
 
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
@@ -94,31 +85,15 @@
             <a href="#" class="sidebar-toggler flex-shrink-0">
                 <i class="fa fa-bars"></i>
             </a>
-            <form class="d-none d-md-flex ms-4">
-                <input class="form-control border-0" type="search" placeholder="Search">
-            </form>
+
             <div class="navbar-nav align-items-center ms-auto">
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-envelope me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">Message</span>
-                    </a>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-bell me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">Notificatin</span>
-                    </a>
-                </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <span class="d-none d-lg-inline-flex">Fmobile</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">My Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
                         <form method="post" action="/logout">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <button class="dropdown-item">Logout</button>
                         </form>
                     </div>
@@ -164,52 +139,37 @@
         </div>
         <!-- Sale & Revenue End -->
 
-
-        <!-- Recent Sales Start -->
-        <div class="container-fluid pt-4 px-4">
-            <div class="bg-light text-center rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Revenue Statistics</h6>
-                    <a href="/admin/statistics">Show All</a>
+        <!-- Biểu đồ doanh thu -->
+        <div class="container mt-5">
+            <h2 class="mb-4">Revenue Statistics</h2>
+            <form id="dateRangeForm" class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label for="startDate" class="form-label">Start Date:</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
                 </div>
-                <div class="table-responsive">
-                    <table class="table text-start align-middle table-bordered table-hover mb-0">
-                        <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Number of Orders</th>
-                            <th>Revenue</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Day (dd/mm/yyyy)</td>
-                            <td>50</td>
-                            <td>10,000,000 VND</td>
-                        </tr>
-                        <tr>
-                            <td>Month (mm/yyyy)</td>
-                            <td>1200</td>
-                            <td>250,000,000 VND</td>
-                        </tr>
-                        <tr>
-                            <td>Year (yyyy)</td>
-                            <td>15,000</td>
-                            <td>3,500,000,000 VND</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="col-md-4">
+                    <label for="endDate" class="form-label">End Date:</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" required>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+
+            <div class="card" >
+                <div class="card-body">
+                    <canvas id="dailyRevenueChart"></canvas>
                 </div>
             </div>
         </div>
-        <!-- Recent Sales End -->
 
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="https://www.facebook.com/profile.php?id=100030887559873">My Profile</a>, All Right Reserved.
+                        &copy; <a href="https://www.facebook.com/profile.php?id=100030887559873">My Profile</a>, All
+                        Right Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -230,6 +190,7 @@
 <%--CDN Javascript--%>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 
 <!-- Bootstrap Bundle JS (Bootstrap 5.0) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -252,8 +213,76 @@
         crossorigin="anonymous"></script>
 
 
+<!-- Date adapter -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-date-fns/2.0.0/chartjs-adapter-date-fns.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var myChart = null;
+
+        $('#dateRangeForm').on('submit', function (event) {
+            event.preventDefault();
+
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+
+            // Kiểm tra xem startDate có nhỏ hơn endDate không
+            if (startDate >= endDate) {
+                alert('Start Date must be less than End Date!');
+                return; // Dừng việc gửi yêu cầu nếu điều kiện không thỏa mãn
+            }
+
+            $.ajax({
+                url: '/api/statistics/revenue/range',
+                type: 'GET',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                success: function (data) {
+                    var dates = [];
+                    var revenues = [];
+                    console.log(data)
+                    data.forEach(function (item) {
+                        dates.push(item.orderDate); // Dữ liệu ngày tháng
+                        revenues.push(item.totalPayment); // Doanh thu
+                    });
+
+
+                    var ctx = document.getElementById('dailyRevenueChart').getContext('2d');
+
+                    // Xóa biểu đồ cũ nếu đã tồn tại
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+
+                    // Tạo mới biểu đồ
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: 'Daily revenue',
+                                data: revenues,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: '#0D6EFD',
+                                borderWidth: 1
+                            }]
+                        },
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Có lỗi xảy ra:', error);
+                }
+            });
+        });
+    });
+</script>
+
+
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
+
 </body>
 
 </html>
