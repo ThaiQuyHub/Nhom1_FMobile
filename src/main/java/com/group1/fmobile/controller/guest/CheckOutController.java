@@ -144,7 +144,7 @@ public class CheckOutController {
             }
 
             String emailContent = String.format(
-                    "Thank you for your order, %s.\n\nOrder Details:\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
+                    "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
                     orders.getFullName(),
                     orders.getId(),
                     orders.getShippingAddress(),
@@ -152,6 +152,10 @@ public class CheckOutController {
             );
 
             mailService.sendMail(user != null ? user.getEmail() : orderDTO.getEmail(), "Order Confirmation", emailContent);
+
+            session.removeAttribute("cartProducts");
+            session.removeAttribute("totalAmount");
+
 
             model.addAttribute("orderSuccess", "Order placed successfully! Thank you for your purchase.");
             session.setAttribute("orderSuccess", "Order placed successfully! Thank you for your purchase.");
@@ -211,12 +215,15 @@ public class CheckOutController {
             saveOrderDetails(result, cartProducts);
 
             String emailContent = String.format(
-                    "Thank you for your order, %s.\n\nOrder Details:\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
+                    "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
                     orders.getFullName(),
                     orders.getId(),
                     orders.getShippingAddress(),
                     orders.getPhone()
             );
+
+            session.removeAttribute("cartProducts");
+            session.removeAttribute("totalAmount");
 
             mailService.sendMail(orderDTO.getEmail(), "Order Confirmation", emailContent);
             model.addAttribute("orderSuccess", "Order placed successfully! Thank you for your purchase.");

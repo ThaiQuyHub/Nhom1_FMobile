@@ -63,18 +63,21 @@
                 margin-top: 1rem;
             }
         }
+        .mr-2 {
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
 
 <div class="container mt-5">
-    <h1 class="mb-4">Checkout</h1>
+    <h1 class="mb-4"><i class="fas fa-shopping-cart fa-lg mr-2"></i>Checkout</h1>
     <div class="row">
         <div class="col-lg-8">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h2 class="card-title">Order Details</h2>
+                    <h2 class="card-title"><i class="fas fa-list-alt fa-lg mr-2"></i>Order Details</h2>
                     <table class="table">
                         <thead>
                         <tr>
@@ -103,7 +106,7 @@
             </div>
             <div class="card mb-4">
                 <div class="card-body">
-                    <h2 class="card-title">Order Information</h2>
+                    <h2 class="card-title"><i class="fas fa-info-circle fa-lg mr-2"></i>Order Information</h2>
                     <c:if test="${not empty orderError}">
                         <div class="alert alert-danger" role="alert">
                                 ${orderError}
@@ -113,46 +116,46 @@
                         <c:when test="${user != null}">
                             <form:form modelAttribute="orderDTO" method="post" action="/checkout" onsubmit="return validateFormUser(this);">
                                 <div class="col-md-6">
-                                    <label class="lbform">Email</label>
+                                    <label class="lbform"><i class="fas fa-envelope mr-2"></i>Email</label>
                                     <input value="${user.email}" readonly disabled class="form-control">
-                                    <label class="lbform">Full Name</label>
+                                    <label class="lbform"><i class="fas fa-user mr-2"></i>Full Name</label>
                                     <form:input path="fullName" class="form-control"/>
                                     <form:errors path="fullName" cssClass="text-danger"/>
                                     <div id="fullNameErrorLogin" class="text-danger"></div>
-                                    <label class="lbform">Address</label>
+                                    <label class="lbform"><i class="fas fa-map-marker-alt mr-2"></i>Address</label>
                                     <form:input path="address" class="form-control"/>
                                     <form:errors path="address" cssClass="text-danger"/>
                                     <div id="addressErrorLogin" class="text-danger"></div>
-                                    <label class="lbform">Phone Number</label>
+                                    <label class="lbform"><i class="fas fa-phone mr-2"></i>Phone Number</label>
                                     <form:input path="phone" class="form-control"/>
                                     <form:errors path="phone" cssClass="text-danger"/>
                                     <div id="phoneErrorLogin" class="text-danger"></div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="lbform">Payment Method</label>
+                                    <label class="lbform"><i class="fas fa-credit-card mr-2"></i>Payment Method</label>
                                     <form:select path="paymentId" class="form-select">
                                         <form:options items="${payment}" itemValue="id" itemLabel="paymentName"/>
                                     </form:select>
-                                    <button class="btn btn-primary btn-lg w-100 mt-4">Place Order</button>
+                                    <button class="btn btn-primary btn-lg w-100 mt-4"><i class="fas fa-check mr-2"></i>Place Order</button>
                                 </div>
                             </form:form>
                         </c:when>
                         <c:otherwise>
                             <form:form modelAttribute="orderDTO" method="post" action="/checkout-not-login" onsubmit="return validateFormGuest(this);">
                                 <div class="col-md-6">
-                                    <label class="lbform">Full Name</label>
+                                    <label class="lbform"><i class="fas fa-user mr-2"></i>Full Name</label>
                                     <form:input path="fullName" class="form-control"/>
                                     <form:errors path="fullName" cssClass="text-danger"/>
                                     <div id="fullNameError" class="text-danger"></div>
-                                    <label class="lbform">Address</label>
+                                    <label class="lbform"><i class="fas fa-map-marker-alt mr-2"></i>Address</label>
                                     <form:input path="address" class="form-control"/>
                                     <form:errors path="address" cssClass="text-danger"/>
                                     <div id="addressError" class="text-danger"></div>
-                                    <label class="lbform">Phone Number</label>
+                                    <label class="lbform"><i class="fas fa-phone mr-2"></i>Phone Number</label>
                                     <form:input path="phone" class="form-control"/>
                                     <form:errors path="phone" cssClass="text-danger"/>
                                     <div id="phoneError" class="text-danger"></div>
-                                    <label class="lbform">Email</label>
+                                    <label class="lbform"><i class="fas fa-envelope mr-2"></i>Email</label>
                                     <form:input path="email" class="form-control"/>
                                     <form:errors path="email" cssClass="text-danger"/>
                                     <div id="emailError" class="text-danger"></div>
@@ -163,11 +166,11 @@
                                     </c:if>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="lbform">Payment Method</label>
+                                    <label class="lbform"><i class="fas fa-credit-card mr-2"></i>Payment Method</label>
                                     <form:select path="paymentId" class="form-select">
                                         <form:options items="${payment}" itemValue="id" itemLabel="paymentName"/>
                                     </form:select>
-                                    <button class="btn btn-primary btn-lg w-100 mt-4">Place Order</button>
+                                    <button class="btn btn-primary btn-lg w-100 mt-4"><i class="fas fa-check mr-2"></i>Place Order</button>
                                 </div>
                             </form:form>
                         </c:otherwise>
@@ -178,7 +181,7 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title">Order Summary</h2>
+                    <h2 class="card-title"><i class="fas fa-receipt fa-lg mr-2"></i>Order Summary</h2>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
                         <span>$ ${totalAmount}</span>
@@ -205,7 +208,7 @@
                     </div>
                     <c:if test="${user == null}">
                         <div class="alert alert-danger" role="alert">
-                            Log in to enjoy discounts on your order!
+                            <i class="fas fa-exclamation-circle mr-2"></i>Log in to enjoy discounts on your order!
                         </div>
                     </c:if>
                 </div>
@@ -289,7 +292,6 @@
         }
         return isValid;
     }
-
 </script>
 </body>
 </html>
