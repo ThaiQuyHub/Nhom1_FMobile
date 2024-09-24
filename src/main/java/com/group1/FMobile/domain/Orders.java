@@ -1,12 +1,16 @@
 package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -45,11 +49,34 @@ public class Orders {
     String shippingAddress;
 
     //LK Orders Detail
-    @OneToMany(mappedBy = "orders")
-    Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "orders", fetch = FetchType.EAGER)
+    List<OrdersDetail> ordersDetails;
 
     // LK Transaction History
     @OneToOne(mappedBy = "orders")
     TransactionHistory transactionHistory;
+
+
+    // Helper methods for managing bidirectional relationships
+    public void addOrderDetail(OrdersDetail orderDetail) {
+        ordersDetails.add(orderDetail);
+        orderDetail.setOrders(this);
+    }
+
+    public void removeOrderDetail(OrdersDetail orderDetail) {
+        ordersDetails.remove(orderDetail);
+        orderDetail.setOrders(null);
+    }
+
+    public void setTransactionHistory(TransactionHistory transactionHistory) {
+        if (transactionHistory == null) {
+            if (this.transactionHistory != null) {
+                this.transactionHistory.setOrders(null);
+            }
+        } else {
+            transactionHistory.setOrders(this);
+        }
+        this.transactionHistory = transactionHistory;
+    }
 
 }

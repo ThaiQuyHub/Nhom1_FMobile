@@ -4,7 +4,7 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>Login Form Design | CodeLab</title>
+    <title>Register | FMOBILE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
@@ -28,7 +28,7 @@
         }
         .wrapper{
             width: 600px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.84);
             border-radius: 15px;
             box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
         }
@@ -40,7 +40,7 @@
             color: #fff;
             user-select: none;
             border-radius: 15px 15px 0 0;
-            background: linear-gradient(-135deg, #c850c0, #4158d0);
+            background: linear-gradient(-135deg, #409a15, #223e21);
         }
         .wrapper form{
             padding: 10px 30px 50px 30px;
@@ -57,13 +57,13 @@
             outline: none;
             font-size: 17px;
             padding-left: 20px;
-            border: 1px solid lightgrey;
+            border: 1px solid #68d041;
             border-radius: 25px;
             transition: all 0.3s ease;
         }
         .wrapper form .field input:focus,
         form .field input:valid{
-            border-color: #4158d0;
+            border-color: #68d041;
         }
         .wrapper form .field label{
             position: absolute;
@@ -118,7 +118,7 @@
             font-size: 20px;
             font-weight: 500;
             cursor: pointer;
-            background: linear-gradient(-135deg, #c850c0, #4158d0);
+            background: linear-gradient(-135deg, #409a15, #223e21);
             transition: all 0.3s ease;
         }
         form .field input[type="submit"]:active{
@@ -194,5 +194,80 @@
         </div>
     </form:form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#registrationForm").validate({
+            rules: {
+                fullName: {
+                    required: true,
+                    minlength: 2
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                phone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 15
+                },
+                address: {
+                    required: true,
+                    minlength: 5
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                },
+                confirmPassword: {
+                    required: true,
+                    equalTo: "#password"
+                }
+            },
+            messages: {
+                fullName: {
+                    required: "Please enter your full name",
+                    minlength: "Your name must consist of at least 2 characters"
+                },
+                email: {
+                    required: "Please enter your email address",
+                    email: "Please enter a valid email address"
+                },
+                phone: {
+                    required: "Please enter your phone number",
+                    digits: "Please enter only digits",
+                    minlength: "Your phone number must be at least 10 digits long",
+                    maxlength: "Your phone number must not be more than 15 digits long"
+                },
+                address: {
+                    required: "Please enter your address",
+                    minlength: "Your address must be at least 5 characters long"
+                },
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 6 characters long"
+                },
+                confirmPassword: {
+                    required: "Please confirm your password",
+                    equalTo: "Passwords do not match"
+                }
+            },
+            errorElement: "div",
+            errorPlacement: function(error, element) {
+                error.addClass("error");
+                error.insertAfter(element);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        });
+    });
+</script>
 </body>
 </html>

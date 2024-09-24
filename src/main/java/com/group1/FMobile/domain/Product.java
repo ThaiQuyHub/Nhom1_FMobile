@@ -1,12 +1,15 @@
 package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -59,14 +62,13 @@ public class Product {
     @Column(name = "updated_product")
     LocalDateTime updatedProduct;
 
-    @Column(name = "image_url")
-    String imageUrl;
-
     // LK Image
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Image> assets = new LinkedHashSet<>();
+    List<Image> assets;
 
     // LK Orders Detail
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
+    List<OrdersDetail> ordersDetails;
+
+
 }

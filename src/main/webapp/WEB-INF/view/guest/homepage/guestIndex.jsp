@@ -1,0 +1,98 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<jsp:include page="guestHeader.jsp"/>
+
+<%--NEW MOBILE--%>
+<div class="container">
+    <header>
+        <div class="title">NEW MOBILE</div>
+    </header>
+    <div class="product newMobile">
+        <c:forEach items="${newestMobileProducts}" var="newMobile">
+            <div data-id = ${newMobile.id} class="item">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="${newMobile.images[0].url}" alt="">
+                        </div>
+                        <div class="col-md-6 p-4">
+                            <h2>${newMobile.productName}</h2>
+                            <div class="price">$${newMobile.price}</div>
+                            <div class="detail">
+                                <p>A18 Pro chip with 6-core GPU</p>
+                                <p>RAM: ${newMobile.ram}</p>
+                                <p>Camera: 48 MP</p>
+                            </div>
+                            <div class="row">
+                                <button class="buyNow bg-primary">Buy Now</button>
+                                <button class="addCart bg-warning">Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+
+<%--BEST-SELLING--%>
+<div class="container">
+    <header>
+        <div class="title">BEST-SELLING</div>
+    </header>
+    <div class="listProduct">
+        <c:forEach items="${bestSellingMobileProducts}" var="bestSellingMobile">
+            <div data-id = ${bestSellingMobile.id} class="item">
+                <img src="${bestSellingMobile.images[0].url}" alt="">
+                <h2>${bestSellingMobile.productName}</h2>
+                <div class="price">$${bestSellingMobile.price}</div>
+                <div class="detail">
+                    <p>A18 Pro chip with 6-core GPU</p>
+                    <p>RAM: ${bestSellingMobile.ram}</p>
+                    <p>Camera: 48 MP</p>
+                </div>
+                <div class="row">
+                    <button class="buyNow bg-primary">Buy Now</button>
+                    <button class="addCart bg-warning">Add To Cart</button>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+
+<%--TABLET--%>
+<div class="container">
+    <header>
+        <div class="title">TABLET</div>
+    </header>
+    <div class="product tablet">
+        <c:forEach items="${tabletProducts}" var="tablet">
+            <div data-id= ${tablet.id} class="item">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="${tablet.images[0].url}" alt="">
+                        </div>
+                        <div class="col-md-6 p-4">
+                            <h2>${tablet.productName}</h2>
+                            <div class="price">$${tablet.price}</div>
+                            <div class="detail">
+                                <p>A18 Pro chip with 6-core GPU</p>
+                                <p>RAM: ${tablet.ram}</p>
+                                <p>Camera: 48 MP</p>
+                            </div>
+                            <div class="row">
+                                <button class="buyNow bg-primary">Buy Now</button>
+                                <button class="addCart bg-warning">Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+</div>
+
+
+<jsp:include page="guestFooter.jsp"/>
