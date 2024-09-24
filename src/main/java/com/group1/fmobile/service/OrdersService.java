@@ -21,6 +21,11 @@ public class OrdersService {
         this.ordersRepository = ordersRepository;
     }
 
+        // Hàm lấy danh sách Orders theo email của người dùng
+    public List<Orders> findOrdersByUser(User user) {
+        return ordersRepository.findByUser(user);
+    }
+    
     public List<Orders> getAllOrder() {
         return this.ordersRepository.findAll();
     }
