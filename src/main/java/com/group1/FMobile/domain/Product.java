@@ -6,7 +6,9 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -59,14 +61,15 @@ public class Product {
     @Column(name = "updated_product")
     LocalDateTime updatedProduct;
 
-    @Column(name = "image_url")
-    String imageUrl;
+
 
     // LK Image
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Image> assets = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<Image> images = new ArrayList<>();
 
     // LK Orders Detail
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<OrdersDetail> ordersDetails = new LinkedHashSet<>();
+
+
 }
