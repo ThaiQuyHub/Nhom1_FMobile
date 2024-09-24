@@ -333,11 +333,90 @@
 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
 <script>
         const darkModeToggle = document.getElementById("darkModeToggle");
         darkModeToggle.addEventListener("change", function () {
         document.body.classList.toggle("dark-mode", darkModeToggle.checked);
     });
+</script>
+
+<script>
+    // Hàm để kiểm tra trạng thái đăng nhập
+    function checkLoginState() {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        updateUI(isLoggedIn);
+    }
+
+    // Hàm cập nhật giao diện người dùng
+    function updateUI(isLoggedIn) {
+        const guestButtons = document.getElementById('guestButtons');
+        const guestButtons1 = document.getElementById('guestButtons1');
+        const userInfo = document.getElementById('userInfo');
+
+        if (guestButtons) guestButtons.style.display = isLoggedIn ? 'none' : 'inline-block';
+        if (guestButtons1) guestButtons1.style.display = isLoggedIn ? 'none' : 'inline-block';
+        if (userInfo) userInfo.style.display = isLoggedIn ? 'flex' : 'none';
+    }
+
+    // Hàm xử lý đăng nhập
+    function handleLogin(event) {
+        event.preventDefault();
+        // Ở đây bạn sẽ thêm logic xác thực đăng nhập thực tế
+        sessionStorage.setItem('isLoggedIn', 'true');
+        updateUI(true);
+        window.location.href = '/index';
+    }
+
+    // Hàm xử lý đăng ký
+    function handleRegister(event) {
+        event.preventDefault();
+        // Ở đây bạn sẽ thêm logic đăng ký thực tế
+        sessionStorage.setItem('isLoggedIn', 'true');
+        updateUI(true);
+        window.location.href = '/index';
+    }
+
+    // Hàm xử lý đăng xuất
+    function handleLogout(event) {
+        event.preventDefault();
+        sessionStorage.removeItem('isLoggedIn');
+        updateUI(false);
+        window.location.href = '/home';  // Changed from '/' to '/index'
+    }
+
+    // Thêm các event listener khi DOM đã sẵn sàng
+    document.addEventListener('DOMContentLoaded', function() {
+        checkLoginState();
+
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) loginForm.addEventListener('submit', handleLogin);
+
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) registerForm.addEventListener('submit', handleRegister);
+
+        const logoutButton = document.querySelector('.logout_btn');  // Changed selector to match the button class
+        if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+
+        const loginLink = document.getElementById('guestButtons');
+        if (loginLink) loginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/login';
+        });
+
+        const registerLink = document.getElementById('guestButtons1');
+        if (registerLink) registerLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/register';
+        });
+    });
+
+    // Function to handle logout (to be called from onclick attribute)
+    function logout() {
+        sessionStorage.removeItem('isLoggedIn');
+        updateUI(false);
+        window.location.href = '/index';
+    }
 </script>
 <script>
     // just for the demos, avoids form submit

@@ -267,7 +267,7 @@
                     if (response.ok) {
                         // Login successful
                         sessionStorage.setItem('isLoggedIn', 'true'); // session bo nho tam thoi trinh duyet
-                        window.location.href = '/'; // sau khi thanh cong dieu huong den trang chu
+                        window.location.href = '/';
                     } else {
                         // Login failed
                         throw new Error('Login failed'); // loi xu ly ben duoi

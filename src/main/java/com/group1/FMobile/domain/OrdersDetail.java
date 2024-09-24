@@ -34,6 +34,6 @@ public class OrdersDetail {
     Integer quantity;
 
     @Column(name = "price", nullable = false)
-    double price;
+    Long price;
 
 }

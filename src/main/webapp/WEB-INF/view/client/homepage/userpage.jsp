@@ -681,6 +681,7 @@
         .footer li {
             font-size: 1.5rem;
         }
+
     </style>
 </head>
 
@@ -757,7 +758,10 @@
                 <form class="d-flex ml-5">
                     <div class="search-icon">
                         <input class="form-control search_nav" type="search" placeholder="Search"
-                               aria-label="Search" style="font-size: 1.5rem" />
+                               aria-label="Search"
+                               style="font-size: 1.5rem;
+                                      height: 50px;
+                                      padding-top: 10px;border-radius: 5px" />
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
@@ -786,9 +790,9 @@
                 </div>
             </div>
         </div>
-        <div class="form-check form-switch dark-mode-toggle mx-5">
+        <div class="form-check form-switch dark-mode-toggle mx-3">
             <input class="form-check-input" type="checkbox" id="darkModeToggle" />
-            <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+            <label class="form-check-label" style="width: 60px; font-size: 1.2rem" for="darkModeToggle">Dark Mode</label>
         </div>
     </div>
 </nav>
@@ -966,65 +970,69 @@
 
         // HTML content for Profile
         const profileContent = `
-                <div class="content-panel mt-3">
-                    <h2 class="title">Profile<span class="pro-label label label-warning">PRO</span></h2>
-                     <form class="form-horizontal">
-            <fieldset class="fieldset">
-                <h1 style="color: #007bff;">PERSONAL INFO</h1>
-            </fieldset>
-            <fieldset class="fieldset mb-5">
+    <div class="content-panel mt-3" style="min-height:750px">
+        <div class="main_content">
+            <div class="main_content-right">
+                 <h2 class="title">Profile<span class="pro-label label label-warning">PRO</span></h2>
+                <form class="form-horizontal">
+                 <fieldset class="fieldset">
+                    <h1 style="color: #007bff;">PERSONAL INFO</h1>
+                    </fieldset>
+                        <fieldset class="fieldset mb-5">
 
-                <div class="form-group">
-                    <label class="col-md-2 col-sm-3 col-xs-12 label_form">Password:</label>
-                    <div class="col-md-10 col-sm-9 col-xs-12">
-                        <p style="font-size: 2rem"><a href="/reset-password" class="change">Reset password</a></p>
+                        <div class="form-group">
+                            <label class="col-md-2 col-sm-3 col-xs-12 label_form">Password:</label>
+                            <div class="col-md-10 col-sm-9 col-xs-12">
+                                <p style="font-size: 2rem"><a href="/reset-password" class="change">Reset password</a></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label class="col-md-2 col-sm-3 col-xs-12 label_form">Full Name:</label>
+                            <div class="col-md-10 col-sm-9 col-xs-12">
+                                <label class="inputName">
+                                    <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.fullName}" readonly/>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                        <label class="col-md-2 col-sm-3 col-xs-12 label_form">Phone:</label>
+                        <div class="col-md-10 col-sm-9 col-xs-12">
+                            <label class="inputName">
+                                 <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.phone}" readonly/>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group mt-3">
-                    <label class="col-md-2 col-sm-3 col-xs-12 label_form">Full Name:</label>
-                    <div class="col-md-10 col-sm-9 col-xs-12">
-                        <label class="inputName">
-                            <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.fullName}" readonly/>
-                        </label>
+                    <div class="form-group mt-3">
+                        <label class="label_form" ss="col-md-2 col-sm-3 col-xs-12">Address:</label>
+                        <div class="col-md-10 col-sm-9 col-xs-12">
+                            <label class="inputName">
+                                <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.address}" readonly/>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group mt-3">
-                <label class="col-md-2 col-sm-3 col-xs-12 label_form">Phone:</label>
-                <div class="col-md-10 col-sm-9 col-xs-12">
-                    <label class="inputName">
-                         <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.phone}" readonly/>
-                    </label>
-                </div>
+                    <div class="form-group mt-3">
+                        <label class="col-md-2 col-sm-3 col-xs-12 label_form">Creation Date:</label>
+                        <div class="col-md-10 col-sm-9 col-xs-12">
+                            <label class="inputName">
+                                <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.creationDate}" readonly/>
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                    <div class="form-group mt-5">
+                        <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0 mt-3">
+                            <a href="/client/homepage/profile" type="button" class="btn btn-primary btn-lg">
+                                Update Profile
+                            </a>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <div class="form-group mt-3">
-                <label class="label_form" ss="col-md-2 col-sm-3 col-xs-12">Address:</label>
-                <div class="col-md-10 col-sm-9 col-xs-12">
-                    <label class="inputName">
-                        <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.address}" readonly/>
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-group mt-3">
-                <label class="col-md-2 col-sm-3 col-xs-12 label_form">Creation Date:</label>
-                <div class="col-md-10 col-sm-9 col-xs-12">
-                    <label class="inputName">
-                        <input class="inpbox" aria-required="true" type="text" data-val="true" data-val-length-max="30" id="Input_FistName" maxlength="30" name="Input.FistName" value="${user.creationDate}" readonly/>
-                    </label>
-                </div>
-            </div>
-            </fieldset>
-            <div class="form-group mt-5">
-                <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0 mt-3">
-                    <a href="/client/homepage/profile" type="button" class="btn btn-primary btn-lg">
-                        Update Profile
-                    </a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
             `;
         // Function to display profile content
