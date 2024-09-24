@@ -82,7 +82,7 @@
         }
 
         .updateProfile {
-            margin-top: 170px;
+            margin-top: 100px;
         }
 
         #updateProfileForm {
@@ -102,6 +102,9 @@
             font-size: 1.5rem;
         }
 
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -217,7 +220,7 @@
                     </div>
                     <div class="mt-5">
                         <a href="/client/homepage/userpage" type="button" class="btn btn-secondary">Close</a>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary" value="Validate!">Save changes</button>
                     </div>
                 </form>
                 <c:if test="${not empty message}">
@@ -327,10 +330,57 @@
 </nav>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script>
         const darkModeToggle = document.getElementById("darkModeToggle");
         darkModeToggle.addEventListener("change", function () {
         document.body.classList.toggle("dark-mode", darkModeToggle.checked);
+    });
+</script>
+<script>
+    // just for the demos, avoids form submit
+    jQuery.validator.setDefaults({
+        debug: true,
+        success: "valid"
+    });
+    $(document).ready(function() {
+        $("#updateProfileForm").validate({
+            rules: {
+                fullName: {
+                    required: true,
+                    minlength: 2,
+                    pattern:"^[a-zA-Z ]+$",
+                },
+                phone: {
+                    required: true,
+                    pattern: "([0-9]{10})|(\([0-9]{3}\)\s+[0-9]{3}\-[0-9]{4})",
+                    // Add phone-specific validation rules (e.g., pattern for specific format)
+                },
+                address: {
+                    required: true,
+
+                }
+            },
+            messages: {
+                fullName: {
+                    required: "Please enter your full name.",
+                    minlength: "Full name must be at least 2 characters long."
+                },
+                phone: {
+                    required: "Please enter your phone number."
+                    // Add custom error messages for phone-specific validation rules
+                },
+                address: {
+                    required: "Please enter your address."
+                }
+            },
+            submitHandler: function(form) {
+                // Form validation successful, proceed with form submission
+                form.submit();
+            }
+        });
     });
 </script>
 </body>

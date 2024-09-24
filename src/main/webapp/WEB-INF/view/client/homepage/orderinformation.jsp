@@ -227,7 +227,7 @@
                                                     <p class="text-muted mb-0 small" style="font-size: 2rem">qty: ${orderDetails.quantity}</p>
                                                 </div>
                                                 <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                                                    <p class="text-muted mb-0 small" style="font-size: 2rem">$$${orderDetails.price}</p>
+                                                    <p class="text-muted mb-0 small" style="font-size: 2rem">$${orderDetails.price}</p>
                                                 </div>
                                             </div>
                                             <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
@@ -236,7 +236,7 @@
                                 </c:forEach>
                                     <div class="d-flex justify-content-between pt-2">
                                         <p class="fw-bold mb-0" style="font-size: 2rem">Order Details</p>
-                                        <p class="text-muted mb-0" style="font-size: 2rem"><span class="fw-bold me-4">Total</span>${order.totalPayment}</p>
+                                        <p class="text-muted mb-0" style="font-size: 2rem"><span class="fw-bold me-4">Total</span>$${order.totalPayment}</p>
                                     </div>
 
                                     <div class="d-flex justify-content-between pt-2">
@@ -256,7 +256,7 @@
                                      style="background-color: #0d6efd; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                                     <div class="d-flex align-content-center justify-content-between text-white text-uppercase mb-0">
                                         <a class="btn mt-1 button_return" style="color: #FFFFFF; font-size: 1.7rem"><i class="fa-solid fa-cart-shopping mx-2"></i>Buy Back</a>
-                                        <h5 class="mt-3">Total paid: <span class="">${order.totalPayment}</span></h5>
+                                        <h5 class="mt-3">Total paid: <span class="">$${order.totalPayment}</span></h5>
                                     </div>
                                 </div>
                             </div>

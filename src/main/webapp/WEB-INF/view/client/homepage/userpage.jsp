@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Hieu
-  Date: 13/09/2024
-  Time: 09:24 am
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -84,46 +78,12 @@
             opacity: 0.9;
         }
 
-        .modal-xl {
-            max-width: 70%;
-            width: 70%;
-            height: 500px;
-        }
-        .modal-body {
-            max-height: 100vh;
-            overflow-y: auto;
-        }
         /* Increase form control size */
         .form-control {
             padding: 0.75rem;
             font-size: 1.1rem;
         }
-        /* Increase label font size */
-        .form-label {
-            font-size: 1.2rem;
-        }
 
-        .label_form {
-            font-weight: 200;
-        }
-
-        .inpbox {
-            width: 600px;
-            border: 1px solid #3b4c4d;
-            outline: none;
-            padding-left:8px;
-            border-radius: 3px;
-            height: 40px;
-            font-size: 20px;
-        }
-
-        .inpbox:hover {
-            border: 1px solid #0d6efd;
-        }
-
-        .change:hover {
-           color: red;
-        }
 
         .login_username {
             color: #0d6efd;
@@ -821,8 +781,8 @@
                     <div class="icon-user mx-3">
                         <img class="logo-nav" style="background: #007bff" src="/client/img/avatar.jpg" alt="" />
                     </div>
-                    <span class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>
-                    <a style="background:#007bff; color: #fff; font-size: 15px" class="btn logout_btn" href="/home" onclick="logout()">Logout</a>
+                    <span style="font-size: 2rem; font-weight: 300" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>
+                    <button style="background:#007bff; color: #fff; font-size: 15px" type="submit" class="btn logout_btn" onclick="logout()">Logout</button>
                 </div>
             </div>
         </div>
@@ -834,7 +794,7 @@
 </nav>
 <%--Main--%>
 <div class="container">
-    <div class="view-account" style="margin-top: 80px">
+    <div class="view-account" style="margin-top: 60px">
         <section class="module">
             <div class="module-inner">
                 <div class="side-bar">
@@ -922,6 +882,83 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Hàm để kiểm tra trạng thái đăng nhập
+    function checkLoginState() {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        updateUI(isLoggedIn);
+    }
+
+    // Hàm cập nhật giao diện người dùng
+    function updateUI(isLoggedIn) {
+        const guestButtons = document.getElementById('guestButtons');
+        const guestButtons1 = document.getElementById('guestButtons1');
+        const userInfo = document.getElementById('userInfo');
+
+        if (guestButtons) guestButtons.style.display = isLoggedIn ? 'none' : 'inline-block';
+        if (guestButtons1) guestButtons1.style.display = isLoggedIn ? 'none' : 'inline-block';
+        if (userInfo) userInfo.style.display = isLoggedIn ? 'flex' : 'none';
+    }
+
+    // Hàm xử lý đăng nhập
+    function handleLogin(event) {
+        event.preventDefault();
+        // Ở đây bạn sẽ thêm logic xác thực đăng nhập thực tế
+        sessionStorage.setItem('isLoggedIn', 'true');
+        updateUI(true);
+        window.location.href = '/index';
+    }
+
+    // Hàm xử lý đăng ký
+    function handleRegister(event) {
+        event.preventDefault();
+        // Ở đây bạn sẽ thêm logic đăng ký thực tế
+        sessionStorage.setItem('isLoggedIn', 'true');
+        updateUI(true);
+        window.location.href = '/index';
+    }
+
+    // Hàm xử lý đăng xuất
+    function handleLogout(event) {
+        event.preventDefault();
+        sessionStorage.removeItem('isLoggedIn');
+        updateUI(false);
+        window.location.href = '/home';  // Changed from '/' to '/index'
+    }
+
+    // Thêm các event listener khi DOM đã sẵn sàng
+    document.addEventListener('DOMContentLoaded', function() {
+        checkLoginState();
+
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) loginForm.addEventListener('submit', handleLogin);
+
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) registerForm.addEventListener('submit', handleRegister);
+
+        const logoutButton = document.querySelector('.logout_btn');  // Changed selector to match the button class
+        if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+
+        const loginLink = document.getElementById('guestButtons');
+        if (loginLink) loginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/login';
+        });
+
+        const registerLink = document.getElementById('guestButtons1');
+        if (registerLink) registerLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/register';
+        });
+    });
+
+    // Function to handle logout (to be called from onclick attribute)
+    function logout() {
+        sessionStorage.removeItem('isLoggedIn');
+        updateUI(false);
+        window.location.href = '/index';
+    }
+</script>
+<script>
     //--------------------------- Display noi dung tuong ung----------------------
     document.addEventListener('DOMContentLoaded', function() {
         const profileLink = document.getElementById('profileLink');
@@ -929,17 +966,18 @@
 
         // HTML content for Profile
         const profileContent = `
-                <div class="content-panel">
+                <div class="content-panel mt-3">
                     <h2 class="title">Profile<span class="pro-label label label-warning">PRO</span></h2>
                      <form class="form-horizontal">
             <fieldset class="fieldset">
                 <h1 style="color: #007bff;">PERSONAL INFO</h1>
             </fieldset>
             <fieldset class="fieldset mb-5">
+
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-3 col-xs-12 label_form">Email:</label>
+                    <label class="col-md-2 col-sm-3 col-xs-12 label_form">Password:</label>
                     <div class="col-md-10 col-sm-9 col-xs-12">
-                        <p style="font-size: 2rem">${user.email}<a href="#" class="mx-3 change">Change</a></p>
+                        <p style="font-size: 2rem"><a href="/reset-password" class="change">Reset password</a></p>
                     </div>
                 </div>
 
