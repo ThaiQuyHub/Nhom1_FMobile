@@ -27,7 +27,7 @@ public class Discount {
     double  discountValue;
 
     @Column(name = "min_purchase_amount")
-    Long minPurchaseAmount;
+    double minPurchaseAmount;
 
     //LK Order
     @OneToOne(mappedBy = "discount")
