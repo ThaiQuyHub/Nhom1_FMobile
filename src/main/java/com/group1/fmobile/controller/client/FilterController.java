@@ -1,8 +1,9 @@
 package com.group1.fmobile.controller.client;
 
 import com.group1.fmobile.domain.Product;
-import com.group1.fmobile.service.ProductService;
 
+
+import com.group1.fmobile.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,11 @@ import java.util.List;
 public class FilterController {
     @Autowired
     public FilterController(ProductService productService){
-        this.productServices = productService;
+
+        this.productService = productService;
     }
 
-    private final ProductService productServices;
+    private final ProductService productService;
     @GetMapping("/filter")
     public String listProducts(
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -45,7 +47,7 @@ public class FilterController {
             }
         }
         // Lấy dữ liệu phân trang và lọc từ dịch vụ
-            Page<Product> productPage = productServices.filterProducts(page, pageSize, brands, minPrice, maxPrice, rams, color, searchQuery);
+            Page<Product> productPage = productService.filterProducts(page, pageSize, brands, minPrice, maxPrice, rams, color, searchQuery);
 
         // Truyền dữ liệu sản phẩm và phân trang tới model
         model.addAttribute("allProducts", productPage.getContent());

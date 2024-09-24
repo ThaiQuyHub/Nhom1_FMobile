@@ -2,19 +2,15 @@ package com.group1.fmobile.service;
 
 import com.group1.fmobile.domain.Product;
 import com.group1.fmobile.repository.ProductRepository;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ProductServices {

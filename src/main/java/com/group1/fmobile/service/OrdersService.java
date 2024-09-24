@@ -1,6 +1,7 @@
 package com.group1.fmobile.service;
 
 import com.group1.fmobile.domain.Orders;
+import com.group1.fmobile.domain.User;
 import com.group1.fmobile.domain.dto.DailyRevenueDTO;
 import com.group1.fmobile.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,6 @@ package com.group1.fmobile.controller.client;
 
 import com.group1.fmobile.domain.Product;
 import com.group1.fmobile.service.ProductService;
-import org.eclipse.tags.shaded.org.apache.xpath.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/client")
 public class ProductController {
+
     @Autowired
     private ProductService productService;
 

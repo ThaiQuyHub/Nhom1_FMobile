@@ -44,7 +44,7 @@ public class GuestCheckOutController {
     private OrderRepository orderRepository;
 
     @Autowired
-    private OrderDetailRepository orderDetailRepository;
+    private OrdersDetailRepository orderDetailRepository;
 
     @Autowired
     private MailService mailService;

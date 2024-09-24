@@ -1,8 +1,6 @@
-@@ -0,0 +1,57 @@
 package com.group1.fmobile.repository;
 
 import com.group1.fmobile.domain.Product;
-import com.group1.fmobile.domain.ProductCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,10 +10,30 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import java.util.Optional;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Override
+    Optional<Product> findById(Long id);
+
+    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 1 ORDER BY p.createdAt DESC")
+    List<Product> findAllMobileByOrderByCreatedAtDesc(Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 1 ORDER BY p.sold DESC")
+    List<Product> findAllMobileByOrderBySoldDesc(Pageable pageable);
+
+    @Query("SELECT DISTINCT p FROM Product p " +
+            "LEFT JOIN p.productCategory c " +
+            "LEFT JOIN p.brand b " +
+            "WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(c.categoryName) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(b.brandName) LIKE LOWER(CONCAT('%', :query, '%'))")
+    List<Product> findProductsByQuery(@Param("query") String query);
+
     // Lấy 4 sản phẩm mới nhất dựa trên product_category_id
-    List<Product> findTop4ByProductCategoryIdOrderByCreatedProductDesc(Long productCategoryId);
+    List<Product> findTop4ByProductCategoryIdOrderByCreatedAtDesc(Long productCategoryId);
 
     // Lấy 4 sản phẩm bán chạy nhất
     List<Product> findTop4ByOrderBySoldDesc();
@@ -50,9 +68,3 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             Pageable pageable);
 }
 
-
-
-
-
-
-//Tạo ProductRepository để lưu và truy vấn dữ liệu từ cơ sở dữ liệu
