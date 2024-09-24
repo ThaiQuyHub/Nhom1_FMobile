@@ -26,8 +26,8 @@ public class StatisticsController {
 
     @GetMapping("/revenue/range")
     public ResponseEntity<List<DailyRevenueDTO>> getRevenueInRange(
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime endDate) {
         List<DailyRevenueDTO> dailyRevenue = ordersService.getRevenueInRange(startDate, endDate);
         return ResponseEntity.ok(dailyRevenue);
     }

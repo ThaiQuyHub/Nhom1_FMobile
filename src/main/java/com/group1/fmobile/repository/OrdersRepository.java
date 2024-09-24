@@ -37,6 +37,6 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
             "WHERE o.orderDate BETWEEN :startDate AND :endDate " +
             "GROUP BY o.orderDate " +
             "ORDER BY o.orderDate")
-    List<DailyRevenueDTO> findRevenueInRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    List<DailyRevenueDTO> findRevenueInRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 }

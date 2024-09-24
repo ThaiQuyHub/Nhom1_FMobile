@@ -11,13 +11,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+
+
 @Entity
 @Table(name = "PRODUCT")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
     @Id
@@ -70,4 +70,5 @@ public class Product {
     // LK Orders Detail
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<OrdersDetail> ordersDetails = new ArrayList<>();
+
 }

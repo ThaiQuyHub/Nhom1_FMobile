@@ -1,35 +1,25 @@
 package com.group1.fmobile.controller.client;
 
-import com.group1.fmobile.domain.dto.ForgotPasswordDTO;
-import com.group1.fmobile.domain.dto.RegisterDTO;
-import com.group1.fmobile.domain.dto.ResetPasswordDTO;
-import com.group1.fmobile.domain.dto.VerifyDTO;
+import com.group1.fmobile.domain.dto.*;
 import com.group1.fmobile.service.account.AccountService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@Controller("clientctl")
+//@RequestMapping("/user")
+//@PreAuthorize("hasRole('USER')")
 public class HomePageController {
-
     private final AccountService accountService;
 
     @Autowired
     public HomePageController(AccountService accountService) {
         this.accountService = accountService;
     }
-//    @GetMapping("/")
-//    public String getHome(){
-//        return "client/homepage/index";
-//    }
 
     @GetMapping("/register")
     public String registerPage(Model model) {
@@ -59,40 +49,36 @@ public class HomePageController {
 
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
-//        model.addAttribute("login", new LoginDTO());
+    public String loginPage(Model model, HttpSession session) {
+        model.addAttribute("login", new LoginDTO());
+        session.removeAttribute("loggedInUser");
         return "client/auth/login";
     }
 
-//    @PostMapping("/login")
-//    public String loginPage(@ModelAttribute("login") @Valid LoginDTO loginDTO, BindingResult bindingResult, HttpSession session, Model model) {
-//        if (bindingResult.hasErrors()) {
-//            return "client/auth/login";
-//        }
-//
-//        try {
-//            accountService.authenticateUser(loginDTO.getEmail(), loginDTO.getPassword());
-//            session.setAttribute("loggedInUser", loginDTO.getEmail());
-//            return "client/auth/dashboard";
-//        } catch (RuntimeException e){
-//            model.addAttribute("error", e.getMessage());
-//            return "client/auth/login";
-//        }
-//    }
+    @PostMapping("/login")
+    public String loginPage(@ModelAttribute("login") @Valid LoginDTO loginDTO, BindingResult bindingResult, HttpSession session, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "client/auth/login";
+        }
+
+        try {
+            accountService.authenticateUser(loginDTO.getEmail(), loginDTO.getPassword());
+            session.setAttribute("loggedInUser", loginDTO.getEmail());
+            return "redirect:/home";
+        } catch (RuntimeException e){
+            model.addAttribute("error", e.getMessage());
+            return "client/auth/login";
+        }
+    }
 
 //    @GetMapping("/home")
 //    public String homePage(HttpSession session, Model model) {
-//
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if(auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))){
-//            return "admin/dashboard/show";
+//        String loggedInUser = (String) session.getAttribute("loggedInUser");
+//        if (loggedInUser == null) {
+//            return "redirect:/login";
 //        }
-//
-//
+//        model.addAttribute("userName", loggedInUser);
 //        return "client/homepage/index";
-//
-//
 //    }
 
     @GetMapping("/forgotpassword")
@@ -189,10 +175,4 @@ public class HomePageController {
             return "client/auth/resetpassword";
         }
     }
-    @GetMapping("/access-deny")
-    public String getDenyPage(Model model) {
-
-        return "client/auth/deny";
-    }
-
 }

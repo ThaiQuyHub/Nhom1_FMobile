@@ -1,3 +1,4 @@
+
 package com.group1.fmobile.service;
 
 
@@ -5,6 +6,7 @@ import com.group1.fmobile.domain.Role;
 import com.group1.fmobile.domain.RoleType;
 import com.group1.fmobile.domain.User;
 import com.group1.fmobile.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -94,4 +96,14 @@ public class UserService {
     public User getUserById(Long id) {
         return this.userRepository.getById(id);
     }
+
+    public User getUserFromSession(HttpSession session){
+        if(session.getAttribute("loggedInUser") == null){
+            return null;
+        }
+        String email = session.getAttribute("loggedInUser").toString();
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
 }
+

@@ -42,7 +42,7 @@ public class OrdersService {
         return this.ordersRepository.countTotalRevenue();
     }
 
-    public List<DailyRevenueDTO> getRevenueInRange(LocalDate startDate, LocalDate endDate) {
+    public List<DailyRevenueDTO> getRevenueInRange(LocalDateTime startDate, LocalDateTime endDate) {
         return ordersRepository.findRevenueInRange(startDate, endDate);
     }
 }

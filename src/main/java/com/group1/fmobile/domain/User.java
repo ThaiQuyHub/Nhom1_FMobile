@@ -17,19 +17,19 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
     String password;
     String email;
     String fullName;
     String phone;
     String address;
-    LocalDate creationDate ;
+    LocalDate creationDate ;;
     LocalDateTime updatedAt;
     long amount;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -40,25 +40,8 @@ public class User {
     )
     Set<Role> roles;
     boolean enabled = false;
+
     @OneToMany(mappedBy = "user")
     Set<Orders> orders = new LinkedHashSet<>();
 
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", creationDate=" + creationDate +
-                ", updatedAt=" + updatedAt +
-                ", amount=" + amount +
-                ", roles=" + roles +
-                ", enabled=" + enabled +
-                ", orders=" + orders +
-                '}';
-    }
 }

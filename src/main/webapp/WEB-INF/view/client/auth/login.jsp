@@ -137,17 +137,10 @@
         form .signup-link a:hover{
             text-decoration: underline;
         }
-        .error {
-            color: red;
-            font-size: 14px;
-        }
     </style>
 </head>
 <body>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
-
 
 <div class="wrapper">
     <div class="title">

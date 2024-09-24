@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Entity
@@ -28,8 +29,7 @@ public class Discount {
     @Column(name = "min_purchase_amount")
     Long minPurchaseAmount;
 
-    //LK Order
-    @OneToOne(mappedBy = "discount")
-    Orders orders;
+    @OneToMany(mappedBy = "discount")
+    List<Orders> orders;
 
 }

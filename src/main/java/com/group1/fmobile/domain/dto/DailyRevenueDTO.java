@@ -7,29 +7,29 @@ import java.time.LocalDateTime;
 
 public class DailyRevenueDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private LocalDate orderDate;
-    private Long totalPayment;
+    private LocalDateTime orderDate;
+    private double totalPayment;
 
     // Constructor
 
-    public DailyRevenueDTO(LocalDate orderDate, Long totalPayment) {
+    public DailyRevenueDTO(LocalDateTime orderDate, double totalPayment) {
         this.orderDate = orderDate;
         this.totalPayment = totalPayment;
     }
 
-    public LocalDate getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
-    public Long getTotalPayment() {
+    public double getTotalPayment() {
         return totalPayment;
     }
 
-    public void setTotalPayment(Long totalPayment) {
+    public void setTotalPayment(double totalPayment) {
         this.totalPayment = totalPayment;
     }
 }

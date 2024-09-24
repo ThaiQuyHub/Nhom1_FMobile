@@ -751,6 +751,7 @@ body.showCart .cartTab {
 .filter-dropdown {
     position: relative;
     display: inline-block;
+    margin-bottom: 10px;
 }
 
 .filter-dropdown .content {
@@ -826,10 +827,22 @@ body.showCart .cartTab {
     border: 1px solid #ddd;
     background-color: #f8f9fa;
     cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.pagination button:hover {
+    background-color: #e0e0e0;
 }
 .page-btn.active {
     background-color: #007bff;
     color: white;
+}
+
+.page-numbers {
+    display: flex;
+    align-items: center;
 }
 
 @media only screen and (max-width: 992px) {
