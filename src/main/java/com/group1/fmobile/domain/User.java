@@ -39,7 +39,7 @@ public class User  {
     String address;
     LocalDate creationDate ;
     LocalDateTime updatedAt;
-    long amount;
+    double amount;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
