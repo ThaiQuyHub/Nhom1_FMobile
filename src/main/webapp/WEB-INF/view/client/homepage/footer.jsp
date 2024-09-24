@@ -204,55 +204,28 @@
 </nav>
 <div class="cartTab">
     <h1>Shopping Cart</h1>
-    <div class="listCart">
+    <form action = "/checkout" method = "post" id="cartForm">
+        <div class="listCart">
 
-    </div>
-    <div class="cartTotal">
-        <div class="totalText">Total:</div>
-        <div class="totalAmount">$0.00</div>
-    </div>
-    <div class="btn">
-        <button class="close">CLOSE</button>
-        <button class="checkOut">CHECK OUT</button>
-    </div>
+        </div>
+        <div class="cartTotal">
+            <div class="totalText">Total:</div>
+            <div class="totalAmount">$0.00</div>
+        </div>
+        <div id="hiddenInputs">
+            <!-- Input ẩn sẽ được thêm vào đây bởi JavaScript -->
+        </div>
+        <input type="hidden" name="total_amount" id="total_amount" value="0.00">
+        <div class="btn">
+            <button class="close">CLOSE</button>
+            <button class="checkOut">CHECK OUT</button>
+        </div>
+    </form>
 </div>
+<script src="/js/cart.js"></script>
+<script src="/js/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Lấy tất cả các nút "Add To Cart"
-    const addToCartButtons = document.querySelectorAll('.addCart');
-
-    // Lấy phần tử hiển thị số lượng trong giỏ hàng
-    const cartCountElement = document.querySelector('.icon-cart span');
-
-    // Khởi tạo biến đếm số lượng sản phẩm trong giỏ hàng
-    let cartCount = 0;
-
-    // Hàm cập nhật hiển thị số lượng giỏ hàng
-    function updateCartDisplay() {
-        if (cartCount > 0) {
-            cartCountElement.textContent = cartCount;
-            cartCountElement.classList.add('visible');
-        } else {
-            cartCountElement.classList.remove('visible');
-        }
-    }
-
-    // Thêm sự kiện click cho mỗi nút "Add To Cart"
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Tăng số lượng sản phẩm trong giỏ hàng
-            cartCount++;
-
-            // Cập nhật hiển thị
-            updateCartDisplay();
-
-            // Thêm hiệu ứng animation
-            cartCountElement.classList.add('animate');
-            setTimeout(() => {
-                cartCountElement.classList.remove('animate');
-            }, 300);
-        });
-    });
     const darkModeToggle = document.getElementById("darkModeToggle");
     darkModeToggle.addEventListener("change", function () {
         document.body.classList.toggle("dark-mode", darkModeToggle.checked);

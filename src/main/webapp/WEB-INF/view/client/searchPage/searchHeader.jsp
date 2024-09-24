@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Admin
+  Date: 16/09/2024
+  Time: 3:09 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,14 +20,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
-    <style>
-        .form-check-input{
-            font-size: 15px;
-        }
-        .form-check-label{
-            font-size: 15px;
-        }
-    </style>
 </head>
 
 <body class="">
@@ -76,11 +75,11 @@
                     </svg>
                     <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/search" method="GET">
+                <form class="d-flex ml-5">
                     <div class="search-icon">
-                        <input class="form-control search_nav" type="text" name = "name" placeholder="Search" <%-- 'searchName' trung ProductController--%>
+                        <input class="form-control search_nav" type="search" placeholder="Search"
                                aria-label="Search"/>
-                        <svg id="searchIcon" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
