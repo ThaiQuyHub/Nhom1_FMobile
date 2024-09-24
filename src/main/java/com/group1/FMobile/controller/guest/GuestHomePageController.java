@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
-public class HomePageController {
+public class GuestHomePageController {
 
     @Autowired
-    public HomePageController(ProductServices productServices){
+    public GuestHomePageController(ProductServices productServices){
         this.productServices = productServices;
     }
 
     private final ProductServices productServices;
 
-    @GetMapping("/home")
-    public String getHome(Model model) {
+    @GetMapping("/")
+    public String guestGetHome(Model model) {
         List<Product> newestMobileProducts = productServices.getNewestMobileProducts(4);
         List<Product> bestSellingMobileProducts = productServices.getBestSellingMobileProducts(8);
         List<Product> tabletProducts = productServices.getTabletProducts(4);

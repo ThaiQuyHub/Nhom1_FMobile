@@ -24,6 +24,4 @@ public class Role {
     @Column(length = 20)
     RoleType name;
 
-    @ManyToMany(mappedBy = "roles")
-    Set<User> users;
 }

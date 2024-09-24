@@ -3,7 +3,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>Login Form Design | CodeLab</title>
+    <title>Login | FMOBILE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <style>
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
         *{
@@ -136,26 +137,44 @@
         form .signup-link a:hover{
             text-decoration: underline;
         }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+
 
 <div class="wrapper">
     <div class="title">
         Login
     </div>
     <%--@elvariable id="login" type="com.group1.fmobile.domain.dto.LoginDTO"--%>
-    <form:form action="/login" method="post" modelAttribute="login">
-        <div class="field">
-            <form:input path="email" type="text" required="required" />
-            <label for="email">Email Address</label>
+    <form action="/login" method="post" >
+        <c:if test="${param.error != null}">
+            <div class="my-2" style="color: red;">Invalid email or password.
+            </div>
+        </c:if>
+        <div class="mb-4 field">
+            <input class="form-control" type="email"
+                   placeholder="name@example.com" name="username" />
+            <label>Email address</label>
             <form:errors path="email" cssClass="error" />
         </div>
-        <div class="field">
-            <form:password path="password" required="required" />
-            <label for="password">Password</label>
+        <div class="mb-4 field">
+            <input class="form-control" type="password"
+                   placeholder="Password" name="password" />
+            <label>Password</label>
             <form:errors path="password" cssClass="error" />
+        </div>
+        <div>
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}" />
+
         </div>
         <div class="content">
             <div class="checkbox">
@@ -172,7 +191,7 @@
         <div class="signup-link">
             Not a member? <a href="/register">Register now</a>
         </div>
-    </form:form>
+    </form>
 </div>
 </body>
 </html>
