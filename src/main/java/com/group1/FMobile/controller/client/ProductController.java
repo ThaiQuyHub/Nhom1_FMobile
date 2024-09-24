@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/client")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String listProducts(Model model) {
         List<Product> products = productService.getTop4SmartPhones(); // Lấy top 4 sản phẩm
         model.addAttribute("products", products); // Truyền danh sách sản phẩm sang trang JSP

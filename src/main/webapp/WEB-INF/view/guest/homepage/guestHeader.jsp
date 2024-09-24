@@ -100,12 +100,13 @@
         <div class="icon-user">
             <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />
         </div>
-        <button class="btn signin_btn" style="font-size: 1.3rem">
+        <a href="/login" class="btn signin_btn" style="font-size: 1.3rem">
             Log In
-        </button>
-        <button class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">
+        </a>
+        <a href="/register" class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">
             Register
-        </button>
+        </a>
+
         <div class="form-check form-switch dark-mode-toggle mx-5">
             <input class="form-check-input" type="checkbox" id="darkModeToggle" />
             <label class="form-check-label" for="darkModeToggle">Dark Mode</label>

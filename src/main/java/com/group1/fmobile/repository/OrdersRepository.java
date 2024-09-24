@@ -1,6 +1,7 @@
 package com.group1.fmobile.repository;
 
 import com.group1.fmobile.domain.Orders;
+import com.group1.fmobile.domain.User;
 import com.group1.fmobile.domain.dto.DailyRevenueDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,13 +10,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
+    List<Orders> findByUser(User user);
+
+    // Tìm tất cả các đơn hàng theo fullname của người dùng
+    List<Orders> findAllByUser_Email(String email);
+
+    List<Orders> findAllByUser(User user);
+
     // Tìm kiếm theo trạng thái với phân trang
     @Query("SELECT o FROM Orders o WHERE o.status LIKE %:search%")
     Page<Orders> searchOrder(@Param("search") String search, Pageable pageable);

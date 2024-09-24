@@ -35,7 +35,7 @@
         }
         .wrapper{
             width: 600px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.84);
             border-radius: 15px;
             box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
         }
@@ -47,7 +47,7 @@
             color: #fff;
             user-select: none;
             border-radius: 15px 15px 0 0;
-            background: linear-gradient(-135deg, #c850c0, #4158d0);
+            background: linear-gradient(-135deg, #409a15, #223e21);
         }
         .wrapper form{
             padding: 10px 30px 50px 30px;
@@ -64,13 +64,13 @@
             outline: none;
             font-size: 17px;
             padding-left: 20px;
-            border: 1px solid lightgrey;
+            border: 1px solid #68d041;
             border-radius: 25px;
             transition: all 0.3s ease;
         }
         .wrapper form .field input:focus,
         form .field input:valid{
-            border-color: #4158d0;
+            border-color: #68d041;
         }
         .wrapper form .field label{
             position: absolute;
@@ -125,7 +125,7 @@
             font-size: 20px;
             font-weight: 500;
             cursor: pointer;
-            background: linear-gradient(-135deg, #c850c0, #4158d0);
+            background: linear-gradient(-135deg, #409a15, #223e21);
             transition: all 0.3s ease;
         }
         form .field input[type="submit"]:active{
@@ -186,7 +186,6 @@
             <form:input type="text" required="required" path="otp" id="otp-input"/>
             <label for="otp">Verification code</label>
             <form:errors path="otp" cssClass="error" />
-            <span id="timer" class="timer-right"></span>
 
         </div>
         <div class="mb-5 field">
@@ -208,31 +207,5 @@
     </form:form>
 </div>
 
-<script>
-    $(document).ready(function() {
-        let timeLeft = 60;
-        let timerInterval;
-
-        function updateTimer() {
-            const minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            if (seconds < 10) {
-                seconds = "0" + seconds;
-            }
-            $("#timer").text(minutes + ":" + seconds);
-
-            if (timeLeft === 0) {
-                clearInterval(timerInterval);
-                $("#timer").text("0:00");
-
-            } else {
-                timeLeft--;
-            }
-        }
-
-        // Start the timer when the page loads
-        timerInterval = setInterval(updateTimer, 1000);
-    });
-</script>
 </body>
 </html>

@@ -137,7 +137,7 @@
                                         <p>Quantity: ${product.quantity}</p>
                                         <p>Sold: ${product.sold}</p>
                                         <p><small class="text-muted">Created:
-                                            <fmt:parseDate value="${product.createdProduct}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                                            <fmt:parseDate value="${product.CreatedAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                                             <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
                                         </small></p>
                                     </div>

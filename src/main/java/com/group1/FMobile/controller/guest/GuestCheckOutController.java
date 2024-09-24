@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
-public class CheckOutController {
+public class GuestCheckOutController {
 
     @Autowired
     private ProductServices productServices;
@@ -127,8 +127,8 @@ public class CheckOutController {
 
             if (user != null) {
                 orders = createOrder(user, paymentMethod, orderDTO.getAddress(), total);
-                orders.setFullName(orderDTO.getFullName());
-                orders.setPhone(orderDTO.getPhone());
+//                orders.setFullName(orderDTO.getFullName());
+//                orders.setPhone(orderDTO.getPhone());
             } else {
                 orders = createGuestOrder(paymentMethod, orderDTO.getAddress(), total, orderDTO.getFullName(), orderDTO.getPhone());
             }
@@ -144,11 +144,11 @@ public class CheckOutController {
             }
 
             String emailContent = String.format(
-                    "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
-                    orders.getFullName(),
-                    orders.getId(),
-                    orders.getShippingAddress(),
-                    orders.getPhone()
+                    "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n"
+//                    orders.getFullName(),
+//                    orders.getId(),
+//                    orders.getShippingAddress(),
+//                    orders.getPhone()
             );
 
             mailService.sendMail(user != null ? user.getEmail() : orderDTO.getEmail(), "Order Confirmation", emailContent);
@@ -205,8 +205,8 @@ public class CheckOutController {
 
                 userRepository.save(newUser);
                 orders = createOrder(newUser, paymentMethod, orderDTO.getAddress(), total);
-                orders.setFullName(orderDTO.getFullName());
-                orders.setPhone(orderDTO.getPhone());
+//                orders.setFullName(orderDTO.getFullName());
+//                orders.setPhone(orderDTO.getPhone());
             } else {
                 orders = createGuestOrder(paymentMethod, orderDTO.getAddress(), total, orderDTO.getFullName(), orderDTO.getPhone());
             }
@@ -215,11 +215,11 @@ public class CheckOutController {
             saveOrderDetails(result, cartProducts);
 
             String emailContent = String.format(
-                    "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
-                    orders.getFullName(),
-                    orders.getId(),
-                    orders.getShippingAddress(),
-                    orders.getPhone()
+                    "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n"
+//                    orders.getFullName(),
+//                    orders.getId(),
+//                    orders.getShippingAddress(),
+//                    orders.getPhone()
             );
 
             session.removeAttribute("cartProducts");
@@ -267,7 +267,7 @@ public class CheckOutController {
         String formattedDate = LocalDateTime.now().format(formatter);
         orders.setOrderDate(LocalDateTime.parse(formattedDate, formatter));
         orders.setStatus("Waiting");
-        orders.setPaymentMethod(paymentMethod);
+//        orders.setPaymentMethod(paymentMethod);
         orders.setUser(user);
         orders.setShippingAddress(address);
         orders.setTotalPayment(total);
@@ -278,11 +278,11 @@ public class CheckOutController {
         Orders orders = new Orders();
         orders.setOrderDate(LocalDateTime.now());
         orders.setStatus("Waiting");
-        orders.setPaymentMethod(paymentMethod);
+//        orders.setPaymentMethod(paymentMethod);
         orders.setShippingAddress(address);
         orders.setTotalPayment(total);
-        orders.setFullName(fullName);
-        orders.setPhone(phone);
+//        orders.setFullName(fullName);
+//        orders.setPhone(phone);
         return orders;
     }
 

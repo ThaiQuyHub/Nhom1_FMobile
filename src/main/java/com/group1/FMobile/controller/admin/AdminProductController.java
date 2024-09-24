@@ -2,11 +2,10 @@ package com.group1.fmobile.controller.admin;
 
 import com.group1.fmobile.domain.Brand;
 import com.group1.fmobile.domain.ProductCategory;
-import com.group1.fmobile.domain.Image;
 import com.group1.fmobile.domain.Product;
 import com.group1.fmobile.service.BrandService;
 import com.group1.fmobile.service.CategoryService;
-import com.group1.fmobile.service.ProductService;
+import com.group1.fmobile.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +16,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/product")
-public class ProductController {
+public class AdminProductController {
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
 
     @Autowired
     private BrandService brandService;

@@ -2,6 +2,7 @@ package com.group1.fmobile.controller.admin;
 
 import com.group1.fmobile.domain.Image;
 import com.group1.fmobile.domain.Product;
+import com.group1.fmobile.service.IProductService;
 import com.group1.fmobile.service.ImageService;
 import com.group1.fmobile.service.ProductService;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class ImageController {
     private ImageService imageService;
 
     @Autowired
-    private ProductService productService;
+    private IProductService productService;
 
     // Đường dẫn lưu trữ hình ảnh trên server
     private static String UPLOAD_DIR = "src/main/webapp/resources/images/product";

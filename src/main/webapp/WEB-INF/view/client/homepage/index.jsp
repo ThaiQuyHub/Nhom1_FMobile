@@ -25,7 +25,7 @@
                                 <p>Quantity: ${newMobile.quantity}</p>
                                 <p>Sold: ${newMobile.sold}</p>
                                 <p><small class="text-muted">Created:
-                                    <fmt:parseDate value="${newMobile.createdProduct}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                                    <fmt:parseDate value="${newMobile.CreatedAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                                     <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
                                 </small></p>
                             </div>
@@ -58,7 +58,7 @@
                     <p>Quantity: ${bestSellingMobile.quantity}</p>
                     <p>Sold: ${bestSellingMobile.sold}</p>
                     <p><small class="text-muted">Created:
-                        <fmt:parseDate value="${bestSellingMobile.createdProduct}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                        <fmt:parseDate value="${bestSellingMobile.CreatedAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                         <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
                     </small></p>
                 </div>
@@ -93,7 +93,7 @@
                                 <p>Quantity: ${tablet.quantity}</p>
                                 <p>Sold: ${tablet.sold}</p>
                                 <p><small>Created:
-                                    <fmt:parseDate value="${tablet.createdProduct}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                                    <fmt:parseDate value="${tablet.CreatedAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                                     <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
                                 </small></p>
                             </div>
