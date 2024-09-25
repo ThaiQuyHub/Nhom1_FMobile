@@ -787,6 +787,7 @@ body.showCart .cartTab {
 
 .filter-container img{
     width: 100%;
+    margin-bottom: 3px;
 }
 .filter-container .row>* {
     padding-right: 0;

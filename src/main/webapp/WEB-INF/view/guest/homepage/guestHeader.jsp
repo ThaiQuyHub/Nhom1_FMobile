@@ -76,7 +76,7 @@
                     </svg>
                     <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/search" method="GET">
+                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/guest/search" method="GET">
                     <div class="search-icon">
                         <input class="form-control search_nav" type="search" name = "query" placeholder="Search"
                                aria-label="Search"/>
@@ -88,6 +88,7 @@
                         </svg>
                     </div>
                 </form>
+
             </ul>
         </div>
         <div class="icon-cart">

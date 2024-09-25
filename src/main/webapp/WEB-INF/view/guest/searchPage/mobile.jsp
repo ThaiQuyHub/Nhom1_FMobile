@@ -20,7 +20,7 @@
                             <div class="col-4">
                                 <input type="checkbox" class="brand-checkbox" name="brand" value="${brand}" id="brand-${brand}">
                                 <label for="brand-${brand}">
-                                    <img src="images/product/${brand}.png">
+                                    <img src="/images/product/${brand}.png">
                                 </label>
                             </div>
                         </c:forEach>
@@ -68,11 +68,33 @@
             <div class="container">
                 <header>
                     <div class="title">
+                        <h2>${products.size()} Products Found</h2>
                         <!-- Nơi hiển thị số lượng sản phẩm -->
                     </div>
                 </header>
                 <div id="productResults">
+
+
+                </div>
+                <div id="productResults2" class="listProduct">
                     <!-- Nơi hiển thị kết quả sản phẩm -->
+                    <c:forEach items="${products}" var="products">
+                        <div data-id=${products.id} class="item">
+                            <img src="${products.images[0].url}" alt="">
+                            <h2>${products.productName}</h2>
+                            <div class="price">$${products.price}</div>
+                            <div class="detail">
+                                <p>A18 Pro chip with 6-core GPU</p>
+                                <p>RAM: ${products.ram}</p>
+                                <p>Camera: 48 MP</p>
+                            </div>
+                            <div class="row">
+                                <button class="buyNow bg-primary">Buy Now</button>
+                                <button class="addCart bg-warning">Add To Cart</button>
+                            </div>
+                        </div>
+                    </c:forEach>
+
                 </div>
                 <div class="pagination">
                     <!-- Nơi hiển thị nút phân trang -->
