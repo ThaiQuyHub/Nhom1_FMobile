@@ -22,7 +22,7 @@
 
 
 <div class="container">
-    <div class="product">
+    <div class="product listProduct">
         <c:forEach items="${products}" var="product">
             <div data-id="${product.id}" class="item">
                 <img src="${product.images[0].url}" alt="${product.productName}">

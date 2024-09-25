@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,11 @@ public class ProductServices {
             categoryCounts.merge(categoryName, 1, Integer::sum);
         }
         return categoryCounts;
+    }
+
+    public Page<Product> findByCategory(String categoryName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findByCategoryName(categoryName, pageable);
     }
 
     public String determineViewName(Set<String> categories) {

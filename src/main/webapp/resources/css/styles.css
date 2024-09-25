@@ -14037,3 +14037,63 @@ body {
     font-size: 0.75rem;
     border-radius: 0.375rem !important;
 }
+
+/* Phong cách cho phân trang hpagination */
+.hpagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+/* Các nút phân trang */
+.hpagination a,
+.hpagination strong {
+    padding: 10px 15px;
+    border: 1px solid #3498db;
+    border-radius: 5px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #3498db;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Nút phân trang hover */
+.hpagination a:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Nút phân trang hiện tại */
+.hpagination strong {
+    background-color: #3498db;
+    color: white;
+    pointer-events: none; /* Không cho phép click */
+    border: none; /* Bỏ border cho nút hiện tại */
+}
+
+/* Nút Previous và Next */
+.hpagination a.prev,
+.hpagination a.next {
+    font-weight: bold;
+    width: 71px;
+    height: 37px;
+    text-align: center;
+}
+
+/* Nút Previous và Next hover */
+.hpagination a.prev:hover:not(.disabled),
+.hpagination a.next:hover:not(.disabled) {
+    background-color: #e7f3ff;
+    color: #3498db;
+}
+
+/* Vô hiệu hóa trạng thái */
+.hpagination a.disabled {
+    color: gray;
+    pointer-events: none; /* Không cho phép click */
+    background-color: #f0f0f0; /* Màu nền nhạt */
+    border-color: #d3d3d3; /* Border nhạt */
+}
+
+
