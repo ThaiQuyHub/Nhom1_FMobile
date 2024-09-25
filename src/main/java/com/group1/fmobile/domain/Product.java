@@ -65,10 +65,10 @@ public class Product {
 
     // LK Image
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<Image> images = new ArrayList<>();
+    List<Image> images;
 
     // LK Orders Detail
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    List<OrdersDetail> ordersDetails = new ArrayList<>();
+    List<OrdersDetail> ordersDetails;
 
 }
