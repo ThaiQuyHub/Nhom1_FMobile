@@ -33,7 +33,7 @@ public class SecurityConfig {
      */
 
 
-    @Bean
+    @Bean(name ="customSuccessHandlerBean" )
     public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
     }
@@ -47,11 +47,9 @@ public class SecurityConfig {
 
     @Bean
     public SpringSessionRememberMeServices rememberMeServices() {
-        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
 
-        rememberMeServices.setAlwaysRemember(true);
 
-        return rememberMeServices;
+        return new SpringSessionRememberMeServices();
     }
 
 
@@ -69,7 +67,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
-                        .requestMatchers("/", "/login", "/register", "/client/**", "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/client/**", "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**","/checkout","/checkout-not-login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -158,11 +156,11 @@ public class SecurityConfig {
      * @throws Exception Nếu có lỗi xảy ra trong quá trình cấu hình
      */
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            HttpSecurity http,
-            DaoAuthenticationProvider authenticationProvider) throws Exception {
-        return http.getSharedObject(AuthenticationManager.class);
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(
+//            HttpSecurity http,
+//            DaoAuthenticationProvider authenticationProvider) throws Exception {
+//        return http.getSharedObject(AuthenticationManager.class);
+//    }
 
 }

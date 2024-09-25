@@ -56,6 +56,9 @@ public class Orders {
     @OneToOne(mappedBy = "orders")
     TransactionHistory transactionHistory;
 
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id")
+    private PaymentMethod paymentMethod;
 
     // Helper methods for managing bidirectional relationships
     public void addOrderDetail(OrdersDetail orderDetail) {

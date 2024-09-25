@@ -141,7 +141,7 @@
                             </form:form>
                         </c:when>
                         <c:otherwise>
-                            <form:form modelAttribute="orderDTO" method="post" action="/checkout-not-login" onsubmit="return validateFormGuest(this);">
+                            <form:form modelAttribute="orderDTO" method="post" action="/checkout/not-login" onsubmit="return validateFormGuest(this);">
                                 <div class="col-md-6">
                                     <label class="lbform"><i class="fas fa-user mr-2"></i>Full Name</label>
                                     <form:input path="fullName" class="form-control"/>

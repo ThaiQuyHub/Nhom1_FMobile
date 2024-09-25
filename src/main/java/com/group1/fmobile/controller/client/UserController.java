@@ -30,6 +30,11 @@ public class UserController {
         this.orderService = orderService;
     }
 
+    @GetMapping("/")
+    public String getHome() {
+        return "client/homepage/index";
+    }
+
     // Display user profile page with current information
     @GetMapping("/userpage")
     public String getUserPage(Model model) {
