@@ -10,7 +10,7 @@
                 <div class="row">
                     <label>BRAND</label>
                     <div class="row brand-container">
-                        <c:forEach items="${['Dell', 'Asus', 'Lenovo', 'Acer', 'HP', 'MSI', 'Apple']}" var="brand">
+                        <c:forEach items="${['Apple', 'Samsung', 'Xiaomi', 'Oppo', 'Huawei', 'Vivo', 'Realme', 'Dell', 'Asus', 'HP', 'Acer', 'Lenovo', 'MSI']}" var="brand">
                             <div class="col-4">
                                 <input type="checkbox" class="brand-checkbox" name="brand" value="${brand}" id="brand-${brand}">
                                 <label for="brand-${brand}">

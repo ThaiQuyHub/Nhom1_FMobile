@@ -24,7 +24,7 @@ public class GuestSearchPageController {
     public String search(@RequestParam("query") String query,
                          @RequestParam(defaultValue  = "0") int page,
                          Model model) {
-    int size = 4;
+    int size = 16;
         if (query == null || query.trim().isEmpty()) {
             return "guest/errorpage/noDataFound";
         }
