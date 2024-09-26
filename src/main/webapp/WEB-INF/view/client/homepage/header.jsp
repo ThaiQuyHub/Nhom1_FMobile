@@ -1,7 +1,7 @@
 
 <%--
   Created by IntelliJ IDEA.
-  User: Hieu
+  User: Quy
   Date: 13/09/2024
   Time: 09:24 am
   To change this template use File | Settings | File Templates.
@@ -10,7 +10,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -174,11 +175,11 @@
                     </svg>
                     <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form class="d-flex ml-5 pt-2">
+                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/client/search" method="GET">
                     <div class="search-icon">
-                        <input class="form-control search_nav" style="line-height: 20px; padding-top: 5px" type="search" placeholder="Search"
-                               aria-label="Search" style="font-size: 1.5rem" />
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                        <input class="form-control search_nav" type="text" name = "name" placeholder="Search" <%-- 'searchName' trung ProductController--%>
+                               aria-label="Search"/>
+                        <svg id="searchIcon" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -212,6 +213,7 @@
     <div class="form-check form-switch dark-mode-toggle mx-5">
         <input class="form-check-input" type="checkbox" id="darkModeToggle" />
         <label class="form-check-label" style="width: 100px" for="darkModeToggle">Dark Mode</label>
+    </div>
     </div>
     </div>
 </nav>
@@ -263,6 +265,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Hàm để kiểm tra trạng thái đăng nhập

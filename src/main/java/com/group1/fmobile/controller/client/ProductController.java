@@ -25,8 +25,8 @@ public class ProductController {
         List<Product> bestSellingProducts = productService.getTop4BestSellingProducts(); // Top 4 best Selling
         model.addAttribute("bestSellingProducts", bestSellingProducts);
 //
-//        List<Product> tabletProducts = productService.getTabletProducts(4);
-//        model.addAttribute("tabletProducts", tabletProducts);
+        List<Product> tabletProducts = productService.getTabletProducts(4);
+        model.addAttribute("tabletProducts", tabletProducts);
 
         return "client/homepage/index";
     }
@@ -54,5 +54,13 @@ public class ProductController {
         model.addAttribute("searchQuery", name);
 
         return "client/homepage/allProducts";
+    }
+
+    @GetMapping("/productsDetail/{productId}")
+    public String getProductDetail(@PathVariable("productId") Long productId, Model model) {
+        // Lấy chi tiết sản phẩm từ Service:
+        Product product = productService.getProductById(productId);
+        model.addAttribute("product", product);
+        return "client/homepage/productsDetail";
     }
 }
