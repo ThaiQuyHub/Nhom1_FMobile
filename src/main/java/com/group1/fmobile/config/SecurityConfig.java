@@ -33,7 +33,7 @@ public class SecurityConfig {
      */
 
 
-    @Bean(name ="customSuccessHandlerBean" )
+    @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
     }

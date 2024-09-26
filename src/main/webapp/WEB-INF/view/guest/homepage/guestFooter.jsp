@@ -204,7 +204,7 @@
 </nav>
 <div class="cartTab">
     <h1>Shopping Cart</h1>
-    <form action = "/checkout" method = "post" id="cartForm">
+    <form action = "/checkout" method = "get" id="cartForm">
     <div class="listCart">
 
     </div>
