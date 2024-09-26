@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 16/09/2024
-  Time: 1:32 PM
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -16,7 +10,7 @@
                 <div class="row">
                     <label>BRAND</label>
                     <div class="row brand-container">
-                        <c:forEach items="${['Apple', 'Samsung', 'Oppo', 'Xiaomi', 'Vivo', 'Realme', 'Huawei']}" var="brand">
+                        <c:forEach items="${['Dell', 'Asus', 'Lenovo', 'Acer', 'HP', 'MSI', 'Apple']}" var="brand">
                             <div class="col-4">
                                 <input type="checkbox" class="brand-checkbox" name="brand" value="${brand}" id="brand-${brand}">
                                 <label for="brand-${brand}">
@@ -64,9 +58,10 @@
                 </div>
             </div>
         </div>
+
         <div class="col-9">
             <div class="container">
-                <input id ="productCategory" type="hidden" name="productCategory" value = "1">
+                <input id ="productCategory" type="hidden" name="productCategory" value = "3">
                 <div id="filterProductResults" data-total="${totalProducts}">
                     <!-- Danh sách sản phẩm khi Filter-->
                 </div>
@@ -98,7 +93,6 @@
                         <div class="hpagination">
                             <a href="?query=${param.query}&page=${currentPage - 1}"
                                class="prev ${currentPage == 0 ? 'disabled' : ''}">Previous</a>
-
                             <c:forEach begin="0" end="${totalPages - 1}" var="i">
                                 <c:choose>
                                     <c:when test="${i == currentPage}">

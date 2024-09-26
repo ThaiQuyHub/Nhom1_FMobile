@@ -3,15 +3,16 @@ package com.group1.fmobile.controller.guest;
 import com.group1.fmobile.domain.Product;
 import com.group1.fmobile.service.ProductServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Controller
+@RequestMapping("/guest")
 public class GuestFilterController {
     @Autowired
     public GuestFilterController(ProductServices productServices) {
@@ -26,20 +27,25 @@ public class GuestFilterController {
             @RequestParam(value = "rams", required = false) String rams,
             @RequestParam(value = "minPrice", required = false) String minPriceStr,
             @RequestParam(value = "maxPrice", required = false) String maxPriceStr,
+            @RequestParam(value = "productCategory", required = false) String productCategoryStr,
             Model model) {
 
-        List<Product> listProducts = productServices.filterProduct(brands, minPriceStr, maxPriceStr, rams);
+        int productCategoryId = Integer.parseInt(productCategoryStr);
+        List<Product> listProducts = productServices.filterProduct(brands, minPriceStr, maxPriceStr, rams, productCategoryId);
 
-        List<Product> listMobileProducts = new ArrayList<>();
-        if (listProducts != null) {
-            for (Product product : listProducts) {
-                if (product.getProductCategory().getId() == 1) {
-                    listMobileProducts.add(product);
-                }
+//        List<Product> listMobileProducts = new ArrayList<>();
+//        if (listProducts != null) {
+//            for (Product product : listProducts) {
+//                if (product.getProductCategory().getId() == 1) {
+//                    listMobileProducts.add(product);
+//                }
+//
+//            }
+//        }
 
-            }
-        }
-        model.addAttribute("products", listMobileProducts);
-        return "guest/searchPage/fragments/productList";
+        model.addAttribute("products", listProducts);
+        return "guest/searchPage/fragments/mobileProductList";
     }
+
 }
+
