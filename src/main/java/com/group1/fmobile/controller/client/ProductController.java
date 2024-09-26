@@ -17,7 +17,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/list")
+    @GetMapping("/homepage")
     public String listProducts(Model model) {
         List<Product> products = productService.getTop4SmartPhones(); // Lấy top 4 sản phẩm
         model.addAttribute("products", products); // Truyền danh sách sản phẩm sang trang JSP
@@ -53,5 +53,13 @@ public class ProductController {
         model.addAttribute("searchQuery", name);
 
         return "client/homepage/allProducts";
+    }
+
+    @GetMapping("/productsDetail/{productId}")
+    public String getProductDetail(@PathVariable("productId") Long productId, Model model) {
+        // Lấy chi tiết sản phẩm từ Service:
+        Product product = productService.getProductById(productId);
+        model.addAttribute("product", product);
+        return "client/homepage/productsDetail";
     }
 }

@@ -238,52 +238,52 @@
      * Nguyen Ngoc Quy Su kien login va register form
      * */
 
-    document.addEventListener('DOMContentLoaded', function() { // Lang nghe su kien trinh duyet duoc tai
-        const loginForm = document.getElementById('loginform'); // tim kiem id va luu tru vao bien loginForm
-        loginForm.addEventListener('submit', function(event) { // nghe su kien submit tren loginForm va kich hoat
-            event.preventDefault(); // ngan hanh vi mac dinh cua submit form
-            // Lay du lieu
-            const email = loginForm.querySelector('input[name="username"]').value;
-            const password = loginForm.querySelector('input[name="password"]').value;
-            const rememberMe = loginForm.querySelector('input[name="remember-me"]').checked;
-            const csrfToken = loginForm.querySelector('input[name="${_csrf.parameterName}"]').value;
+    <%--document.addEventListener('DOMContentLoaded', function() { // Lang nghe su kien trinh duyet duoc tai--%>
+    <%--    const loginForm = document.getElementById('loginform'); // tim kiem id va luu tru vao bien loginForm--%>
+    <%--    loginForm.addEventListener('submit', function(event) { // nghe su kien submit tren loginForm va kich hoat--%>
+    <%--        event.preventDefault(); // ngan hanh vi mac dinh cua submit form--%>
+    <%--        // Lay du lieu--%>
+    <%--        const email = loginForm.querySelector('input[name="username"]').value;--%>
+    <%--        const password = loginForm.querySelector('input[name="password"]').value;--%>
+    <%--        const rememberMe = loginForm.querySelector('input[name="remember-me"]').checked;--%>
+    <%--        const csrfToken = loginForm.querySelector('input[name="${_csrf.parameterName}"]').value;--%>
 
-            // Send login request to server
-            fetch('/login', { // object cau hinh yeu cau
-                method: 'POST', // gui du lieu len server
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded', // gui du lieu tu form
-                    'X-CSRF-TOKEN': csrfToken // tang cuong bao mat
-                },
-                body: new URLSearchParams({ // object query string chua cac cap key value tuong ung
-                    'username': email,
-                    'password': password,
-                    'remember-me': rememberMe,
-                    [csrfToken.name]: csrfToken.value
-                })
-            })
-                // Phan xu ly ket qua tra ve
-                .then(response => {
-                    if (response.ok) {
-                        // Login successful
-                        sessionStorage.setItem('isLoggedIn', 'true'); // session bo nho tam thoi trinh duyet
-                        window.location.href = '/client/homepage/';
-                    } else {
-                        // Login failed
-                        throw new Error('Login failed'); // loi xu ly ben duoi
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Display error message on the page instead of using an alert
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'my-2';
-                    errorDiv.style.color = 'red';
-                    errorDiv.textContent = 'Invalid email or password.';
-                    loginForm.insertBefore(errorDiv, loginForm.firstChild);
-                });
-        });
-    });
+    <%--        // Send login request to server--%>
+    <%--        fetch('/login', { // object cau hinh yeu cau--%>
+    <%--            method: 'POST', // gui du lieu len server--%>
+    <%--            headers: {--%>
+    <%--                'Content-Type': 'application/x-www-form-urlencoded', // gui du lieu tu form--%>
+    <%--                'X-CSRF-TOKEN': csrfToken // tang cuong bao mat--%>
+    <%--            },--%>
+    <%--            body: new URLSearchParams({ // object query string chua cac cap key value tuong ung--%>
+    <%--                'username': email,--%>
+    <%--                'password': password,--%>
+    <%--                'remember-me': rememberMe,--%>
+    <%--                [csrfToken.name]: csrfToken.value--%>
+    <%--            })--%>
+    <%--        })--%>
+    <%--            // Phan xu ly ket qua tra ve--%>
+    <%--            .then(response => {--%>
+    <%--                if (response.ok) {--%>
+    <%--                    // Login successful--%>
+    <%--                    sessionStorage.setItem('isLoggedIn', 'true'); // session bo nho tam thoi trinh duyet--%>
+    <%--                    window.location.href = '/client/homepage';--%>
+    <%--                } else {--%>
+    <%--                    // Login failed--%>
+    <%--                    throw new Error('Login failed'); // loi xu ly ben duoi--%>
+    <%--                }--%>
+    <%--            })--%>
+    <%--            .catch(error => {--%>
+    <%--                console.error('Error:', error);--%>
+    <%--                // Display error message on the page instead of using an alert--%>
+    <%--                const errorDiv = document.createElement('div');--%>
+    <%--                errorDiv.className = 'my-2';--%>
+    <%--                errorDiv.style.color = 'red';--%>
+    <%--                errorDiv.textContent = 'Invalid email or password.';--%>
+    <%--                loginForm.insertBefore(errorDiv, loginForm.firstChild);--%>
+    <%--            });--%>
+    <%--    });--%>
+    <%--});--%>
 </script>
 </body>
 </html>

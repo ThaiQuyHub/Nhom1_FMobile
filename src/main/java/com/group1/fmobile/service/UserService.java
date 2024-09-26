@@ -50,6 +50,7 @@ public class UserService {
 
     @Transactional
     public User findByEmail(String email) {
+        System.out.println("email-------------: " +email);
         return this.userRepository.findByEmail(email);
     }
 

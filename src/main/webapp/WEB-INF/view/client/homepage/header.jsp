@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Hieu
+  User: Quy
   Date: 13/09/2024
   Time: 09:24 am
   To change this template use File | Settings | File Templates.
@@ -10,7 +10,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -174,11 +175,11 @@
                     </svg>
                     <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form class="d-flex ml-5 pt-2">
+                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/client/search" method="GET">
                     <div class="search-icon">
-                        <input class="form-control search_nav" style="line-height: 20px; padding-top: 5px" type="search" placeholder="Search"
-                               aria-label="Search" style="font-size: 1.5rem" />
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                        <input class="form-control search_nav" type="text" name = "name" placeholder="Search" <%-- 'searchName' trung ProductController--%>
+                               aria-label="Search"/>
+                        <svg id="searchIcon" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -207,7 +208,7 @@
                         <a href="/client/homepage/userpage" class="me-2">
                             <img class="logo-nav rounded-circle" style="width: 40px; height: 40px; object-fit: cover; background: #007bff;" src="/client/img/avatar.jpg" alt="user" />
                         </a>
-                        <span style="color: #0d6efd" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>
+<%--                        <span style="color: #0d6efd" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>--%>
                         <form method="post" action="/logout" class="m-0">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout()">Logout</button>
@@ -271,6 +272,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Hàm để kiểm tra trạng thái đăng nhập

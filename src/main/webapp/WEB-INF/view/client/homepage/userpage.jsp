@@ -785,7 +785,7 @@
                     <div class="icon-user mx-3">
                         <img class="logo-nav" style="background: #007bff" src="/client/img/avatar.jpg" alt="" />
                     </div>
-                    <span style="font-size: 2rem; font-weight: 300" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>
+<%--                    <span style="font-size: 2rem; font-weight: 300" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>--%>
                     <button style="background:#007bff; color: #fff; font-size: 15px" type="submit" class="btn logout_btn" onclick="logout()">Logout</button>
                 </div>
             </div>
