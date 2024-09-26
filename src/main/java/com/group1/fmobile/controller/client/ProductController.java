@@ -21,10 +21,10 @@ public class ProductController {
     public String listProducts(Model model) {
         List<Product> products = productService.getTop4SmartPhones(); // Lấy top 4 sản phẩm
         model.addAttribute("products", products); // Truyền danh sách sản phẩm sang trang JSP
-
+//
         List<Product> bestSellingProducts = productService.getTop4BestSellingProducts(); // Top 4 best Selling
         model.addAttribute("bestSellingProducts", bestSellingProducts);
-
+//
         List<Product> tabletProducts = productService.getTabletProducts(4);
         model.addAttribute("tabletProducts", tabletProducts);
 
@@ -44,6 +44,7 @@ public class ProductController {
                          @RequestParam(value = "page", defaultValue = "1") int page,
                          @RequestParam(value = "size", defaultValue = "6") int pageSize,
                          Model model) {
+        System.out.println(">>> run here");
         Page<Product> products = productService.search(name, page, pageSize);
         model.addAttribute("allProducts", products.getContent()); //'products' phai trung với index.jsp
 

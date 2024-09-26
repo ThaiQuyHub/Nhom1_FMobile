@@ -419,41 +419,48 @@
     }
 </script>
 <script>
-    // just for the demos, avoids form submit
-    jQuery.validator.setDefaults({
-        debug: true,
-        success: "valid"
-    });
     $(document).ready(function() {
         $("#updateProfileForm").validate({
             rules: {
                 fullName: {
                     required: true,
                     minlength: 2,
-                    pattern:"^[a-zA-Z ]+$",
+                    pattern: /^[a-zA-Z\s]+$/
                 },
                 phone: {
                     required: true,
-                    pattern: "([0-9]{10})|(\([0-9]{3}\)\s+[0-9]{3}\-[0-9]{4})",
-                    // Add phone-specific validation rules (e.g., pattern for specific format)
+                    pattern: /^(\+\d{1,3}[- ]?)?\d{10}$/
                 },
                 address: {
                     required: true,
-
+                    minlength: 5
                 }
             },
             messages: {
                 fullName: {
                     required: "Please enter your full name.",
-                    minlength: "Full name must be at least 2 characters long."
+                    minlength: "Full name must be at least 2 characters long.",
+                    pattern: "Please enter a valid name (letters and spaces only)."
                 },
                 phone: {
-                    required: "Please enter your phone number."
-                    // Add custom error messages for phone-specific validation rules
+                    required: "Please enter your phone number.",
+                    pattern: "Please enter a valid phone number (10 digits, optional country code)."
                 },
                 address: {
-                    required: "Please enter your address."
+                    required: "Please enter your address.",
+                    minlength: "Address must be at least 5 characters long."
                 }
+            },
+            errorElement: "span",
+            errorClass: "error-message",
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            highlight: function(element) {
+                $(element).addClass("is-invalid");
+            },
+            unhighlight: function(element) {
+                $(element).removeClass("is-invalid");
             },
             submitHandler: function(form) {
                 // Form validation successful, proceed with form submission

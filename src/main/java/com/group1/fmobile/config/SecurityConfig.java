@@ -33,7 +33,7 @@ public class SecurityConfig {
      */
 
 
-    @Bean(name ="customSuccessHandlerBean" )
+    @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
     }
@@ -75,7 +75,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .invalidSessionUrl("/logout?expired")
 
-                        .maximumSessions(1)
+                        .maximumSessions(10)
                         .maxSessionsPreventsLogin(false))
                 .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
 

@@ -14,7 +14,9 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="${newMobile.images[0].url}" alt="">
+                            <a href="${pageContext.request.contextPath}/client/productsDetail/${newMobile.id}"> <!-- Liên kết hình ảnh đến trang chi tiết sản phẩm -->
+                                <img src="${newMobile.images[0].url}" alt="">
+                            </a>
                         </div>
                         <div class="col-md-6 p-4">
                             <h2>${newMobile.productName}</h2>
@@ -44,7 +46,9 @@
     <div class="listProduct">
         <c:forEach items="${bestSellingMobileProducts}" var="bestSellingMobile">
             <div data-id = ${bestSellingMobile.id} class="item">
-                <img src="${bestSellingMobile.images[0].url}" alt="">
+                <a href="${pageContext.request.contextPath}/client/productsDetail/${bestSellingMobile.id}"> <!-- Liên kết hình ảnh đến trang chi tiết sản phẩm -->
+                    <img src="${bestSellingMobile.images[0].url}" alt="">
+                </a>
                 <h2>${bestSellingMobile.productName}</h2>
                 <div class="price">$${bestSellingMobile.price}</div>
                 <div class="detail">
@@ -72,7 +76,9 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="${tablet.images[0].url}" alt="">
+                            <a href="${pageContext.request.contextPath}/client/productsDetail/${tablet.id}"> <!-- Liên kết hình ảnh đến trang chi tiết sản phẩm -->
+                                <img src="${tablet.images[0].url}" alt="">
+                            </a>
                         </div>
                         <div class="col-md-6 p-4">
                             <h2>${tablet.productName}</h2>

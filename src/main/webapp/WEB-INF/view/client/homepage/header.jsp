@@ -1,5 +1,4 @@
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   Created by IntelliJ IDEA.
   User: Quy
@@ -9,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -16,7 +16,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>FMOBILE</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,13 +96,13 @@
         }
 
     </style>
-    <script>
-        // Kiểm tra trạng thái đăng nhập ngay khi trang bắt đầu tải
-        (function() {
-            var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            document.documentElement.classList.add(isLoggedIn ? 'logged-in' : 'logged-out');
-        })();
-    </script>
+<%--    <script>--%>
+<%--        // Kiểm tra trạng thái đăng nhập ngay khi trang bắt đầu tải--%>
+<%--        (function() {--%>
+<%--            var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';--%>
+<%--            document.documentElement.classList.add(isLoggedIn ? 'logged-in' : 'logged-out');--%>
+<%--        })();--%>
+<%--    </script>--%>
 </head>
 
 <body class="">
@@ -197,30 +197,23 @@
             <span>0</span>
         </div>
         <div class="navbar-nav ms-auto">
-            <!-- Nút "Login" và "Register" -->
-            <a href="javascript:void(0);" id="guestButtons" class="btn btn-outline-primary me-2 btn_login" style="border: none; font-size: 15px;" onclick="openLoginPage()">Login</a>
-            <a href="javascript:void(0);" id="guestButtons1" class="btn btn-outline-primary me-2 btn_login" style="border: none; font-size: 15px;" onclick="openRegisterPage()">Register</a>
-
-            <!-- Phần thông tin người dùng (hiển thị khi đã đăng nhập) -->
-            <div id="userInfo" style="display: none;">
-                <div class="d-flex align-items-center">
-                    <div class="icon-user mx-3">
-                        <a href="/client/homepage/userpage" class="me-2">
-                            <img class="logo-nav rounded-circle" style="width: 40px; height: 40px; object-fit: cover; background: #007bff;" src="/client/img/avatar.jpg" alt="user" />
-                        </a>
-<%--                        <span style="color: #0d6efd" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>--%>
-                        <form method="post" action="/logout" class="m-0">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout()">Logout</button>
-                        </form>
-                    </div>
+            <security:authorize access="isAuthenticated()">
+                <a href="/client/homepage/userpage" class="me-2">
+                    <img class="logo-nav rounded-circle" style="width: 40px; height: 40px; object-fit: cover; background: #007bff;" src="/client/img/avatar.jpg" alt="user" />
+                </a>
+                <div class="mt-3" style="font-size: 1rem">
+                    <security:authentication property="principal.username" />
                 </div>
-            </div>
+                <form method="post" action="/logout" class="m-0">
+                    <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout()">Logout</button>
+                </form>
+            </security:authorize>
         </div>
     </div>
     <div class="form-check form-switch dark-mode-toggle mx-5">
         <input class="form-check-input" type="checkbox" id="darkModeToggle" />
         <label class="form-check-label" style="width: 100px" for="darkModeToggle">Dark Mode</label>
+    </div>
     </div>
     </div>
 </nav>
