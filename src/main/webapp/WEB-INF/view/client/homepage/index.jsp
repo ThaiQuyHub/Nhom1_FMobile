@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
 <jsp:include page="header.jsp"/>
 
 <%--NEW MOBILE--%>
+
 <div class="container">
     <header>
         <div class="title">NEW MOBILE</div>
@@ -25,7 +27,7 @@
                                 <p>Quantity: ${newMobile.quantity}</p>
                                 <p>Sold: ${newMobile.sold}</p>
                                 <p><small class="text-muted">Created:
-                                    <fmt:parseDate value="${newMobile.CreatedAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                                    <fmt:parseDate value="${newMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                                     <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
                                 </small></p>
                             </div>
@@ -58,7 +60,7 @@
                     <p>Quantity: ${bestSellingMobile.quantity}</p>
                     <p>Sold: ${bestSellingMobile.sold}</p>
                     <p><small class="text-muted">Created:
-                        <fmt:parseDate value="${bestSellingMobile.CreatedAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                        <fmt:parseDate value="${bestSellingMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                         <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
                     </small></p>
                 </div>
@@ -93,7 +95,7 @@
                                 <p>Quantity: ${tablet.quantity}</p>
                                 <p>Sold: ${tablet.sold}</p>
                                 <p><small>Created:
-                                    <fmt:parseDate value="${tablet.CreatedAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                                    <fmt:parseDate value="${tablet.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
                                     <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
                                 </small></p>
                             </div>
