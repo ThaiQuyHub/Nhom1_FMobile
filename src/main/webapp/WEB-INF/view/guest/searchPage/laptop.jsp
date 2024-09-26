@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label>Price</label>
+                    <label>PRICE</label>
                     <div class="row price-container">
                         <div class="col-6">
                             <input type="checkbox" class="price-checkbox" data-min="0" data-max="200" id="price-0-200">
@@ -58,42 +58,56 @@
                 </div>
             </div>
         </div>
+
         <div class="col-9">
             <div class="container">
-                <header>
-                    <div class="title">
-                        <h2>${products.size()} Products Found</h2>
-                        <!-- Nơi hiển thị số lượng sản phẩm -->
-                    </div>
-                </header>
-                <div id="productResults">
 
-
+                <div id="filterProductResults" data-total="${totalProducts}">
+                    <!-- Danh sách sản phẩm khi Filter-->
                 </div>
-                <div id="productResults2" class="listProduct">
-                    <!-- Nơi hiển thị kết quả sản phẩm -->
-                    <c:forEach items="${products}" var="products">
-                        <div data-id=${products.id} class="item">
-                            <img src="${products.images[0].url}" alt="">
-                            <h2>${products.productName}</h2>
-                            <div class="price">$${products.price}</div>
-                            <div class="detail">
-                                <p>A18 Pro chip with 6-core GPU</p>
-                                <p>RAM: ${products.ram}</p>
-                                <p>Camera: 48 MP</p>
-                            </div>
-                            <div class="row">
-                                <button class="buyNow bg-primary">Buy Now</button>
-                                <button class="addCart bg-warning">Add To Cart</button>
-                            </div>
+                <div id="searchProductResults">
+                    <div class="row" >
+                        <div class="listProduct">
+                            <!-- Nơi hiển thị kết quả sản phẩm khi Search -->
+                            <c:forEach items="${products}" var="products">
+                                <div data-id=${products.id} class="item">
+                                    <img src="${products.images[0].url}" alt="">
+                                    <h2>${products.productName}</h2>
+                                    <div class="price">$${products.price}</div>
+                                    <div class="detail">
+                                        <p>${products.description}</p>
+                                        <p>RAM: ${products.ram}</p>
+                                        <c:if test="${not empty products.color}">
+                                            <p>Màu sắc: ${products.color}</p>
+                                        </c:if>
+                                    </div>
+                                    <div class="row">
+                                        <button class="buyNow bg-primary">Buy Now</button>
+                                        <button class="addCart bg-warning">Add To Cart</button>
+                                    </div>
+                                </div>
+                            </c:forEach>
                         </div>
-                    </c:forEach>
+                    </div>
+                    <div class ="row">
+                        <div class="hpagination">
+                            <a href="?query=${param.query}&page=${currentPage - 1}"
+                               class="prev ${currentPage == 0 ? 'disabled' : ''}">Previous</a>
+                            <c:forEach begin="0" end="${totalPages - 1}" var="i">
+                                <c:choose>
+                                    <c:when test="${i == currentPage}">
+                                        <strong>${i + 1}</strong>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="?query=${param.query}&page=${i}">${i + 1}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
 
-                </div>
-                <div class="pagination">
-                    <!-- Nơi hiển thị nút phân trang -->
-                    <button id="prevPage" class="pagination-btn" onclick="changePage('prev')">Previous</button>
-                    <button id="nextPage" class="pagination-btn" onclick="changePage('next')">Next</button>
+                            <a href="?query=${param.query}&page=${currentPage + 1}"
+                               class="next ${currentPage >= totalPages - 1 ? 'disabled' : ''}">Next</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

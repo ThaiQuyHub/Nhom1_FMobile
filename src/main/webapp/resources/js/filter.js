@@ -2,6 +2,8 @@
 let filterCurrentPage = 1;
 const filterItemsPerPage = 2; // Số sản phẩm trên mỗi trang
 let filterTotalProducts = 0;
+let isFiltering = false;
+let wasFiltering = false; // Biến để theo dõi trạng thái lọc trước đó
 
 function updateProducts() {
     let brands = $('.brand-checkbox:checked').map(function() { return this.value; }).get().join(',');
@@ -13,6 +15,7 @@ function updateProducts() {
     isFiltering = brands || rams || minPrice || maxPrice;
 
     if (isFiltering) {
+        wasFiltering = true; // Đánh dấu rằng bộ lọc đã được sử dụng
         $('#filterProductResults').html('<p>Đang tải...</p>');
         $('#searchProductResults').hide();
         $('#filterProductResults').show();
@@ -32,7 +35,7 @@ function updateProducts() {
                 filterTotalProducts = $('#filterProductResults').data('total') || $(response).find('.item').length;
                 console.log('Total products:', filterTotalProducts);
 
-                let titleText = 'Kết quả lọc: ' + filterTotalProducts + ' sản phẩm';
+                let titleText = 'Filter Result:  ' + filterTotalProducts + ' products';
                 document.title = titleText;
                 $('.title h2').text(titleText);
                 applyPagination();
@@ -44,19 +47,27 @@ function updateProducts() {
             }
         });
     } else {
-        // If no filter is applied, show the original search results without pagination
-        $('#filterProductResults').hide();
-        $('#searchProductResults').show();
-        $('.pagination').remove(); // Remove pagination if exists
-        let totalSearchProducts = $('#searchProductResults .item').length;
-        let titleText = totalSearchProducts + ' Products Found';
-        document.title = titleText;
-        $('.title h2').text(titleText);
+        if (wasFiltering) {
+            // Nếu trước đó đã sử dụng bộ lọc và bây giờ tắt, làm mới trang
+            window.location.reload();
+        } else {
+            // Nếu không có bộ lọc và trước đó cũng không có, chỉ hiển thị kết quả tìm kiếm ban đầu
+            $('#filterProductResults').hide();
+            $('#searchProductResults').show();
+            ('.hpagination').remove(); // Remove pagination if exists
+            let totalSearchProducts = $('#searchProductResults .item').length;
+            let titleText = totalSearchProducts + ' Products Found';
+            document.title = titleText;
+            $('.title h2').text(titleText);
+        }
     }
 }
 
 function applyPagination() {
-    if (!isFiltering) return; // Don't apply pagination if not filtering
+    if (!isFiltering || filterTotalProducts === 0) {
+        $('.hpagination').remove(); // Remove pagination if no products or not filtering
+        return;
+    }
 
     const products = $('#filterProductResults .item');
     const totalPages = Math.ceil(filterTotalProducts / filterItemsPerPage);
@@ -70,7 +81,7 @@ function applyPagination() {
     products.slice(startIndex, endIndex).show();
 
     // Cập nhật tiêu đề
-    let titleText = 'Kết quả lọc: ' + filterTotalProducts + ' sản phẩm';
+    let titleText = 'Filter Result: ' + filterTotalProducts + ' products';
     document.title = titleText;
     $('.title h2').text(titleText);
 
@@ -80,7 +91,10 @@ function applyPagination() {
 
 function createPaginationButtons(totalPages) {
     $('.hpagination').remove(); // Xóa phân trang cũ nếu có
-    if (totalPages <= 1) return; // Không tạo phân trang nếu chỉ có 1 trang
+
+    if (filterTotalProducts === 0) {
+        return; // Không tạo phân trang nếu không có sản phẩm
+    }
 
     let paginationHtml = '<div class="hpagination">';
 

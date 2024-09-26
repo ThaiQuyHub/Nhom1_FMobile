@@ -237,6 +237,10 @@ p {
     font-size: 1.5rem;
     font-weight: 300;
 }
+.searchResults p:first-of-type {
+    width: 100%;
+    font-weight: bold;
+}
 
 .icon-user img {
     height: 40px;
@@ -410,9 +414,9 @@ header {
     position: relative;
     overflow: hidden;
     transition: background-color 0.3s;
-    max-width: 35%;
+    max-width: 40%;
     height: 38px;
-    font-size: 12px;
+    font-weight: bolder;
 }
 
 .addCart:hover {
@@ -532,9 +536,10 @@ header {
     border: none;
     padding: 5px 10px;
     margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     border-radius: 20px;
 }
-
 .searchResults button{
     font-size: 10px;
     max-width: 40%;
@@ -695,6 +700,11 @@ body.showCart .cartTab {
     position: relative;
     width: 300px;
 }
+.search-icon input {
+    font-size: 1.5rem;
+    height: 50px;
+    border-radius: 5px
+}
 
 .search_nav {
     width: 100%;
@@ -741,6 +751,7 @@ body.showCart .cartTab {
     cursor: pointer;
     margin-bottom: 5px;
     font-weight: lighter;
+    height: 33px;
 }
 
 .filter-container button:hover,
@@ -781,7 +792,7 @@ body.showCart .cartTab {
 .brand-checkbox:checked + label,
 .price-checkbox:checked + label,
 .ram-checkbox:checked + label {
-    border: 1px solid;
+    border: 2px solid;
     border-color: #007bff;
 }
 

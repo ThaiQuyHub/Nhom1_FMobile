@@ -41,7 +41,7 @@ public class GuestFilterController {
             }
         }
         model.addAttribute("products", listMobileProducts);
-        return "guest/searchPage/fragments/productList";
+        return "guest/searchPage/fragments/mobileProductList";
     }
 
 }

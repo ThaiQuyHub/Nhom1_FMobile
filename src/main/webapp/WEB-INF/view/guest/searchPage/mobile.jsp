@@ -11,7 +11,6 @@
 <jsp:include page="searchHeader.jsp" />
 <div class="container">
     <div class="row">
-
         <div class="col-3">
             <div class="filter-container">
                 <div class="row">
@@ -28,7 +27,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label>Price</label>
+                    <label>PRICE</label>
                     <div class="row price-container">
                         <div class="col-6">
                             <input type="checkbox" class="price-checkbox" data-min="0" data-max="200" id="price-0-200">
@@ -67,11 +66,7 @@
         </div>
         <div class="col-9">
             <div class="container">
-                <header>
-                    <div class="title">
-                        <!-- Nơi hiển thị số lượng sản phẩm -->
-                    </div>
-                </header>
+
                 <div id="filterProductResults" data-total="${totalProducts}">
                     <!-- Danh sách sản phẩm khi Filter-->
                 </div>
@@ -85,9 +80,11 @@
                                     <h2>${products.productName}</h2>
                                     <div class="price">$${products.price}</div>
                                     <div class="detail">
-                                        <p>A18 Pro chip with 6-core GPU</p>
+                                        <p>${products.description}</p>
                                         <p>RAM: ${products.ram}</p>
-                                        <p>Camera: 48 MP</p>
+                                        <c:if test="${not empty products.color}">
+                                            <p>Màu sắc: ${products.color}</p>
+                                        </c:if>
                                     </div>
                                     <div class="row">
                                         <button class="buyNow bg-primary">Buy Now</button>
