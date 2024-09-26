@@ -26,6 +26,7 @@ import java.util.Map;
  *
  * @author [Ha Van Dat]
  */
+@Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private UserService userService;

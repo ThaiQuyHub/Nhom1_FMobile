@@ -5,7 +5,7 @@ import com.group1.fmobile.service.UserService;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
+
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,7 +31,7 @@ public class SecurityConfig {
      * @return Đối tượng CustomSuccessHandler để xử lý khi đăng nhập thành công
      */
 
-    @Bean
+    @Bean(name = "customSuccessHandlerBean")
     public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
     }
@@ -44,11 +44,10 @@ public class SecurityConfig {
      */
     @Bean
     public SpringSessionRememberMeServices rememberMeServices() {
-        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
-
-        rememberMeServices.setAlwaysRemember(true);
-
-        return rememberMeServices;
+//        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
+//        rememberMeServices.setAlwaysRemember(false);
+//        rememberMeServices.setValiditySeconds(1209600); // 14 days
+        return new SpringSessionRememberMeServices();
     }
 
     /**
@@ -64,22 +63,26 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
-                        .requestMatchers("/", "/login", "/register", "/client/**", "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/client/**", "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement((sessionManagement) -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                         .invalidSessionUrl("/logout?expired")
-                        .maximumSessions(1)//chỉ đăng nhập được 1 máy
+
+                        .maximumSessions(1)
                         .maxSessionsPreventsLogin(false))
                 .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+
+
                 .rememberMe(r -> r
                         .rememberMeServices(rememberMeServices())
-                        .tokenValiditySeconds(1209600)
+                        .tokenValiditySeconds(120)
                         .key("uniqueAndSecret")
                         .rememberMeParameter("remember-me")
                 )
+
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")
@@ -88,11 +91,12 @@ public class SecurityConfig {
                 )
 
 
-                .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
+
+                .exceptionHandling(ex->ex.accessDeniedPage("/access-deny"));
+
 
         return httpSecurity.build();
     }
-
     /**
      * Tạo bean bộ mã hóa mật khẩu BCrypt.
      *
@@ -139,10 +143,10 @@ public class SecurityConfig {
      * @return Đối tượng AuthenticationManager
      * @throws Exception Nếu có lỗi xảy ra trong quá trình cấu hình
      */
-    @Bean
-    public AuthenticationManager authenticationManager(
-            HttpSecurity http,
-            DaoAuthenticationProvider authenticationProvider) throws Exception {
-        return http.getSharedObject(AuthenticationManager.class);
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(
+//            HttpSecurity http,
+//            DaoAuthenticationProvider authenticationProvider) throws Exception {
+//        return http.getSharedObject(AuthenticationManager.class);
+//    }
 }
