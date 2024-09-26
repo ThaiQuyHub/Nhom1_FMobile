@@ -83,10 +83,10 @@ public class ProductServices {
         }
     }
 
-    public List<Product> filterProduct(String brands, String minPriceStr, String maxPriceStr, String rams) {
+    public List<Product> filterProduct(String brands, String minPriceStr, String maxPriceStr, String rams, int productCategoryId) {
 
         // Tạo query ban đầu
-        String query = "SELECT p FROM Product p WHERE 1=1";
+        String query = "SELECT p FROM Product p WHERE p.productCategory.id = :productCategoryId";
 
         // Xử lý brands
         List<String> brandList = null;
@@ -136,6 +136,9 @@ public class ProductServices {
 
         // Sau khi hoàn tất việc xây dựng query, tạo TypedQuery
         TypedQuery<Product> typedQuery = entityManager.createQuery(query, Product.class);
+
+        // Gán các tham số vào query
+        typedQuery.setParameter("productCategoryId", productCategoryId);
 
         // Gán các tham số vào query
         if (brandList != null) {

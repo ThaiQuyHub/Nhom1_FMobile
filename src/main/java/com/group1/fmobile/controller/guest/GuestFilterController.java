@@ -27,20 +27,23 @@ public class GuestFilterController {
             @RequestParam(value = "rams", required = false) String rams,
             @RequestParam(value = "minPrice", required = false) String minPriceStr,
             @RequestParam(value = "maxPrice", required = false) String maxPriceStr,
+            @RequestParam(value = "productCategory", required = false) String productCategoryStr,
             Model model) {
 
-        List<Product> listProducts = productServices.filterProduct(brands, minPriceStr, maxPriceStr, rams);
+        int productCategoryId = Integer.parseInt(productCategoryStr);
+        List<Product> listProducts = productServices.filterProduct(brands, minPriceStr, maxPriceStr, rams, productCategoryId);
 
-        List<Product> listMobileProducts = new ArrayList<>();
-        if (listProducts != null) {
-            for (Product product : listProducts) {
-                if (product.getProductCategory().getId() == 1) {
-                    listMobileProducts.add(product);
-                }
+//        List<Product> listMobileProducts = new ArrayList<>();
+//        if (listProducts != null) {
+//            for (Product product : listProducts) {
+//                if (product.getProductCategory().getId() == 1) {
+//                    listMobileProducts.add(product);
+//                }
+//
+//            }
+//        }
 
-            }
-        }
-        model.addAttribute("products", listMobileProducts);
+        model.addAttribute("products", listProducts);
         return "guest/searchPage/fragments/mobileProductList";
     }
 

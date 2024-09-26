@@ -61,7 +61,7 @@
 
         <div class="col-9">
             <div class="container">
-
+                <input id ="productCategory" type="hidden" name="productCategory" value = "2">
                 <div id="filterProductResults" data-total="${totalProducts}">
                     <!-- Danh sách sản phẩm khi Filter-->
                 </div>

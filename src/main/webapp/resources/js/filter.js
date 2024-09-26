@@ -11,6 +11,9 @@ function updateProducts() {
     let minPrice = $('.price-checkbox:checked').map(function() { return $(this).data('min'); }).get().join(',');
     let maxPrice = $('.price-checkbox:checked').map(function() { return $(this).data('max'); }).get().join(',');
 
+    // Lấy giá trị của productCategory từ input ẩn
+    let productCategory = $('#productCategory').val();
+
     // Check if any filter is applied
     isFiltering = brands || rams || minPrice || maxPrice;
 
@@ -27,7 +30,8 @@ function updateProducts() {
                 brands: brands,
                 rams: rams,
                 minPrice: minPrice,
-                maxPrice: maxPrice
+                maxPrice: maxPrice,
+                productCategory: productCategory
             },
             success: function(response) {
                 $('#filterProductResults').html(response);
