@@ -82,7 +82,7 @@ public class GuestCheckOutController {
 
         logger.info("Checkout method called. User: " + (user != null ? user.getEmail() : "null"));
 
-        return "guest/searchPage/checkout";
+        return "guest/searchpage/checkout";
     }
 
     @PostMapping
@@ -94,7 +94,7 @@ public class GuestCheckOutController {
         if (bindingResult.hasErrors()) {
             addAttributesForCheckoutForm(model, session);
             model.addAttribute("user", user);
-            return "guest/searchPage/checkout";
+            return "guest/searchpage/checkout";
         }
 
         try {
@@ -108,7 +108,7 @@ public class GuestCheckOutController {
             if (userEmail == null || userEmail.isEmpty()) {
                 logger.error("Logged in user has no email address");
                 model.addAttribute("emailError", "User email not found. Please update your profile.");
-                return "guest/searchPage/checkout";
+                return "guest/searchpage/checkout";
             }
 
             PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDTO.getPaymentId()).orElseThrow();
@@ -116,7 +116,7 @@ public class GuestCheckOutController {
 
             if (cartProducts.isEmpty()) {
                 model.addAttribute("errorQuantityCart", "Cart quantity must be > 0");
-                return "guest/searchPage/checkout";
+                return "guest/searchpage/checkout";
             }
 
             Double total = calculateTotal(cartProducts);
@@ -141,7 +141,7 @@ public class GuestCheckOutController {
         } catch (Exception e) {
             logger.error("Error in createOrder: ", e);
             setErrorMessage(model, session);
-            return "guest/searchPage/checkout";
+            return "guest/searchpage/checkout";
         }
 
         return "redirect:/order";
@@ -154,7 +154,7 @@ public class GuestCheckOutController {
 
         if (bindingResult.hasErrors()) {
             addAttributesForCheckoutForm(model, session);
-            return "guest/searchPage/checkout";
+            return "guest/searchpage/checkout";
         }
 
         try {
@@ -162,7 +162,7 @@ public class GuestCheckOutController {
             if (existingUser != null) {
                 model.addAttribute("emailError", "This email is already registered. Please use a different email to receive notifications or log in to get discounts.");
                 addAttributesForCheckoutForm(model, session);
-                return "guest/searchPage/checkout";
+                return "guest/searchpage/checkout";
             }
 
             PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDTO.getPaymentId()).orElseThrow();
@@ -170,7 +170,7 @@ public class GuestCheckOutController {
 
             if (cartProducts.isEmpty()) {
                 model.addAttribute("errorQuantityCart", "Cart quantity must be > 0");
-                return "guest/searchPage/checkout";
+                return "guest/searchpage/checkout";
             }
 
             Double total = calculateTotal(cartProducts);
@@ -194,7 +194,7 @@ public class GuestCheckOutController {
         } catch (Exception e) {
             logger.error("Error in createOrderNotLogin: ", e);
             setErrorMessage(model, session);
-            return "guest/searchPage/checkout";
+            return "guest/searchpage/checkout";
         }
 
         return "redirect:/home";

@@ -32,13 +32,9 @@ import java.util.Map;
  */
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
+
     @Autowired
     private UserService userService;
-
-
-
-
-
 
     /**
      * Xác định URL đích chuyển hướng dựa trên vai trò của người dùng.

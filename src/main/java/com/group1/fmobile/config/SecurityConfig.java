@@ -32,8 +32,12 @@ public class SecurityConfig {
      * @return Đối tượng CustomSuccessHandler để xử lý khi đăng nhập thành công
      */
 
-
-    @Bean
+//Lỗi khi chạy chương trình báo "The bean 'customSuccessHandler',
+// defined in class path resource [com/group1/fmobile/config/SecurityConfig.class],could not be registered.
+// A bean with that name has already been defined in file
+// [D:\Local Reponsive\Nhom1_FMobile\target\classes\com\group1\fmobile\config\CustomSuccessHandler.class] and overriding is disabled."
+// nên Hieu comment lại để chạy tạm. Của ai thì khi merge mở ra.
+//    @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
     }
