@@ -33,16 +33,6 @@ public class GuestFilterController {
         int productCategoryId = Integer.parseInt(productCategoryStr);
         List<Product> listProducts = productServices.filterProduct(brands, minPriceStr, maxPriceStr, rams, productCategoryId);
 
-//        List<Product> listMobileProducts = new ArrayList<>();
-//        if (listProducts != null) {
-//            for (Product product : listProducts) {
-//                if (product.getProductCategory().getId() == 1) {
-//                    listMobileProducts.add(product);
-//                }
-//
-//            }
-//        }
-
         model.addAttribute("products", listProducts);
         return "guest/searchPage/fragments/mobileProductList";
     }

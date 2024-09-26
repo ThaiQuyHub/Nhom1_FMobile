@@ -53,14 +53,9 @@ public class GuestSearchPageController {
         if (results.isEmpty()) {
             return "guest/searchPage/noDataFound";
         }
-
-//        Map<String, Integer> categoryCounts = productServices.countProductsByCategory(results);
-
-//        model.addAttribute("query", query);
-//        model.addAttribute("categoryCounts", categoryCounts);
         model.addAttribute("products", results);
         return "guest/searchPage/allProducts";
-//        return productServices.determineViewName(categoryCounts.keySet());
+
     }
 
 }
