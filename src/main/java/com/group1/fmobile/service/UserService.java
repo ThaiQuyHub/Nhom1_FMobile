@@ -62,7 +62,6 @@ public class UserService {
 
     @Transactional
     public User findByEmail(String email) {
-        System.out.println("email-------------: " +email);
         return this.userRepository.findByEmail(email);
     }
 
@@ -123,13 +122,11 @@ public class UserService {
         return user.getPassword();
     }
 
-    public boolean isAdmin(){
-        return true;
-    }
 
-    public Boolean existsByUserEmail(String email) {
-        return this.userRepository.existsByEmail(email);
-    }
+
+//    public Boolean existsByUserEmail(String email) {
+//        return this.userRepository.existsByEmail(email);
+//    }
 
     /**
      * Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa.
