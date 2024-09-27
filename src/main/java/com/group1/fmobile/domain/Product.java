@@ -1,10 +1,13 @@
 package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -26,42 +29,69 @@ public class Product {
     Long id;
 
     // LK Brand
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     Brand brand;
 
     // LK Product Category
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_category_id")
     ProductCategory productCategory;
 
+    @NotBlank
+    @Size(min = 1, max = 255)
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
     @Column(name = "product_name", nullable = false)
     String productName;
 
+    @NotNull
+    @Min(value = 1)
+    @Max(value = 999999)
     @Column(name = "price", nullable = false)
     double price;
 
+    @NotNull
+    @Min(value = 1)
+    @Max(value = Integer.MAX_VALUE )
     @Column(name = "quantity", nullable = false)
     int quantity;
 
+    @NotNull
+    @Min(value = 1)
+    @Max(value = Integer.MAX_VALUE )
     @Column(name = "sold")
     int sold;
 
+    @NotBlank
+    @Size(min = 1, max = 255)
+    @Pattern(regexp = "^[a-zA-Z]*$")
     @Column(name = "color")
     String color;
 
+    @NotBlank
+    @Size(min = 1, max = 255)
+    @Pattern(regexp = "^(?=.*\\d)(?=.*GB)[a-zA-Z0-9 ]*$")
     @Column(name = "ram")
     String ram;
 
+    @NotBlank
+    @Size(min = 1, max = 255)
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
     @Lob
     @Column(name = "description")
     String description;
 
+    @NotNull
+    @PastOrPresent
     @Column(name = "created_at")
-    LocalDateTime createdAt;
+    LocalDate createdAt;
 
+    @NotNull
+    @PastOrPresent
     @Column(name = "updated_at")
-    LocalDateTime updatedAt;
+    LocalDate updatedAt;
 
     // LK Image
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

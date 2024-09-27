@@ -112,8 +112,6 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-
-
     public Optional<User> findByFullName(String fullName) {
         return userRepository.findByFullName(fullName);
     }

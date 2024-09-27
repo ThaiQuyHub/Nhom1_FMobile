@@ -26,7 +26,7 @@ public class OrdersDetail {
     Orders orders;
 
     //LK Product
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     Product product;
 

@@ -66,5 +66,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("color") String color,
             @Param("searchQuery") String searchQuery,
             Pageable pageable);
+
+    // search product Duy
+    @Query("SELECT p FROM Product p WHERE " +
+            "p.productName LIKE %:keyword% OR " +
+            "p.color LIKE %:keyword% OR " +
+            "p.ram LIKE %:keyword%")
+    List<Product> searchProduct(String keyword);
+
 }
 

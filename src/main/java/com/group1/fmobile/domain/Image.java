@@ -1,6 +1,10 @@
 package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,16 +24,17 @@ public class Image {
     @Column(name = "image_id", nullable = false)
     Long id;
 
-
     //LK Product
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     Product product;
 
-    @Column(name = "type")
-    String type;
+    @NotBlank
+    @Size(min = 1, max = 255)
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
+    @Column(name = "image_name")
+    String image_name;
 
-    @Lob
     @Column(name = "URL")
     String url;
 

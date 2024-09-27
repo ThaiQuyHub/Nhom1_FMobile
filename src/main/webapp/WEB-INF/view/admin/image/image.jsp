@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="navbar-nav w-100">
-                <a href="/admin" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="/admin/home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="/admin/user" class="nav-item nav-link"><i class="fa fa-user me-2"></i>User</a>
                 <a href="/admin/order" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Order</a>
                 <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-tag me-2"></i>Product</a>
@@ -98,44 +98,46 @@
                 </div>
             </div>
         </nav>
-        <br>
         <!-- Navbar End -->
         <div class="row">
             <h5 class="mb-4"><c:choose><c:when test="${isEdit}">Update Image</c:when>
                 <c:otherwise>Add new image</c:otherwise></c:choose></h5>
             <form:form action="/admin/image/saveOrUpdate" method="post" modelAttribute="image" enctype="multipart/form-data">
-                <input type="hidden" name="image_id" value="${image.image_id}" />
-
-                <!-- Chọn Sản phẩm -->
-                <div class="form-group">
-                    <label for="product">Choose Product:</label>
-                    <select class="form-control" id="product" name="product.product_id" required>
-                        <option value="">-- Choose Product --</option>
-                        <c:forEach var="product" items="${products}">
-                            <option value="${product.product_id}"
-                                    <c:if test="${product.product_id == image.product.product_id}">selected</c:if>>
-                                    ${product.product_name}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <br>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="image_name">Image Name:</label>
-                        <form:input path="image_name" class="form-control" placeholder="Nhập tên hình ảnh" />
+                <div class="row">
+                    <input type="hidden" name="id" value="${image.id}" />
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <!-- Chọn Sản phẩm -->
+                    <div class="form-group col-md-4">
+                        <label for="product">Choose Product:</label>
+                        <select class="form-control" id="product" name="product.id" required>
+                            <option value="">-- Choose Product --</option>
+                            <c:forEach var="product" items="${products}">
+                                <option value="${product.id}"
+                                        <c:if test="${product.id == image.product.id}">selected</c:if>>
+                                        ${product.productName}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="image_name">Image Name:</label>
+                            <form:input path="image_name" class="form-control" placeholder="Enter Image Name" />
+                            <p style="color: red"><form:errors path="image_name"></form:errors></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="image_url">Choose Image:</label>
+                        <input type="file" class="form-control" id="image_url" name="image_url" required />
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" id="submit-button">
+                            <c:choose><c:when test="${isEdit}">Update Image</c:when>
+                                <c:otherwise>Add new image</c:otherwise></c:choose>
+                        </button>
                     </div>
                 </div>
-                <br>
-                <div class="col-md-6 form-group">
-                    <label for="image_data">Choose Image:</label>
-                    <input type="file" class="form-control" id="image_data" name="image_data" required />
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary" id="submit-button">
-                    <c:choose><c:when test="${isEdit}">Update Image</c:when>
-                        <c:otherwise>Add new image</c:otherwise></c:choose>
-                </button>
+
             </form:form>
         </div>
 
@@ -143,7 +145,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">Image Table</h6>
+                    <h5 class="mb-4">Image Table</h5>
+                    <form action="" method="GET" class="d-none d-md-flex col-4" style="background-color: gainsboro">
+                        <div class="input-group input-group-sm col-3">
+                            <input class="form-control border-0" type="text" placeholder="Search by Image Name" name="keyword" value="${keyword}" >
+                            <button type="submit" class="btn btn-group-lg"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                    <br>
                     <table class="table">
                         <thead>
                         <tr>
@@ -157,14 +166,14 @@
                         <tbody>
                         <c:forEach var="img" items="${images}">
                             <tr>
-                                <td>${img.image_id}</td>
-                                <td>${img.product.product_name}</td>
+                                <td>${img.id}</td>
+                                <td>${img.product.productName}</td>
                                 <td>${img.image_name}</td>
                                 <td>
                                     <!-- Hiển thị ảnh thu nhỏ -->
                                     <c:choose>
-                                        <c:when test="${not empty img.image_url}">
-                                            <img src="${pageContext.request.contextPath}${img.image_url}" alt="${img.image_name}" class="img-thumbnail" width="100" height="100"/>
+                                        <c:when test="${not empty img.url}">
+                                            <img src="${pageContext.request.contextPath}${img.url}" alt="${img.image_name}" class="img-thumbnail" width="100" height="100"/>
                                         </c:when>
                                         <c:otherwise>
                                             <span>Chưa có hình ảnh</span>
@@ -173,11 +182,11 @@
                                 </td>
                                 <td>
                                     <!-- Nút Sửa -->
-                                    <a href="${pageContext.request.contextPath}/admin/image/edit/${img.image_id}" class="btn btn-warning btn-sm">
+                                    <a href="${pageContext.request.contextPath}/admin/image/edit/${img.id}" class="btn btn-warning btn-sm">
                                         Edit
                                     </a>
                                     <!-- Nút Xóa -->
-                                    <a href="${pageContext.request.contextPath}/admin/image/delete/${img.image_id}" class="btn btn-danger btn-sm"
+                                    <a href="${pageContext.request.contextPath}/admin/image/delete/${img.id}" class="btn btn-danger btn-sm"
                                        onclick="return confirm('Are you sure to delete?');">
                                         Del
                                     </a>
@@ -186,6 +195,23 @@
                         </c:forEach>
                         </tbody>
                     </table>
+                    <!-- Pagination begin -->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                <a class="page-link" href="?pageNo=${currentPage - 1}&keyword=${keyword}">Previous</a>
+                            </li>
+                            <c:forEach var="i" begin="1" end="${totalPage}">
+                                <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                    <a class="page-link" href="?pageNo=${i}&keyword=${keyword}">${i}</a>
+                                </li>
+                            </c:forEach>
+                            <li class="page-item ${currentPage == totalPage ? 'disabled' : ''}">
+                                <a class="page-link" href="?pageNo=${currentPage + 1}&keyword=${keyword}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- Pagination end -->
                 </div>
             </div>
         </div>
