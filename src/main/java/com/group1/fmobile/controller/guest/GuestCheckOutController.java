@@ -52,10 +52,10 @@ public class GuestCheckOutController {
                            @RequestParam(value = "productQuantity[]", required = false) String[] quantities,
                            @RequestParam(value = "totalAmount", required = false) String total,
                            Model model) {
-        if (productIds == null || productIds.length == 0) {
-            model.addAttribute("error", "Cart is empty. Please add products to cart before checkout.");
-            return "redirect:/home";
-        }
+//        if (productIds == null || productIds.length == 0) {
+//            model.addAttribute("error", "Cart is empty. Please add products to cart before checkout.");
+//            return "redirect:/home";
+//        }
 
         Map<Product, Long> cartProducts = new HashMap<>();
         Double totalAmount = Double.parseDouble(total);
@@ -67,10 +67,19 @@ public class GuestCheckOutController {
             }
         }
 
-        applyDiscount(totalAmount, model);
-        setSessionAttributes(session, cartProducts, totalAmount);
-        setModelAttributes(model, cartProducts, totalAmount);
-
+//        List<Discount> discounts = discountRepository.findByAmount(totalAmount);
+//        if (discounts.size() > 0) {
+//            Discount applicableDiscount = discounts.get(0);
+//            model.addAttribute("discount", applicableDiscount);
+//            model.addAttribute("discountedAmount", totalAmount - applicableDiscount.getDiscountValue());
+//        }
+        System.out.println("cartproducts: "+cartProducts.size());
+        session.setAttribute("cartProducts", cartProducts);
+        session.setAttribute("totalAmount", totalAmount);
+        model.addAttribute("cart", cartProducts);
+        model.addAttribute("totalAmount", totalAmount);
+        model.addAttribute("payment", paymentMethodService.findAll());
+//
         List<PaymentMethod> paymentMethods = paymentMethodService.findAll();
         model.addAttribute("paymentMethods", paymentMethods);
 
@@ -80,9 +89,58 @@ public class GuestCheckOutController {
         User user = getUser(session);
         model.addAttribute("user", user);
 
-        logger.info("Checkout method called. User: " + (user != null ? user.getEmail() : "null"));
+//        logger.info("Checkout method called. User: " + (user != null ? user.getEmail() : "null"));
 
         return "guest/searchpage/checkout";
+    }
+
+
+    @PostMapping("/checkout-not-login")
+    public String createOrderNotLogin(HttpSession session, Model model,
+                                      @RequestParam(value = "payment") Long payment,@RequestParam(value = "phone") String phone,
+                                      @RequestParam(value = "address") String address,@RequestParam(value = "fullName") String fullName,@RequestParam(value = "email") String email){
+        PaymentMethod paymentMethod = paymentMethodRepository.findById(payment).get();
+        HashMap<Product, Long> cartProducts = (HashMap<Product, Long>) session.getAttribute("cartProducts");
+        if(cartProducts.size() == 0){
+            model.addAttribute("errorQuantityCart", "Quantity of cart must > 0");
+            return "guest/searchpage/checkout";
+        }
+
+        Double total = 0D;
+        for (Map.Entry<Product, Long> entry : cartProducts.entrySet()) {
+            Product product = entry.getKey();
+            Long quantity = entry.getValue();
+            total += product.getPrice() * quantity;
+        }
+        Orders orders = new Orders();
+        orders.setOrderDate(LocalDateTime.now());
+        orders.setStatus("Watting");
+        orders.setPaymentMethod(paymentMethod);
+        orders.setShippingAddress(address);
+        orders.setTotalPayment(total);
+        orders.setFullName(fullName);
+        orders.setPhone(phone);
+        orders.setEmail(email);
+
+        List<Discount> discounts = discountRepository.findByAmount(total);
+
+        if (discounts.size() > 0){
+            orders.setDiscount(discounts.get(0));
+        }
+        Orders result = orderRepository.save(orders);
+        for (Map.Entry<Product, Long> entry : cartProducts.entrySet()) {
+            Product product = entry.getKey();
+            Long quantity = entry.getValue();
+            OrdersDetail ordersDetail = new OrdersDetail();
+            ordersDetail.setOrders(result);
+            ordersDetail.setPrice(product.getPrice());
+            ordersDetail.setProduct(product);
+            ordersDetail.setQuantity(Integer.valueOf(quantity.toString()));
+            orderDetailRepository.save(ordersDetail);
+        }
+        mailService.sendMail(email, "Thông báo đặt hàng thành công",
+                "Cảm ơn bạn đã đặt hàng của chúng tôi, Mã đơn hàng của bạn là: "+orders.getId());
+        return "redirect:/";
     }
 
     @PostMapping

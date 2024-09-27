@@ -695,7 +695,9 @@ body.showCart .cartTab {
     background-color: #eee1;
 }
 
-.listCart {
+#cartForm {
+    display: grid;
+    grid-template-rows: 1fr 0px;
     overflow: auto;
 }
 
