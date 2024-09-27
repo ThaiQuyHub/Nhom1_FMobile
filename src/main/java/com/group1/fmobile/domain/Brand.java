@@ -1,6 +1,7 @@
 package com.group1.fmobile.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -27,15 +29,20 @@ public class Brand implements Serializable {
     @Column(name = "brand_id", nullable = false)
     Long id;
 
+    @NotBlank
+    @Size(min = 1, max = 255)
+    @Pattern(regexp = "^[a-zA-Z0-9]*$")
     @Column(name = "brand_name", nullable = false)
     String brandName;
 
-    @Lob
-    @Column(name = "description")
+    @NotBlank
+    @Size(min = 1, max = 255)
+    @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
+    @Column(name = "description", nullable = false)
     String description;
 
     // LK Product
-    @OneToMany(mappedBy = "brand")
-    Set<Product> products = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<Product> products ;
 
 }

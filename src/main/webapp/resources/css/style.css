@@ -694,7 +694,8 @@ body.showCart .container {
 }
 
 .search_nav {
-    width: 100%;
+    margin-top: 10px;
+    width: 70%;
     padding: 10px 40px 10px 15px;
     font-size: 1.5rem;
     border: 1px solid #ccc;
@@ -703,7 +704,7 @@ body.showCart .container {
 
 .search-icon svg {
     position: absolute;
-    right: 10px;
+    right: 90px;
     top: 50%;
     transform: translateY(-50%);
     color: #666;

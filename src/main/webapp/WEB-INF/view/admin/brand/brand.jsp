@@ -59,7 +59,7 @@
                 </div>
             </div>
             <div class="navbar-nav w-100">
-                <a href="/admin" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="/admin/home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="/admin/user" class="nav-item nav-link"><i class="fa fa-user me-2"></i>User</a>
                 <a href="/admin/order" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Order</a>
                 <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-tag me-2"></i>Product</a>
@@ -98,29 +98,36 @@
                 </div>
             </div>
         </nav>
-        <br>
         <!-- Navbar End -->
         <div class="row">
             <h5 class="mb-4"><c:choose><c:when test="${isEdit}">Update Brand</c:when>
                 <c:otherwise>Add new brand</c:otherwise></c:choose></h5>
-            <form action="/admin/brand/saveOrUpdate" method="post">
-                <input type="hidden" name="brand_id" value="${brand.brand_id}" />
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="brand_name">Brand Name:</label>
-                        <input class="form-control" type="text" id="brand_name" name="brand_name" value="${brand.brand_name}" required>
+            <form:form action="/admin/brand/saveOrUpdate" modelAttribute="brand" method="post">
+                <div class="row">
+                    <input type="hidden" name="id" value="${brand.id}" />
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="brand_name">Brand Name:</label>
+                            <input class="form-control" type="text" id="brand_name" name="brandName" value="${brand.brandName}">
+                            <div class="error-message" id="brandNameError" style="color: red; display: none;"></div>
+                            <p style="color: red"><form:errors path="brandName"></form:errors></p>
+                        </div>
                     </div>
+                    <div class="col-md-4 form-group">
+                        <label for="brand_description">Description:</label>
+                        <input class="form-control" type="text" name="description" id="brand_description" value="${brand.description}">
+                        <div class="error-message" id="descriptionError" style="color: red; display: none;"></div>
+                        <p style="color: red"><form:errors path="description"></form:errors></p>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" id="submit-button">
+                            <c:choose><c:when test="${isEdit}">Update Brand</c:when>
+                                <c:otherwise>Add new brand</c:otherwise></c:choose>
+                        </button>
+                    </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 </div>
-                <br>
-                <div class="col-md-6 form-group">
-                    <label for="brand_description">Description:</label>
-                    <input class="form-control" type="text" name="brand_description" id="brand_description" value="${brand.brand_description}">
-                </div>
-                <button type="submit" class="btn btn-primary" id="submit-button">
-                    <c:choose><c:when test="${isEdit}">Update Brand</c:when>
-                        <c:otherwise>Add new brand</c:otherwise></c:choose>
-                </button>
-            </form>
+            </form:form>
         </div>
 
         <!-- Bảng brand -->
@@ -140,12 +147,12 @@
                         <tbody>
                         <c:forEach var="b" items="${brands}">
                             <tr>
-                                <td>${b.brand_id}</td>
-                                <td>${b.brand_name}</td>
-                                <td>${b.brand_description}</td>
+                                <td>${b.id}</td>
+                                <td>${b.brandName}</td>
+                                <td>${b.description}</td>
                                 <td>
-                                    <a href="/admin/brand/edit/${b.brand_id}" class="btn btn-warning">Edit</a>
-                                    <a href="/admin/brand/delete/${b.brand_id}" class="btn btn-danger" onclick="return confirm('Are you sure to delete?');">Del</a>
+                                    <a href="/admin/brand/edit/${b.id}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="/admin/brand/delete/${b.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete?');">Del</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -203,5 +210,58 @@
         crossorigin="anonymous"></script>
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
+<%--validate--%>
+<%--<script>--%>
+<%--    document.getElementById("submit-button").onclick = function(event) {--%>
+<%--        // Lấy giá trị của brandName và description--%>
+<%--        var brandName = document.getElementById("brand_name").value;--%>
+<%--        var description = document.getElementById("brand_description").value;--%>
+
+<%--        // Reset thông báo lỗi--%>
+<%--        document.getElementById("brandNameError").style.display = "none";--%>
+<%--        document.getElementById("descriptionError").style.display = "none";--%>
+
+<%--        // Kiểm tra xem brandName có rỗng không--%>
+<%--        if (!brandName || !description) {--%>
+<%--            if (!brandName) {--%>
+<%--                document.getElementById("brandNameError").innerText = "Brand Name cannot be empty!";--%>
+<%--                document.getElementById("brandNameError").style.display = "block";--%>
+<%--            }--%>
+<%--            if (!description) {--%>
+<%--                document.getElementById("descriptionError").innerText = "Description cannot be empty!";--%>
+<%--                document.getElementById("descriptionError").style.display = "block";--%>
+<%--            }--%>
+<%--            event.preventDefault(); // Ngăn chặn gửi biểu mẫu--%>
+<%--            return;--%>
+<%--        }--%>
+
+<%--        // Kiểm tra độ dài--%>
+<%--        if (brandName.length > 255 || description.length > 255) {--%>
+<%--            if (brandName.length > 255) {--%>
+<%--                document.getElementById("brandNameError").innerText = "Brand Name cannot exceed 255 characters!";--%>
+<%--                document.getElementById("brandNameError").style.display = "block";--%>
+<%--            }--%>
+<%--            if (description.length > 255) {--%>
+<%--                document.getElementById("descriptionError").innerText = "Description cannot exceed 255 characters!";--%>
+<%--                document.getElementById("descriptionError").style.display = "block";--%>
+<%--            }--%>
+<%--            event.preventDefault();--%>
+<%--            return;--%>
+<%--        }--%>
+<%--        // Kiểm tra ký tự đặc biệt--%>
+<%--        var regex = /^[a-zA-Z0-9\s]+$/;--%>
+<%--        if (!regex.test(brandName) || !regex.test(description)) {--%>
+<%--            if (!regex.test(brandName)) {--%>
+<%--                document.getElementById("brandNameError").innerText = "Brand Name can only contain letters, numbers, and spaces!";--%>
+<%--                document.getElementById("brandNameError").style.display = "block";--%>
+<%--            }--%>
+<%--            if (!regex.test(description)) {--%>
+<%--                document.getElementById("descriptionError").innerText = "Description can only contain letters, numbers, and spaces!";--%>
+<%--                document.getElementById("descriptionError").style.display = "block";--%>
+<%--            }--%>
+<%--            event.preventDefault();--%>
+<%--        }--%>
+<%--    };--%>
+<%--</script>--%>
 </body>
 </html>

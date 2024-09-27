@@ -6,12 +6,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Admin Order</title>
+    <title>Admin User</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-
-
     <!-- Favicon -->
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/webfonts/fa-solid-900.woff2"
           rel="icon">
@@ -37,13 +35,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-
     <!-- Link CSS -->
     <link href="/css/admin.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0">
-
     <!-- Sidebar Start -->
     <div class="sidebar pe-4 pb-3">
         <nav class="navbar bg-light navbar-light">
@@ -91,6 +88,8 @@
                         <span class="d-none d-lg-inline-flex">Fmobile</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
                         <form method="post" action="/logout">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <button class="dropdown-item">Logout</button>
@@ -100,89 +99,26 @@
             </div>
         </nav>
         <!-- Navbar End -->
-        <br>
-        <!-- Bảng người dùng -->
-        <div class="bg-light rounded p-4">
-            <div class="row">
-                <div class="col-9">
-                    <h6 class="mb-4" style="font-size: 25px">Order List</h6>
-                </div>
-                <div class="col-3">
-                    <form class="d-none d-md-flex ms-4" method="get" action="${pageContext.request.contextPath}/admin/order">
-                        <input class="form-control border-0" type="search" placeholder="Search by Status" name="search"
-                               style="background-color: gainsboro" value="${param.search}"/>
-                        <input type="hidden" name="pageNo" value="${currentPage}"/>
-                    </form>
-                </div>
-                <hr>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Order ID</th>
-                            <th scope="col">User ID</th>
-                            <th scope="col">Discount ID</th>
-                            <th scope="col">Total Payment</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Order Date</th>
-                            <th scope="col">Shipping Address</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="order" items="${orders}">
-                            <tr>
-                                <td>${order.id}</td>
-                                <td>${order.user.id}</td>
-                                <td>${order.discount.id}</td>
-                                <td>$${order.totalPayment}</td>
-                                <td>${order.status}</td>
-                                <td>${order.orderDate}</td>
-                                <td>${order.shippingAddress}</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Phân trang -->
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <p>Showing ${orders.size()} of ${totalItems} Orders</p>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination m-0">
-                            <!-- Nút Previous -->
-                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="?search=${param.search}&pageNo=${currentPage - 1}"
-                                   aria-label="Previous">
-                                    <span aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
-                                </a>
-                            </li>
-
-                            <!-- Lặp qua số trang -->
-                            <c:forEach var="i" begin="1" end="${totalPages}">
-                                <li class="page-item ${currentPage == i ? 'active' : ''}">
-                                    <a class="page-link" href="?search=${param.search}&pageNo=${i}">${i}</a>
-                                </li>
-                            </c:forEach>
-
-                            <!-- Nút Next -->
-                            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                                <a class="page-link" href="?search=${param.search}&pageNo=${currentPage + 1}"
-                                   aria-label="Next">
-                                    <span aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+        <!-- 404 Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="row vh-100 bg-light rounded align-items-center justify-content-center mx-0">
+                <div class="col-md-6 text-center p-4">
+                    <i class="bi bi-exclamation-triangle display-1 text-primary"></i>
+                    <h3 class="display-3 fw-bold">Something went wrong!</h3>
+                    <h3 class="mb-4">We’re sorry!</h3>
+                    <p class="mb-4">The page you have looked for does not exist in our website!
+                        Maybe go to our home page or try to use a search?</p>
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="/admin/home">Go Back To Home</a>
                 </div>
             </div>
         </div>
-
-
+        <!-- 404 End -->
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
-                        &copy; <a href="https://www.facebook.com/profile.php?id=100030887559873">My Profile</a>, All
+                        &copy;All
                         Right Reserved.
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-end">
@@ -195,10 +131,7 @@
         </div>
         <!-- Footer End -->
     </div>
-    <!-- Content End -->
 </div>
-</div>
-
 <%--CDN Javascript--%>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -227,9 +160,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
-
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
+<%--validate--%>
 </body>
 </html>

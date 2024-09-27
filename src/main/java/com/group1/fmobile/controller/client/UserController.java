@@ -30,7 +30,6 @@ public class UserController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/")
     public String getHome() {
         return "client/homepage/index";
     }

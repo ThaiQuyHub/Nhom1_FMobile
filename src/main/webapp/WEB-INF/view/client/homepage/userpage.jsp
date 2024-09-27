@@ -1,6 +1,8 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -682,6 +684,13 @@
             font-size: 1.5rem;
         }
 
+        .inpbox {
+            height: 50px;
+            width: 500px;
+            border-radius: 5px;
+            padding-left: 5px;
+        }
+
     </style>
 </head>
 
@@ -713,7 +722,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse ml-5" id="navbarNav">
+        <div class="collapse navbar-collapse ml-5" id="navbarNav" style="width: 750px">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -721,7 +730,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
                     </svg>
-                    <a class="nav-link menu" aria-current="page" href="/client/homepage/">Home</a>
+                    <a class="nav-link menu" aria-current="page" href="/client/homepage">Home</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -755,14 +764,16 @@
                     </svg>
                     <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form class="d-flex ml-5">
-                    <div class="search-icon">
+                <form class="d-flex ml-5 mb-2">
+                    <div class="search-icon" style="width: 330px">
                         <input class="form-control search_nav" type="search" placeholder="Search"
                                aria-label="Search"
                                style="font-size: 1.5rem;
-                                      height: 50px;
-                                      padding-top: 10px;border-radius: 5px" />
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                        height: 40px;
+                                        padding-top: 8px;
+                                        border-radius: 5px;" />
+                        <svg style="right: 105px;
+                                    top: 60%;" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -772,23 +783,28 @@
                 </form>
             </ul>
         </div>
-        <div class="icon-cart mx-3">
+        <div class="icon-cart" style="margin-left: 30px">
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
             </svg>
             <span>0</span>
         </div>
-        <div class="navbar-nav ms-auto">
-            <div id="userInfo">
-                <div class="d-flex align-items-center">
-                    <div class="icon-user mx-3">
-                        <img class="logo-nav" style="background: #007bff" src="/client/img/avatar.jpg" alt="" />
-                    </div>
-<%--                    <span style="font-size: 2rem; font-weight: 300" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>--%>
-                    <button style="background:#007bff; color: #fff; font-size: 15px" type="submit" class="btn logout_btn" onclick="logout()">Logout</button>
+        <div class="navbar-nav">
+            <security:authorize access="isAuthenticated()">
+                <a class="me-2">
+                    <img class="logo-nav rounded-circle" style="width: 40px; height: 40px; object-fit: cover; background: #007bff;" src="/client/img/avatar.jpg" alt="user" />
+                </a>
+                <div class="mt-3" style="font-size: 1.5rem">
+                    <security:authentication var="userEmail" property="principal.username" />
+                    <c:set var="username" value="${fn:substringBefore(userEmail, '@')}" />
+                        ${fullName}
                 </div>
-            </div>
+                <form id="logoutForm" method="post" action="/logout" class="mt-2">
+                    <security:csrfInput />
+                    <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout(event)">Logout</button>
+                </form>
+            </security:authorize>
         </div>
         <div class="form-check form-switch dark-mode-toggle mx-3">
             <input class="form-check-input" type="checkbox" id="darkModeToggle" />
@@ -815,7 +831,7 @@
                         <ul class="nav">
                             <li><a href="#" id="profileLink"><span class="fa fa-user mx-2"></span>Profile</a></li>
                             <li><a href="/client/homepage/purchase-history"><span class="fa fa-cog mx-2"></span>Purchase History</a></li>
-                            <li><a href="/home"><span class="fa-solid fa-house mx-2"></span>Home</a></li>
+                            <li><a href="/client/homepage/"><span class="fa-solid fa-house mx-2"></span>Home</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -824,142 +840,22 @@
         </section>
     </div>
 </div>
-<!-- Footer -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light mt-5" style="position: fixed; bottom: 0; width: 100%;">
-    <div class="container-fluid footer">
-        <img class="logo" src="/images/product/FMobileLogo.png" alt="" />
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="row g-5 mt-1">
-            <div class="col-md-6">
-                <h2 class="mb-4">
-                    Be the first to explore and use our new products while others are
-                    still waiting
-                </h2>
-                <button class="btn btn-primary">Get Started</button>
-            </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h5>Products</h5>
-                        <ul class="list-unstyled">
-                            <li>Iphone</li>
-                            <li>Samsung</li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3">
-                        <h5>Category</h5>
-                        <ul class="list-unstyled">
-                            <li>Alcatel 6850</li>
-                            <li>Ruckus ZD 1200</li>
-                            <li>Alcatel 6850</li>
-                            <li>Ruckus ZD 1200</li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3">
-                        <h5>About</h5>
-                        <ul class="list-unstyled">
-                            <li>Newsletter</li>
-                            <li>Privacy</li>
-                            <li>Terms</li>
-                            <li>Cookies</li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3">
-                        <h5>Contact</h5>
-                        <ul class="list-unstyled">
-                            <li>0763254524</li>
-                            <li>fmobile@gmail.com</li>
-                            <li>fmobile@edu.vn</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <footer class="text-center" style="font-size: 1.5rem">
-                Copyright © 2024 group 1 F Mobile
-            </footer>
-        </div>
-    </div>
-</nav>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Hàm để kiểm tra trạng thái đăng nhập
-    function checkLoginState() {
-        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
-        updateUI(isLoggedIn);
-    }
-
-    // Hàm cập nhật giao diện người dùng
-    function updateUI(isLoggedIn) {
-        const guestButtons = document.getElementById('guestButtons');
-        const guestButtons1 = document.getElementById('guestButtons1');
-        const userInfo = document.getElementById('userInfo');
-
-        if (guestButtons) guestButtons.style.display = isLoggedIn ? 'none' : 'inline-block';
-        if (guestButtons1) guestButtons1.style.display = isLoggedIn ? 'none' : 'inline-block';
-        if (userInfo) userInfo.style.display = isLoggedIn ? 'flex' : 'none';
-    }
-
-    // Hàm xử lý đăng nhập
-    function handleLogin(event) {
+    function logout(event) {
         event.preventDefault();
-        // Ở đây bạn sẽ thêm logic xác thực đăng nhập thực tế
-        sessionStorage.setItem('isLoggedIn', 'true');
-        updateUI(true);
-        window.location.href = '/index';
-    }
-
-    // Hàm xử lý đăng ký
-    function handleRegister(event) {
-        event.preventDefault();
-        // Ở đây bạn sẽ thêm logic đăng ký thực tế
-        sessionStorage.setItem('isLoggedIn', 'true');
-        updateUI(true);
-        window.location.href = '/index';
-    }
-
-    // Hàm xử lý đăng xuất
-    function handleLogout(event) {
-        event.preventDefault();
-        sessionStorage.removeItem('isLoggedIn');
-        updateUI(false);
-        window.location.href = '/home';  // Changed from '/' to '/index'
-    }
-
-    // Thêm các event listener khi DOM đã sẵn sàng
-    document.addEventListener('DOMContentLoaded', function() {
-        checkLoginState();
-
-        const loginForm = document.getElementById('loginForm');
-        if (loginForm) loginForm.addEventListener('submit', handleLogin);
-
-        const registerForm = document.getElementById('registerForm');
-        if (registerForm) registerForm.addEventListener('submit', handleRegister);
-
-        const logoutButton = document.querySelector('.logout_btn');  // Changed selector to match the button class
-        if (logoutButton) logoutButton.addEventListener('click', handleLogout);
-
-        const loginLink = document.getElementById('guestButtons');
-        if (loginLink) loginLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = '/login';
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(new FormData(document.getElementById('logoutForm'))),
+        }).then(() => {
+            window.location.href = '/client/homepage';  // Redirect to homepage after logout
+        }).catch(error => {
+            console.error('Logout error:', error);
         });
-
-        const registerLink = document.getElementById('guestButtons1');
-        if (registerLink) registerLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = '/register';
-        });
-    });
-
-    // Function to handle logout (to be called from onclick attribute)
-    function logout() {
-        sessionStorage.removeItem('isLoggedIn');
-        updateUI(false);
-        window.location.href = '/index';
     }
 </script>
 <script>

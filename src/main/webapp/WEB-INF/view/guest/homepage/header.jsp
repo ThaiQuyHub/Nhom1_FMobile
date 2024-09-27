@@ -155,6 +155,16 @@
                     <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout()">Logout</button>
                 </form>
             </security:authorize>
+            <security:authorize access="!isAuthenticated()">
+                <a href="/login" style="font-size: 1.5rem;
+                                        height: 30px;
+                                        width: 55px;"
+                   class="btn btn-outline-primary me-2">Login</a>
+                <a href="/register" style="font-size: 1.5rem;
+                                        height: 30px;
+                                        width: 75px;"
+                   class="btn btn-outline-secondary">Register</a>
+            </security:authorize>
         </div>
     </div>
     <div class="form-check form-switch dark-mode-toggle mx-3" style="margin-top: 15px">

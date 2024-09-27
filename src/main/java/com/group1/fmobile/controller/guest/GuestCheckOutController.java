@@ -331,7 +331,7 @@ public class GuestCheckOutController {
         user.setEmail(null);
         user.setCreationDate(LocalDate.now());
         user.setRoles(new HashSet<>(List.of(new Role(3, RoleType.GUEST))));
-        user.setAmount(0L);
+        user.setAmount(0);
         user = userRepository.save(user);
 
         return createAndSaveOrder(user, paymentMethod, orderDTO.getAddress(), total);

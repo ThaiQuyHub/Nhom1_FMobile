@@ -73,10 +73,10 @@
                 <a href="/admin/home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="/admin/user" class="nav-item nav-link"><i class="fa fa-user me-2"></i>User</a>
                 <a href="/admin/order" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Order</a>
-                <a href="" class="nav-item nav-link"><i class="fa fa-tag me-2"></i>Product</a>
-                <a href="" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Brand</a>
-                <a href="" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
-                <a href="" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Image</a>
+                <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-tag me-2"></i>Product</a>
+                <a href="/admin/brand" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Brand</a>
+                <a href="/admin/category" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Category</a>
+                <a href="/admin/image" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Image</a>
             </div>
         </nav>
     </div>

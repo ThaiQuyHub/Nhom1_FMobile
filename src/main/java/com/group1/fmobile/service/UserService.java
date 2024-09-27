@@ -51,8 +51,6 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-
-
     /**
      * Tìm kiếm người dùng bằng email.
      *
@@ -128,9 +126,9 @@ public class UserService {
 
 
 
-//    public Boolean existsByUserEmail(String email) {
-//        return this.userRepository.existsByEmail(email);
-//    }
+    public Boolean existsByUserEmail(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
 
     /**
      * Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa.
@@ -161,8 +159,6 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
-
 
     public Optional<User> findByFullName(String fullName) {
         return userRepository.findByFullName(fullName);
