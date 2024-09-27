@@ -20,6 +20,19 @@ closeCart.addEventListener('click', () => {
     body.classList.toggle('showCart');
 })
 
+// Lắng nghe sự kiện BUY NOW khi DOM đã tải xong
+document.addEventListener('DOMContentLoaded', function() {
+    const buyNowButtons = document.querySelectorAll('.buyNow');
+
+    buyNowButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const productId = this.closest('.item').getAttribute('data-id');
+            window.location.href = '/client/checkout?productId=' + productId;
+        });
+    });
+});
+
 // Hàm khởi tạo ứng dụng
 const initApp = () => {
     // Load giỏ hàng từ session

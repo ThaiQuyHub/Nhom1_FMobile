@@ -33,12 +33,12 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${cart}" var="item">
+    <c:forEach items="${products}" var="product">
         <tr>
-            <td>${item.key.productName}</td>
-            <td>$${item.key.price}</td>
-            <td>${item.value}</td>
-            <td>$${item.key.price * item.value}</td>
+            <td>${product.productName}</td>
+            <td>${product.price}</td>
+            <td>${product.quantity}</td>
+            <td>${product.price * product.quantity}</td>
         </tr>
     </c:forEach>
     </tbody>

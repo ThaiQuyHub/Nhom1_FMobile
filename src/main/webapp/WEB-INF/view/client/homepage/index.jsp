@@ -3,7 +3,17 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <jsp:include page="header.jsp"/>
-
+<%--<style>--%>
+<%--    .buyNow {--%>
+<%--        width: 90px;--%>
+<%--        height: 38px;--%>
+<%--        line-height: 30px;--%>
+<%--        border-radius: 99px;--%>
+<%--        margin-top: 50px;--%>
+<%--        max-width: 35%;--%>
+<%--        font-size: 12px;--%>
+<%--    }--%>
+<%--</style>--%>
 <%--NEW MOBILE--%>
 <div class="container">
     <header>
@@ -25,14 +35,9 @@
                             <div class="detail">
                                 <p>Color: ${newMobile.color}</p>
                                 <p>RAM: ${newMobile.ram}</p>
-<%--                                <p>Quantity: ${newMobile.quantity}</p>--%>
-<%--                                <p>Sold: ${newMobile.sold}</p>--%>
-<%--                                <p><small class="text-muted">Created:--%>
-<%--                                    <fmt:parseDate value="${newMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                                </small></p>--%>
                             </div>
                             <div class="row">
+<%--                                <a href="${pageContext.request.contextPath}/client/checkout/${newMobile.id}"--%>
                                 <button class="buyNow bg-primary">Buy Now</button>
                                 <button class="addCart bg-warning">Add To Cart</button>
                             </div>
@@ -60,12 +65,6 @@
                 <div class="detail">
                     <p>Color: ${bestSellingMobile.color}</p>
                     <p>RAM: ${bestSellingMobile.ram}</p>
-<%--                    <p>Quantity: ${bestSellingMobile.quantity}</p>--%>
-<%--                    <p>Sold: ${bestSellingMobile.sold}</p>--%>
-<%--                    <p><small class="text-muted">Created:--%>
-<%--                        <fmt:parseDate value="${bestSellingMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                        <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                    </small></p>--%>
                 </div>
                 <div class="row">
                     <button href="#" class="buyNow bg-primary">Buy Now</button>
@@ -96,13 +95,6 @@
                             <div class="price">$${tablet.price}</div>
                             <div class="detail">
                                 <p>Color: ${tablet.color}</p>
-
-<%--                                <p>Quantity: ${tablet.quantity}</p>--%>
-<%--                                <p>Sold: ${tablet.sold}</p>--%>
-<%--                                <p><small>Created:--%>
-<%--                                    <fmt:parseDate value="${tablet.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                                </small></p>--%>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>

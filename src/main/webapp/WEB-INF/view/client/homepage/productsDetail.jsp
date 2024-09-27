@@ -84,12 +84,12 @@
         }
     </style>
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="headerDetail.jsp"/>
 
 <div style="margin: auto" class="container-product">
     <div data-id="${product.id}" class="item">
         <div class="product-image col-md-9">
-            <img src="${product.images[0].url}" alt="" style="max-width: 100%;">
+            <img src="${product.images[0].url}" alt="" style="width: 400px;object-fit: cover">
         </div>
         <div class="product-info col-md-9">
             <div class="options">

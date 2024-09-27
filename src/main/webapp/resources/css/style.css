@@ -410,6 +410,7 @@ header {
     overflow: hidden;
     transition: background-color 0.3s;
     max-width: 35%;
+    width: 90px;
     height: 38px;
     font-size: 12px;
 }
