@@ -128,9 +128,9 @@ public class UserService {
 
 
 
-//    public Boolean existsByUserEmail(String email) {
-//        return this.userRepository.existsByEmail(email);
-//    }
+    public Boolean existsByUserEmail(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
 
     /**
      * Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa.
