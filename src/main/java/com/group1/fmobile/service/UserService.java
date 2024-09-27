@@ -82,6 +82,10 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
     }
+    @Transactional
+    public User saveAccount(User user) {
+        return this.userRepository.save(user);
+    }
 
     public List<User> getAllUser() {
         return this.userRepository.findAll();
