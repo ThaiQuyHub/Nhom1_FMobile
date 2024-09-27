@@ -71,7 +71,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
-                        .requestMatchers("/", "/login", "/register", "/client/**", "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**","/checkout","/checkout-not-login").permitAll()
+                        .requestMatchers("/", "/login", "/register",  "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**","/checkout","/checkout-not-login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

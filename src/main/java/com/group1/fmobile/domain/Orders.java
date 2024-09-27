@@ -36,6 +36,12 @@ public class Orders {
     @JoinColumn(name = "discount_id", referencedColumnName = "discount_id")
     Discount discount;
 
+    String phone;
+
+    String fullName;
+
+    String email;
+
     @Column(name = "total_payment", nullable = false)
     double totalPayment;
 
