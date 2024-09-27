@@ -506,6 +506,7 @@ header {
     gap: 20px;
 }
 
+
 .listProduct .item {
     background-color: #f6f6f6;
     padding: 20px;
@@ -554,6 +555,12 @@ header {
     display: grid;
     grid-template-columns: repeat(2, 0.5fr);
     gap: 40px;
+}
+
+.listAllProduct {
+    display: grid;
+    grid-template-columns: repeat(5, 0.5fr);
+    gap: 20px;
 }
 
 .product .item {
