@@ -2,21 +2,23 @@ package com.group1.fmobile.controller.admin;
 
 import com.group1.fmobile.domain.ProductCategory;
 import com.group1.fmobile.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/category")
+@RequestMapping("/admin")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
     // Hiển thị danh sách thương hiệu và form thêm mới
-    @RequestMapping("")
+    @RequestMapping("/category")
     public String listCategory(Model model) {
         List<ProductCategory> list = categoryService.getAll();
         model.addAttribute("categories", list);
@@ -26,15 +28,19 @@ public class CategoryController {
     }
 
     // Xử lý thêm mới hoặc cập nhật thương hiệu
-    @PostMapping("/saveOrUpdate")
-    public String saveOrUpdateCategory(@ModelAttribute("category") ProductCategory category, RedirectAttributes redirectAttributes) {
+    @PostMapping("/category/saveOrUpdate")
+    public String saveOrUpdateCategory(@ModelAttribute("category") @Valid ProductCategory category,
+                                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            System.out.println(bindingResult);
+            return "admin/category/category";
+        }
         categoryService.saveOrUpdate(category);  // Lưu thương hiệu (thêm mới hoặc cập nhật)
-        redirectAttributes.addFlashAttribute("successMessage", "Thương hiệu đã được lưu thành công!");
         return "redirect:/admin/category";  // Quay lại trang quản lý sau khi lưu
     }
 
     // Chỉnh sửa thương hiệu (lấy thông tin để đưa lên form)
-    @GetMapping("/edit/{id}")
+    @GetMapping("/category/edit/{id}")
     public String editCategory(@PathVariable("id") Long id, Model model) {
         ProductCategory category = categoryService.getById(id);
         model.addAttribute("category", category);  // Đối tượng category được điền vào form để cập nhật
@@ -45,10 +51,9 @@ public class CategoryController {
     }
 
     // Xóa thương hiệu
-    @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+    @GetMapping("/category/delete/{id}")
+    public String deleteCategory(@PathVariable("id") Long id) {
         categoryService.delete(id);
-        redirectAttributes.addFlashAttribute("successMessage", "Thương hiệu đã được xóa thành công!");
         return "redirect:/admin/category";  // Quay lại trang quản lý sau khi xóa
     }
 

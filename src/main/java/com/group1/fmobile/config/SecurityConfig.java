@@ -69,6 +69,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
                         .requestMatchers("/", "/login", "/register",  "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**","/checkout","/checkout-not-login","/client/homepage").permitAll()

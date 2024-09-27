@@ -98,34 +98,34 @@
         </div>
       </div>
     </nav>
-    <br>
     <!-- Navbar End -->
     <div class="row">
       <h5 class="mb-4"><c:choose><c:when test="${isEdit}">Update Category</c:when>
         <c:otherwise>Add new category</c:otherwise></c:choose></h5>
-      <form action="/admin/category/saveOrUpdate" method="post">
-        <input type="hidden" name="category_id" value="${category.category_id}" />
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="category_name">Category Name</label>
-            <input class="form-control" type="text" id="category_name" name="category_name" value="${category.category_name}" required>
+      <form:form action="/admin/category/saveOrUpdate" modelAttribute="category" method="post">
+        <div class="row">
+          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+          <input type="hidden" name="id" value="${category.id}" />
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="category_name">Category Name</label>
+              <input class="form-control" type="text" id="category_name" name="categoryName" value="${category.categoryName}">
+              <div class="error-message" id="categoryNameError" style="color: red; display: none;"></div>
+              <p style="color: red"><form:errors path="categoryName"></form:errors></p>
+            </div>
+          </div>
+          <div>
+            <button type="submit" id="submit-button" class="btn btn-primary">
+              <c:choose> <c:when test="${isEdit}">Update Category</c:when>
+                <c:otherwise>
+                  Add new Category
+                </c:otherwise>
+              </c:choose>
+            </button>
           </div>
         </div>
-        <br>
-        <div class="col-md-6 form-group">
-          <label for="category_description">Description:</label>
-          <input  class="form-control" id="category_description" name="category_description" value="${category.category_description}" required>
-        </div>
-        <button type="submit" id="submit-button" class="btn btn-primary">
-          <c:choose> <c:when test="${isEdit}">Update Category</c:when>
-            <c:otherwise>
-              Add new Category
-            </c:otherwise>
-          </c:choose>
-        </button>
-      </form>
+      </form:form>
     </div>
-
     <!-- Bảng category -->
     <div class="row">
       <div class="col-lg-12">
@@ -136,19 +136,17 @@
             <tr>
               <th scope="col">ID</th>
               <th scope="col">Category Name</th>
-              <th scope="col">Description</th>
               <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="c" items="${categories}">
               <tr>
-                <td>${c.category_id}</td>
-                <td>${c.category_name}</td>
-                <td>${c.category_description}</td>
+                <td>${c.id}</td>
+                <td>${c.categoryName}</td>
                 <td>
-                  <a href="/admin/category/edit/${c.category_id}" class="btn btn-warning">Edit</a>
-                  <a href="/admin/category/delete/${c.category_id}" class="btn btn-danger" onclick="return confirm('Are you sure to delete?');">Del</a>
+                  <a href="/admin/category/edit/${c.id}" class="btn btn-warning btn-sm">Edit</a>
+                  <a href="/admin/category/delete/${c.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete?');">Del</a>
                 </td>
               </tr>
             </c:forEach>
@@ -184,18 +182,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"
         integrity="sha512-KFHXdr2oObHKI9w4Hv1XPKc898mE4kgYx58oqsc/JqqdLMDI4YjOLzom+EMlW8HFUd0QfjfAvxSL6sEq/a42fQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <!-- Bootstrap Bundle JS (Bootstrap 5.0) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <!-- Chart.js (nếu cần biểu đồ) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <!-- Owl Carousel (nếu sử dụng carousel) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
         integrity="sha512-YDr/FllsYt5mPpDsytI+Y1twc4Lgf/Xrh/1hYIS2BEPxDfevPcfovtRUFa+VDP4kNeh4+srDOFexlIn/ksz+wA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <!-- Moment.js (nếu cần xử lý thời gian) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
         integrity="sha512-qTXRIMyZIFb8JdNgwO1Br6Lq3EY7dx6h7nBbg78X6hfXqUBSXGXk43kO5nc7u7+L2e5jrS3T1KNczHD8Qq9Kog=="
@@ -206,5 +200,39 @@
         crossorigin="anonymous"></script>
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
+<%--<script>--%>
+<%--  document.getElementById("submit-button").onclick = function(event) {--%>
+<%--    // Lấy giá trị của categoryName--%>
+<%--    var categoryName = document.getElementById("category_name").value;--%>
+
+<%--    // Reset thông báo lỗi--%>
+<%--    document.getElementById("categoryNameError").style.display = "none";--%>
+
+<%--    // Kiểm tra xem categoryName có rỗng không--%>
+<%--    if (!categoryName) {--%>
+<%--      document.getElementById("categoryNameError").innerText = "Category Name cannot be empty!";--%>
+<%--      document.getElementById("categoryNameError").style.display = "block";--%>
+<%--      event.preventDefault(); // Ngăn chặn gửi biểu mẫu--%>
+<%--      return;--%>
+<%--    }--%>
+
+<%--    // Kiểm tra độ dài--%>
+<%--    if (categoryName.length > 255) {--%>
+<%--      document.getElementById("categoryNameError").innerText = "Category Name cannot exceed 255 characters!";--%>
+<%--      document.getElementById("categoryNameError").style.display = "block";--%>
+<%--      event.preventDefault();--%>
+<%--      return;--%>
+<%--    }--%>
+
+<%--    // Kiểm tra ký tự đặc biệt và số--%>
+<%--    var regex = /^[^\d!@#$%^&*()_+=[\]{};':"\\|,.<>/?]*$/;--%>
+<%--    if (!regex.test(categoryName)) {--%>
+<%--      document.getElementById("categoryNameError").innerText = "Category Name cannot contain numbers or special characters!";--%>
+<%--      document.getElementById("categoryNameError").style.display = "block";--%>
+<%--      event.preventDefault();--%>
+<%--    }--%>
+<%--  };--%>
+<%--</script>--%>
+
 </body>
 </html>

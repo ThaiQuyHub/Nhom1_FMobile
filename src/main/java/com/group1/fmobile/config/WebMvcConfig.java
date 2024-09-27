@@ -1,7 +1,9 @@
 package com.group1.fmobile.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -49,6 +51,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
         registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/product");
         registry.addResourceHandler("/client/**").addResourceLocations("/resources/client/");
+    }
+    // validation Duy
+    @Bean
+    public MessageSource messageSource(){
+        ReloadableResourceBundleMessageSource bundleMessageSource = new ReloadableResourceBundleMessageSource();
+        bundleMessageSource.setBasename("classpath:messages");
+        return bundleMessageSource;
     }
 
 }

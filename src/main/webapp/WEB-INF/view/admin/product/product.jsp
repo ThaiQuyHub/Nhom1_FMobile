@@ -101,101 +101,108 @@
                 </div>
             </div>
         </nav>
-        <br>
         <!-- Navbar End -->
         <div class="row">
             <h5 class="mb-4"><c:choose><c:when test="${isEdit}">Update Product</c:when>
                 <c:otherwise>Add new product</c:otherwise></c:choose></h5>
-            <form action="/admin/product/saveOrUpdate" method="post">
-
+            <form:form action="/admin/product/saveOrUpdate" modelAttribute="product" method="post">
 <%--                Ten sp--%>
                 <div class="row">
-                    <input type="hidden" name="product_id" value="${product.product_id}" />
-                    <div class="col-md-6">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <input type="hidden" name="id" value="${product.id}" />
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_name">Product Name</label>
-                            <input class="form-control" type="text" class="form-control" id="product_name" name="product_name" value="${product.product_name}" required />
+                            <input class="form-control" type="text" class="form-control" id="product_name" name="productName" value="${product.productName}" />
+                            <p style="color: red"><form:errors path="productName"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_price">Product Price</label>
-                            <input class="form-control" type="number" class="form-control" id="product_price" name="product_price" step="0.01" value="${product.product_price}" required />
+                            <input class="form-control" type="number" class="form-control" id="product_price" name="price" step="1" value="${product.price}"  />
+                            <p style="color: red"><form:errors path="price"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_quantity">Product Quantity</label>
-                            <input class="form-control" type="number" class="form-control" id="product_quantity" name="product_quantity" value="${product.product_quantity}" required />
+                            <input class="form-control" type="number" class="form-control" id="product_quantity" name="quantity" value="${product.quantity}"  />
+                            <p style="color: red"><form:errors path="quantity"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_sold">Product Sold</label>
-                            <input class="form-control" type="number" class="form-control" id="product_sold" name="product_sold" value="${product.product_sold}" />
+                            <input class="form-control" type="number" class="form-control" id="product_sold" name="sold" value="${product.sold}" />
+                            <p style="color: red"><form:errors path="sold"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_color">Product Color</label>
-                            <input class="form-control" type="text" class="form-control" id="product_color" name="product_color" value="${product.product_color}" />
+                            <input class="form-control" type="text" class="form-control" id="product_color" name="color" value="${product.color}" />
+                            <p style="color: red"><form:errors path="color"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_ram">RAM</label>
-                            <input class="form-control" type="text" class="form-control" id="product_ram" name="product_ram" value="${product.product_ram}" />
+                            <input class="form-control" type="text" class="form-control" id="product_ram" name="ram" value="${product.ram}" />
+                            <p style="color: red"><form:errors path="ram"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_description">Description</label>
-                            <input class="form-control" id="product_description" name="product_description" value="${product.product_description}">
+                            <input class="form-control" id="product_description" name="description" value="${product.description}">
+                            <p style="color: red"><form:errors path="description"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
                         <label for="brand">Brand</label>
-                        <select class="form-control" id="brand" name="brand.brand_id" required>
+                        <select class="form-control" id="brand" name="brand.id" required>
                             <option value="">-- Choose Brand --</option>
                             <c:forEach var="brand" items="${brands}">
-                                <option value="${brand.brand_id}" <c:if test="${brand.brand_id == product.brand.brand_id}">selected</c:if>>
-                                        ${brand.brand_name}
+                                <option value="${brand.id}" <c:if test="${brand.id == product.brand.id}">selected</c:if>>
+                                        ${brand.brandName}
                                 </option>
                             </c:forEach>
                         </select>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
                         <label for="category">Category</label>
-                        <select class="form-control" id="category" name="category.category_id" required>
+                        <select class="form-control" id="category" name="productCategory.id" required>
                             <option value="">-- Choose Category --</option>
                             <c:forEach var="category" items="${categories}">
-                                <option value="${category.category_id}"
-                                        <c:if test="${category.category_id == product.category.category_id}">selected</c:if>>
-                                        ${category.category_name}
+                                <option value="${category.id}" <c:if test="${category.id == product.productCategory.id}">selected</c:if>>
+                                        ${category.categoryName}
                                 </option>
                             </c:forEach>
                         </select>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="create_day">Create Day</label>
-                            <input class="form-control" type="date" class="form-control" id="create_day" name="create_day" value="${product.create_day}" />
+                            <input class="form-control" type="date" class="form-control" id="create_day" name="createdAt" value="${product.createdAt}" />
+                            <p style="color: red"><form:errors path="createdAt"></form:errors></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="update_day">Update Day</label>
-                            <input class="form-control" type="date" class="form-control" id="update_day" name="update_day" value="${product.update_day}" />
+                            <input class="form-control" type="date" class="form-control" id="update_day" name="updatedAt" value="${product.updatedAt}" />
+                            <p style="color: red"><form:errors path="updatedAt"></form:errors></p>
                         </div>
                     </div>
                     <div>
@@ -207,18 +214,21 @@
                             </c:choose>
                         </button>
                     </div>
-
                 </div>
-
-            </form>
+            </form:form>
         </div>
-        <br>
-
         <!-- Bảng product -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">Product Table</h6>
+                    <h5 class="mb-4">Product Table</h5>
+                    <form action="" method="GET" class="d-none d-md-flex col-4" style="background-color: gainsboro">
+                        <div class="input-group input-group-sm col-3">
+                            <input class="form-control border-0" type="text" placeholder="Search by name or color or ram" name="keyword" value="${keyword}" >
+                            <button type="submit" class="btn btn-group-lg"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                    <br>
                     <table class="table">
                         <thead>
                         <tr>
@@ -240,26 +250,41 @@
                         <tbody>
                         <c:forEach var="product" items="${products}">
                             <tr>
-                                <td>${product.product_id}</td>
-                                <td>${product.product_name}</td>
-                                <td>${product.product_price}</td>
-                                <td>${product.product_quantity}</td>
-                                <td>${product.product_sold}</td>
-                                <td>${product.product_color}</td>
-                                <td>${product.product_ram}</td>
-                                <td>${product.brand.brand_name}</td>
-                                <td>${product.category.category_name}</td>
-                                <td>${product.product_description}</td>
-                                <td>${product.create_day}</td>
-                                <td>${product.update_day}</td>
+                                <td>${product.id}</td>
+                                <td>${product.productName}</td>
+                                <td>${product.price}</td>
+                                <td>${product.quantity}</td>
+                                <td>${product.sold}</td>
+                                <td>${product.color}</td>
+                                <td>${product.ram}</td>
+                                <td>${product.brand.brandName}</td>
+                                <td>${product.productCategory.categoryName}</td>
+                                <td>${product.description}</td>
+                                <td>${product.createdAt}</td>
+                                <td>${product.updatedAt}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/admin/product/edit/${product.product_id}" class="btn btn-warning">Edit</a>
-                                    <a href="${pageContext.request.contextPath}/admin/product/delete/${product.product_id}" class="btn btn-danger" onclick="return confirm('Are you sure to delete?');">Del</a>
+                                    <a href="${pageContext.request.contextPath}/admin/product/edit/${product.id}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="${pageContext.request.contextPath}/admin/product/delete/${product.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete?');">Del</a>
                                 </td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                <a class="page-link" href="?pageNo=${currentPage - 1}&keyword=${keyword}">Previous</a>
+                            </li>
+                            <c:forEach var="i" begin="1" end="${totalPage}">
+                                <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                    <a class="page-link" href="?pageNo=${i}&keyword=${keyword}">${i}</a>
+                                </li>
+                            </c:forEach>
+                            <li class="page-item ${currentPage == totalPage ? 'disabled' : ''}">
+                                <a class="page-link" href="?pageNo=${currentPage + 1}&keyword=${keyword}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -274,7 +299,6 @@
                     <div class="col-12 col-sm-6 text-center text-sm-end">
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                         Designed By F Mobile
-                        </br>
                     </div>
                 </div>
             </div>
