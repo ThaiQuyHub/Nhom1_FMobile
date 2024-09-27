@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,7 +69,7 @@
     </style>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="searchHeader.jsp"/>
 
 <div class="container mt-5">
     <h1 class="mb-4"><i class="fas fa-shopping-cart fa-lg mr-2"></i>Checkout</h1>
@@ -93,14 +93,14 @@
                                 <td>${item.key.productName}</td>
                                 <td class="prices">$${item.key.price}</td>
                                 <td>${item.value}</td>
-                                <td>$ ${item.key.price * item.value}</td>
+                                <td><fmt:formatNumber value="${item.key.price * item.value}" type="number" maxFractionDigits="0" /></td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-between">
                         <h5>Total:</h5>
-                        <h5>$ ${totalAmount}</h5>
+                        <h5>$ <fmt:formatNumber value="${totalAmount}" type="number" maxFractionDigits="0" /></h5>
                     </div>
                 </div>
             </div>
@@ -141,7 +141,7 @@
                             </form:form>
                         </c:when>
                         <c:otherwise>
-                            <form:form modelAttribute="orderDTO" method="post" action="/checkout/not-login" onsubmit="return validateFormGuest(this);">
+                            <form:form modelAttribute="orderDTO" method="post" action="/checkout/checkout-not-login" onsubmit="return validateFormGuest(this);">
                                 <div class="col-md-6">
                                     <label class="lbform"><i class="fas fa-user mr-2"></i>Full Name</label>
                                     <form:input path="fullName" class="form-control"/>
@@ -167,9 +167,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="lbform"><i class="fas fa-credit-card mr-2"></i>Payment Method</label>
-                                    <form:select path="paymentId" class="form-select">
-                                        <form:options items="${payment}" itemValue="id" itemLabel="paymentName"/>
-                                    </form:select>
+                                    <select name="payment" class="form-control">
+                                        <c:forEach items="${payment}" var="payment">
+                                            <option value="${payment.id}">${payment.paymentName}</option>
+                                        </c:forEach>
+                                    </select>
                                     <button class="btn btn-primary btn-lg w-100 mt-4"><i class="fas fa-check mr-2"></i>Place Order</button>
                                 </div>
                             </form:form>
@@ -184,7 +186,7 @@
                     <h2 class="card-title"><i class="fas fa-receipt fa-lg mr-2"></i>Order Summary</h2>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
-                        <span>$ ${totalAmount}</span>
+                        <span>$ <fmt:formatNumber value="${totalAmount}" type="number" maxFractionDigits="0" /></span>
                     </div>
                     <c:if test="${user != null && discount != null}">
                         <div class="d-flex justify-content-between mb-2 text-danger">
@@ -201,7 +203,7 @@
                                     $ ${discountedAmount}
                                 </c:when>
                                 <c:otherwise>
-                                    $ ${totalAmount}
+                                    <fmt:formatNumber value="${totalAmount}" type="number" maxFractionDigits="0" />
                                 </c:otherwise>
                             </c:choose>
                         </h5>
@@ -217,7 +219,7 @@
     </div>
 </div>
 
-<jsp:include page="footer.jsp"/>
+<jsp:include page="searchFooter.jsp"/>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

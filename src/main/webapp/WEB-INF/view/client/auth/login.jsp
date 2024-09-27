@@ -226,12 +226,11 @@
             }
         });
 
-    });
+
     $("form").on("submit", function(e) {
         if (!$("#remember-me").is(":checked")) {
-
             $("input[name='remember-me']").prop("disabled", true);
-        }
+        }});
     });
 
     /**
@@ -267,7 +266,7 @@
     <%--                if (response.ok) {--%>
     <%--                    // Login successful--%>
     <%--                    sessionStorage.setItem('isLoggedIn', 'true'); // session bo nho tam thoi trinh duyet--%>
-    <%--                    window.location.href = '/client/homepage/';--%>
+    <%--                    window.location.href = '/client/homepage';--%>
     <%--                } else {--%>
     <%--                    // Login failed--%>
     <%--                    throw new Error('Login failed'); // loi xu ly ben duoi--%>

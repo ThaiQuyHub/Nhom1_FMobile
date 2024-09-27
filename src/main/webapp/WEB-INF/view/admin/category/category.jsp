@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="navbar-nav w-100">
-        <a href="/admin" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+        <a href="/admin/home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
         <a href="/admin/user" class="nav-item nav-link"><i class="fa fa-user me-2"></i>User</a>
         <a href="/admin/order" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Order</a>
         <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-tag me-2"></i>Product</a>

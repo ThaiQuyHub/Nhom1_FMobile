@@ -1,6 +1,7 @@
 package com.group1.fmobile.repository;
 
 import com.group1.fmobile.domain.Product;
+import com.group1.fmobile.domain.ProductCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,19 +29,23 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "LEFT JOIN p.productCategory c " +
             "LEFT JOIN p.brand b " +
             "WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :query, '%')) " +
-            "OR LOWER(c.categoryName) LIKE LOWER(CONCAT('%', :query, '%')) " +
             "OR LOWER(b.brandName) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Product> findProductsByQuery(@Param("query") String query);
 
     // Lấy 4 sản phẩm mới nhất dựa trên product_category_id
+    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 1 ORDER BY p.createdAt DESC")
     List<Product> findTop4ByProductCategoryIdOrderByCreatedAtDesc(Long productCategoryId);
 
     // Lấy 4 sản phẩm bán chạy nhất
+    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 1 ORDER BY p.sold DESC")
     List<Product> findTop4ByOrderBySoldDesc();
 
     // Lấy 4 table bán chạy nhất
-    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 3 ORDER BY p.price DESC")
+    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 3 ORDER BY p.sold DESC")
     List<Product> findAllTabletByOrderByPriceDesc(Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.productCategory.categoryName = :categoryName")
+    Page<Product> findByCategoryName(@Param("categoryName") String categoryName, Pageable pageable);
 
     //Search sản phẩm
     @Query("FROM Product p WHERE p.productName LIKE CONCAT('%', :name, '%') OR p.color LIKE CONCAT('%', :name, '%') OR p.ram LIKE CONCAT('%', :name, '%')")

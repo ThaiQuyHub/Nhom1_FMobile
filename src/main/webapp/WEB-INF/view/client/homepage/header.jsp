@@ -1,21 +1,23 @@
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Hieu
+  User: Quy
   Date: 13/09/2024
   Time: 09:24 am
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>FMOBILE</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,46 +30,11 @@
             display: none;
         }
 
-        .login_username {
-            color: #0d6efd;
-            font-size: 15px;
-        }
 
         body.dark-mode .login_username {
             color: #0d6efd;
         }
-        .popup {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .popup-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+
         form {
             display: flex;
             flex-direction: column;
@@ -75,36 +42,10 @@
         label, input {
             margin-bottom: 10px;
         }
-
-        .icon-user {
-            display: flex;
-            align-items: center;
-            background-color: #f8f9fa;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .login_username {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .btn-outline-danger {
-            padding: 2px 10px;
-            font-size: 0.875rem;
-        }
-
     </style>
-    <script>
-        // Kiểm tra trạng thái đăng nhập ngay khi trang bắt đầu tải
-        (function() {
-            var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            document.documentElement.classList.add(isLoggedIn ? 'logged-in' : 'logged-out');
-        })();
-    </script>
 </head>
 
-<body class="">
+<body>
 <div id="notification" style="
     display: none;
     position: fixed;
@@ -132,7 +73,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse ml-5" id="navbarNav">
+        <div class="collapse navbar-collapse ml-5" id="navbarNav" style="width: 850px">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -174,11 +115,16 @@
                     </svg>
                     <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form class="d-flex ml-5 pt-2">
-                    <div class="search-icon">
+                <form class="d-flex ml-5 mb-2">
+                    <div class="search-icon" style="width: 330px">
                         <input class="form-control search_nav" style="line-height: 20px; padding-top: 5px" type="search" placeholder="Search"
-                               aria-label="Search" style="font-size: 1.5rem" />
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                               aria-label="Search"
+                               style="font-size: 1.5rem;
+                                        height: 40px;
+                                        padding-top: 5px;
+                                        border-radius: 5px;"/>
+                        <svg style="right: 105px;
+                                    top: 60%;" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -188,38 +134,33 @@
                 </form>
             </ul>
         </div>
-        <div class="icon-cart mx-3">
+        <div class="icon-cart" style="margin-left: 20px">
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
             </svg>
             <span>0</span>
         </div>
-        <div class="navbar-nav ms-auto">
-            <!-- Nút "Login" và "Register" -->
-            <a href="javascript:void(0);" id="guestButtons" class="btn btn-outline-primary me-2 btn_login" style="border: none; font-size: 15px;" onclick="openLoginPage()">Login</a>
-            <a href="javascript:void(0);" id="guestButtons1" class="btn btn-outline-primary me-2 btn_login" style="border: none; font-size: 15px;" onclick="openRegisterPage()">Register</a>
-
-            <!-- Phần thông tin người dùng (hiển thị khi đã đăng nhập) -->
-            <div id="userInfo" style="display: none;">
-                <div class="d-flex align-items-center">
-                    <div class="icon-user mx-3">
-                        <a href="/client/homepage/userpage" class="me-2">
-                            <img class="logo-nav rounded-circle" style="width: 40px; height: 40px; object-fit: cover; background: #007bff;" src="/client/img/avatar.jpg" alt="user" />
-                        </a>
-                        <span style="color: #0d6efd" class="login_username me-3"><%=request.getUserPrincipal().getName().split("@")[0]%></span>
-                        <form method="post" action="/logout" class="m-0">
-                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                            <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout()">Logout</button>
-                        </form>
-                    </div>
+        <div class="navbar-nav" style="margin-left: 15px">
+            <security:authorize access="isAuthenticated()">
+                <a href="/client/homepage/userpage" class="me-2">
+                    <img class="logo-nav rounded-circle" style="width: 40px; height: 40px; object-fit: cover; background: #007bff;" src="/client/img/avatar.jpg" alt="user" />
+                </a>
+                <div class="mt-3" style="font-size: 1.5rem;width: 150px">
+                    <security:authentication var="userEmail" property="principal.username" />
+                    <c:set var="username" value="${fn:substringBefore(userEmail, '@')}" />
+                        ${fullName}
                 </div>
-            </div>
+                <form method="post" action="/logout" class="mt-3">
+                    <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout()">Logout</button>
+                </form>
+            </security:authorize>
         </div>
     </div>
-    <div class="form-check form-switch dark-mode-toggle mx-5">
+    <div class="form-check form-switch dark-mode-toggle mx-3" style="margin-top: 15px">
         <input class="form-check-input" type="checkbox" id="darkModeToggle" />
-        <label class="form-check-label" style="width: 100px" for="darkModeToggle">Dark Mode</label>
+        <label class="form-check-label" style="width: 100px;" for="darkModeToggle">Dark Mode</label>
+    </div>
     </div>
     </div>
 </nav>
@@ -271,6 +212,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Hàm để kiểm tra trạng thái đăng nhập

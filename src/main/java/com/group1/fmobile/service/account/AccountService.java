@@ -73,7 +73,7 @@ public class AccountService {
             roles.add(userRole);
             user.setRoles(roles);
 
-            userService.saveUser(user);
+            userService.saveAccount(user);
 
             String otp = otpService.generateOTP();
             otpService.saveOtp(user.getEmail(), otp);
@@ -94,7 +94,7 @@ public class AccountService {
             if (otpService.verifyOtp(email, otp)) {
                 User user = userService.findByEmail(email);
                 user.setEnabled(true);
-                userService.saveUser(user);
+                userService.saveAccount(user);
                 otpService.removeOtp(email);
                 return true;
             }
@@ -150,7 +150,7 @@ public class AccountService {
                 User user = userService.findByEmail(email);
                 if (user != null) {
                     user.setPassword(passwordEncoder.encode(newPassword));
-                    userService.saveUser(user);
+                    userService.saveAccount(user);
                     otpService.removeOtp(email);
                     return true;
                 }

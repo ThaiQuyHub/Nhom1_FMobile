@@ -27,7 +27,7 @@
 <!-- Nav -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a href="#">
+        <a href="/">
             <img class="logo-nav" src="/images/product/FMobileLogo.png" alt="" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -42,7 +42,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
                     </svg>
-                    <a class="nav-link menu" aria-current="page" href="#">Home</a>
+                    <a class="nav-link menu" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -52,11 +52,11 @@
                               d="M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4Zm12 12V5H7v11h10Zm-5 1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
                               clip-rule="evenodd" />
                     </svg>
-                    <a class="nav-link menu" href="#">Mobile</a>
+                    <a class="nav-link menu" href="/guest/search?query=mobile">Mobile</a>
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-laptop"></i>
-                    <a class="nav-link menu" href="#">Laptop</a>
+                    <a class="nav-link menu" href="/guest/search?query=laptop">Laptop</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -64,7 +64,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M11 18h2M5.875 3h12.25c.483 0 .875.448.875 1v16c0 .552-.392 1-.875 1H5.875C5.392 21 5 20.552 5 20V4c0-.552.392-1 .875-1Z" />
                     </svg>
-                    <a class="nav-link menu" href="#">Tablet</a>
+                    <a class="nav-link menu" href="/guest/search?query=tablet">Tablet</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -74,9 +74,9 @@
                               d="M12 5a7 7 0 0 0-7 7v1.17c.313-.11.65-.17 1-.17h2a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H6a3 3 0 0 1-3-3v-6a9 9 0 0 1 18 0v6a3 3 0 0 1-3 3h-2a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h2c.35 0 .687.06 1 .17V12a7 7 0 0 0-7-7Z"
                               clip-rule="evenodd" />
                     </svg>
-                    <a class="nav-link menu" href="#">Accessories</a>
+                    <a class="nav-link menu" href="/guest/search?query=accessories">Accessories</a>
                 </li>
-                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/search" method="GET">
+                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/guest/search" method="GET">
                     <div class="search-icon">
                         <input class="form-control search_nav" type="search" name = "query" placeholder="Search"
                                aria-label="Search"/>

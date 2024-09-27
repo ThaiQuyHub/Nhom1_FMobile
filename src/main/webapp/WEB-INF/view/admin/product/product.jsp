@@ -168,7 +168,7 @@
 
                     <div class="form-group col-md-3">
                         <label for="brand">Brand</label>
-                        <select class="form-control" id="brand" name="brand.id" >
+                        <select class="form-control" id="brand" name="brand.id" required>
                             <option value="">-- Choose Brand --</option>
                             <c:forEach var="brand" items="${brands}">
                                 <option value="${brand.id}" <c:if test="${brand.id == product.brand.id}">selected</c:if>>
@@ -180,7 +180,7 @@
 
                     <div class="form-group col-md-3">
                         <label for="category">Category</label>
-                        <select class="form-control" id="category" name="productCategory.id">
+                        <select class="form-control" id="category" name="productCategory.id" required>
                             <option value="">-- Choose Category --</option>
                             <c:forEach var="category" items="${categories}">
                                 <option value="${category.id}" <c:if test="${category.id == product.productCategory.id}">selected</c:if>>

@@ -22,12 +22,11 @@ closeCart.addEventListener('click', () => {
 
 // Hàm khởi tạo ứng dụng
 const initApp = () => {
+    // Load giỏ hàng từ session
+    loadCartFromSession();
 
     // Lấy dữ liệu sản phẩm từ DOM
     fetchProducts();
-
-    // Load giỏ hàng từ session
-    loadCartFromSession();
 
     // Thêm sự kiện click cho các nút "Add To Cart"
     addEventToButtons();
@@ -61,6 +60,7 @@ const loadCartFromSession = () => {
     const savedCart = sessionStorage.getItem('cart');
     if (savedCart) {
         cart = JSON.parse(savedCart);
+        updateCartDisplay(cart.reduce((sum, item) => sum + item.quantity, 0));
     }
 }
 
@@ -105,18 +105,6 @@ const getProductsFromDOM = (selector) => {
         image: element.querySelector('img').src
     }));
 }
-
-
-
-// const addEventToButtons = () => {
-//     const addToCartButtons = document.querySelectorAll('.addCart');
-//     addToCartButtons.forEach(button => {
-//         button.addEventListener('click', () => {
-//             const productId = button.closest('.item').getAttribute('data-id');
-//             addToCart(productId);
-//         });
-//     });
-// }
 
 const addEventToButtons = () => {
     // Sử dụng event delegation
@@ -165,7 +153,7 @@ const updateCartHTML = () => {
             newItem.classList.add('item');
             newItem.dataset.id = item.id;
 
-            let info = findProductById(item.id);
+            let info = findProductById(item.id) || item;
             if (info) {
                 let itemTotal = info.price * item.quantity;
                 totalAmount += itemTotal;

@@ -32,8 +32,12 @@ public class SecurityConfig {
      * @return Đối tượng CustomSuccessHandler để xử lý khi đăng nhập thành công
      */
 
-
-    @Bean
+//Lỗi khi chạy chương trình báo "The bean 'customSuccessHandler',
+// defined in class path resource [com/group1/fmobile/config/SecurityConfig.class],could not be registered.
+// A bean with that name has already been defined in file
+// [D:\Local Reponsive\Nhom1_FMobile\target\classes\com\group1\fmobile\config\CustomSuccessHandler.class] and overriding is disabled."
+// nên Hieu comment lại để chạy tạm. Của ai thì khi merge mở ra.
+    @Bean (name = "customSuccessHandlerBean")
     public AuthenticationSuccessHandler customSuccessHandler() {
         return new CustomSuccessHandler();
     }
@@ -68,7 +72,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
-                        .requestMatchers("/", "/login", "/register", "/client/**", "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**","/checkout","/checkout-not-login").permitAll()
+                        .requestMatchers("/", "/login", "/register",  "/css/**", "/js/**", "/images/**", "/verify", "/reset-password", "/forgotpassword","/home","/guest/**","/checkout","/checkout-not-login","/client/homepage").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -157,11 +161,11 @@ public class SecurityConfig {
      * @throws Exception Nếu có lỗi xảy ra trong quá trình cấu hình
      */
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(
-//            HttpSecurity http,
-//            DaoAuthenticationProvider authenticationProvider) throws Exception {
-//        return http.getSharedObject(AuthenticationManager.class);
-//    }
+    @Bean
+    public AuthenticationManager authenticationManager(
+            HttpSecurity http,
+            DaoAuthenticationProvider authenticationProvider) throws Exception {
+        return http.getSharedObject(AuthenticationManager.class);
+    }
 
 }
