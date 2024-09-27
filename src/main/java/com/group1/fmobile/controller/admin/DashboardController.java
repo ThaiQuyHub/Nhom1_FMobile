@@ -22,16 +22,16 @@ public class DashboardController {
         this.userService = userService;
     }
 
-    @GetMapping("/home")
-    public String getDashboardPage(Model model){
-        Long totalUsers = userService.countTotalUsers();
-        Long totalOrders = ordersService.countTotalOrder();
-        Double totalRevenue = ordersService.countTotalRevenue();
-
-        model.addAttribute("totalUsers", totalUsers);
-        model.addAttribute("totalOrders", totalOrders);
-        model.addAttribute("totalRevene", totalRevenue);
-        return "admin/dashboard/dashboard";
-    }
+//    @GetMapping("/home")
+//    public String getDashboardPage(Model model){
+//        //Long totalUsers = userService.countTotalUsers();
+//        Long totalOrders = ordersService.countTotalOrder();
+//        Double totalRevenue = ordersService.countTotalRevenue();
+//
+//        model.addAttribute("totalUsers", totalUsers);
+//        model.addAttribute("totalOrders", totalOrders);
+//        model.addAttribute("totalRevene", totalRevenue);
+//        return "admin/dashboard/dashboard";
+//    }
 
 }

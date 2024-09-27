@@ -1,9 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%--
+  Created by IntelliJ IDEA.
+  User: Quy
+  Date: 13/09/2024
+  Time: 09:24 am
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,24 +30,9 @@
             display: none;
         }
 
-        .login_username {
-            color: #0d6efd;
-            font-size: 15px;
-        }
 
         body.dark-mode .login_username {
             color: #0d6efd;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
         }
 
         form {
@@ -47,27 +42,9 @@
         label, input {
             margin-bottom: 10px;
         }
-
-        .icon-user {
-            display: flex;
-            align-items: center;
-            background-color: #f8f9fa;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .login_username {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .btn-outline-danger {
-            padding: 2px 10px;
-            font-size: 0.875rem;
-        }
-
     </style>
 </head>
+
 <body>
 <div id="notification" style="
     display: none;
@@ -169,14 +146,13 @@
                 <a href="/client/homepage/userpage" class="me-2">
                     <img class="logo-nav rounded-circle" style="width: 40px; height: 40px; object-fit: cover; background: #007bff;" src="/client/img/avatar.jpg" alt="user" />
                 </a>
-                <div class="mt-3" style="font-size: 1.5rem; width: 150px">
+                <div class="mt-3" style="font-size: 1.5rem;width: 150px">
                     <security:authentication var="userEmail" property="principal.username" />
                     <c:set var="username" value="${fn:substringBefore(userEmail, '@')}" />
                         ${fullName}
                 </div>
-                <form id="logoutForm" method="post" action="/logout" class="mt-2">
-                    <security:csrfInput />
-                    <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout(event)">Logout</button>
+                <form method="post" action="/logout" class="mt-3">
+                    <button type="submit" style="width: 70px; height: 30px" class="btn btn-outline-primary" onclick="logout()">Logout</button>
                 </form>
             </security:authorize>
             <security:authorize access="!isAuthenticated()">
@@ -196,7 +172,9 @@
         <label class="form-check-label" style="width: 100px;" for="darkModeToggle">Dark Mode</label>
     </div>
     </div>
+    </div>
 </nav>
+
 <!-- Header -->
 <div class="container">
     <div class="row header">
@@ -244,136 +222,75 @@
         </div>
     </div>
 </div>
-<%--NEW MOBILE--%>
-<div class="container">
-    <header>
-        <div class="title">NEW MOBILE</div>
-    </header>
-    <div class="product newMobile">
-        <c:forEach items="${products}" var="newMobile"> <%-- 'products' trùng với ProductController--%>
-            <div data-id = ${newMobile.id} class="item">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a href="${pageContext.request.contextPath}/client/productsDetail/${newMobile.id}"> <!-- Liên kết hình ảnh đến trang chi tiết sản phẩm -->
-                                <img src="${newMobile.images[0].url}" alt="">
-                            </a>
-                        </div>
-                        <div class="col-md-6 p-4">
-                            <h2>${newMobile.productName}</h2>
-                            <div class="price">$${newMobile.price}</div>
-                            <div class="detail">
-                                <p>Color: ${newMobile.color}</p>
-                                <p>RAM: ${newMobile.ram}</p>
-<%--                                <p>Quantity: ${newMobile.quantity}</p>--%>
-<%--                                <p>Sold: ${newMobile.sold}</p>--%>
-<%--                                <p><small class="text-muted">Created:--%>
-<%--                                    <fmt:parseDate value="${newMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                                </small></p>--%>
-                            </div>
-                            <div class="row">
-                                <button class="buyNow bg-primary">Buy Now</button>
-                                <button class="addCart bg-warning">Add To Cart</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-</div>
 
-<%--BEST-SELLER--%>
-<div class="container">
-    <header>
-        <div class="title">BEST-SELLER</div>
-    </header>
-    <div class="listProduct">
-        <c:forEach items="${bestSellingProducts}" var="bestSellingMobile">
-            <div data-id = ${bestSellingMobile.id} class="item">
-                <a href="${pageContext.request.contextPath}/client/productsDetail/${bestSellingMobile.id}"> <%-- click vào sản phẩm chi tiết--%>
-                    <img src="${bestSellingMobile.images[0].url}" alt="">
-                </a>
-                <h2>${bestSellingMobile.productName}</h2>
-                <div class="price">$${bestSellingMobile.price}</div>
-                <div class="detail">
-                    <p>Color: ${bestSellingMobile.color}</p>
-                    <p>RAM: ${bestSellingMobile.ram}</p>
-<%--                    <p>Quantity: ${bestSellingMobile.quantity}</p>--%>
-<%--                    <p>Sold: ${bestSellingMobile.sold}</p>--%>
-<%--                    <p><small class="text-muted">Created:--%>
-<%--                        <fmt:parseDate value="${bestSellingMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                        <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                    </small></p>--%>
-                </div>
-                <div class="row">
-                    <button href="#" class="buyNow bg-primary">Buy Now</button>
-                    <button class="addCart bg-warning">Add To Cart</button>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-</div>
-
-<%--TABLET--%>
-<div class="container">
-    <header>
-        <div class="title">TABLET</div>
-    </header>
-    <div class="product tablet">
-        <c:forEach items="${tabletProducts}" var="tablet">
-            <div data-id= ${tablet.id} class="item">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <a href="${pageContext.request.contextPath}/client/productsDetail/${tablet.id}"> <%-- click vào sản phẩm chi tiết--%>
-                                <img src="${tablet.images[0].url}" alt="">
-                            </a>
-                        </div>
-                        <div class="col-md-6 p-4">
-                            <h2>${tablet.productName}</h2>
-                            <div class="price">$${tablet.price}</div>
-                            <div class="detail">
-                                <p>Color: ${tablet.color}</p>
-
-<%--                                <p>Quantity: ${tablet.quantity}</p>--%>
-<%--                                <p>Sold: ${tablet.sold}</p>--%>
-<%--                                <p><small>Created:--%>
-<%--                                    <fmt:parseDate value="${tablet.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                                </small></p>--%>
-                            </div>
-                            <div class="row">
-                                <button class="buyNow bg-primary">Buy Now</button>
-                                <button class="addCart bg-warning">Add To Cart</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-</div>
-
-
-<jsp:include page="footer.jsp"/>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    function logout(event) {
-        event.preventDefault();
-        fetch('/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams(new FormData(document.getElementById('logoutForm'))),
-        }).then(() => {
-            window.location.href = '/client/homepage';  // Redirect to homepage after logout
-        }).catch(error => {
-            console.error('Logout error:', error);
-        });
+    // Hàm để kiểm tra trạng thái đăng nhập
+    function checkLoginState() {
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        updateUI(isLoggedIn);
     }
+
+    // Hàm cập nhật giao diện người dùng
+    function updateUI(isLoggedIn) {
+        const guestButtons = document.getElementById('guestButtons');
+        const guestButtons1 = document.getElementById('guestButtons1');
+        const userInfo = document.getElementById('userInfo');
+
+        if (guestButtons) guestButtons.style.display = isLoggedIn ? 'none' : 'inline-block';
+        if (guestButtons1) guestButtons1.style.display = isLoggedIn ? 'none' : 'inline-block';
+        if (userInfo) userInfo.style.display = isLoggedIn ? 'flex' : 'none';
+    }
+
+    // Hàm xử lý đăng nhập
+    function handleLogin(event) {
+        event.preventDefault();
+        // Ở đây bạn sẽ thêm logic xác thực đăng nhập thực tế
+        sessionStorage.setItem('isLoggedIn', 'true');
+        updateUI(true);
+        window.location.href = '/index';
+    }
+
+    // Hàm xử lý đăng ký
+    function handleRegister(event) {
+        event.preventDefault();
+        // Ở đây bạn sẽ thêm logic đăng ký thực tế
+        sessionStorage.setItem('isLoggedIn', 'true');
+        updateUI(true);
+        window.location.href = '/index';
+    }
+
+    // Hàm xử lý đăng xuất
+    function handleLogout(event) {
+        event.preventDefault();
+        sessionStorage.removeItem('isLoggedIn');
+        updateUI(false);
+        window.location.href = '/';
+    }
+
+    // Thêm các event listener khi DOM đã sẵn sàng
+    document.addEventListener('DOMContentLoaded', function() {
+        checkLoginState();
+
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) loginForm.addEventListener('submit', handleLogin);
+
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) registerForm.addEventListener('submit', handleRegister);
+
+        const logoutButton = document.querySelector('form[action="/logout"] button');
+        if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+
+        const loginLink = document.getElementById('guestButtons');
+        if (loginLink) loginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/login';
+        });
+
+        const registerLink = document.getElementById('guestButtons1');
+        if (registerLink) registerLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/register';
+        });
+    });
 </script>
-</body>
-</html>
