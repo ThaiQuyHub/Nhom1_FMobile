@@ -39,8 +39,6 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-
-
     /**
      * Tìm kiếm người dùng bằng email.
      *

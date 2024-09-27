@@ -229,9 +229,6 @@
 
     $("form").on("submit", function(e) {
         if (!$("#remember-me").is(":checked")) {
-
-
-          
             $("input[name='remember-me']").prop("disabled", true);
         }
     });

@@ -693,7 +693,7 @@ body.showCart .cartTab {
 
 .search-icon {
     position: relative;
-    width: 300px;
+    width: 330px;
 }
 
 .search_nav {
@@ -706,8 +706,8 @@ body.showCart .cartTab {
 
 .search-icon svg {
     position: absolute;
-    right: 10px;
-    top: 50%;
+    right: 95px;
+    top: 65%;
     transform: translateY(-50%);
     color: #666;
     cursor: pointer;
