@@ -1,8 +1,8 @@
-<%--
+%--
   Created by IntelliJ IDEA.
-  User: Admin
-  Date: 16/09/2024
-  Time: 3:09 PM
+  User: Hieu
+  Date: 13/09/2024
+  Time: 09:24 am
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -20,7 +20,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="">
@@ -100,7 +99,7 @@
         <div class="icon-user">
             <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />
         </div>
-        <button class="btn signin_btn" style="font-size: 1.3rem">
+        <button class="btn signin_btn" style="font-size: 1.3rem" onclick="window.location.href='/login'">
             Log In
         </button>
         <button class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">
@@ -112,51 +111,5 @@
         </div>
     </div>
 </nav>
-
+<div style="padding-top: 50px"></div>
 <!-- Header -->
-<div class="container">
-    <div class="row header">
-        <div class="col-md-6 header_baner">
-            <h1 style="font-size: 6rem">
-                Let's go to store. You have what you need.
-            </h1>
-            <a class="btn btn_header btn-primary">Get Started</a>
-        </div>
-        <!-- Anh truoc ngang -->
-        <div id="bannerCarousel" class="carousel slide col-md-6" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="/images/product/galaxy z fold 4.jpg" class="d-block w-100 img-fluid" alt="Galaxy Z Fold 4" />
-                </div>
-                <div class="carousel-item">
-                    <img src="/images/product/iphone-16-pro-fi.webp" class="d-block w-100 img-fluid" alt="Iphone 16" />
-                </div>
-                <div class="carousel-item">
-                    <img src="/images/product/huaweinew.png" class="d-block w-100 img-fluid" alt="Huawei" />
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
-                    data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
-                    data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-
-            <!-- Indicators -->
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
-            </div>
-        </div>
-    </div>
-</div>

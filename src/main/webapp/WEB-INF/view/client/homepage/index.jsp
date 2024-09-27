@@ -245,7 +245,6 @@
     </div>
 </div>
 <%--NEW MOBILE--%>
-
 <div class="container">
     <header>
         <div class="title">NEW MOBILE</div>
@@ -256,7 +255,9 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="${newMobile.images[0].url}" alt="">
+                            <a href="${pageContext.request.contextPath}/client/productsDetail/${newMobile.id}"> <!-- Liên kết hình ảnh đến trang chi tiết sản phẩm -->
+                                <img src="${newMobile.images[0].url}" alt="">
+                            </a>
                         </div>
                         <div class="col-md-6 p-4">
                             <h2>${newMobile.productName}</h2>
@@ -264,12 +265,12 @@
                             <div class="detail">
                                 <p>Color: ${newMobile.color}</p>
                                 <p>RAM: ${newMobile.ram}</p>
-                                <p>Quantity: ${newMobile.quantity}</p>
-                                <p>Sold: ${newMobile.sold}</p>
-                                <p><small class="text-muted">Created:
-                                    <fmt:parseDate value="${newMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
-                                </small></p>
+<%--                                <p>Quantity: ${newMobile.quantity}</p>--%>
+<%--                                <p>Sold: ${newMobile.sold}</p>--%>
+<%--                                <p><small class="text-muted">Created:--%>
+<%--                                    <fmt:parseDate value="${newMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
+<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
+<%--                                </small></p>--%>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>
@@ -283,26 +284,28 @@
     </div>
 </div>
 
-<%--BEST-SELLING--%>
+<%--BEST-SELLER--%>
 <div class="container">
     <header>
-        <div class="title">BEST-SELLING</div>
+        <div class="title">BEST-SELLER</div>
     </header>
     <div class="listProduct">
         <c:forEach items="${bestSellingProducts}" var="bestSellingMobile">
             <div data-id = ${bestSellingMobile.id} class="item">
-                <img src="${bestSellingMobile.images[0].url}" alt="">
+                <a href="${pageContext.request.contextPath}/client/productsDetail/${bestSellingMobile.id}"> <%-- click vào sản phẩm chi tiết--%>
+                    <img src="${bestSellingMobile.images[0].url}" alt="">
+                </a>
                 <h2>${bestSellingMobile.productName}</h2>
                 <div class="price">$${bestSellingMobile.price}</div>
                 <div class="detail">
                     <p>Color: ${bestSellingMobile.color}</p>
                     <p>RAM: ${bestSellingMobile.ram}</p>
-                    <p>Quantity: ${bestSellingMobile.quantity}</p>
-                    <p>Sold: ${bestSellingMobile.sold}</p>
-                    <p><small class="text-muted">Created:
-                        <fmt:parseDate value="${bestSellingMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-                        <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
-                    </small></p>
+<%--                    <p>Quantity: ${bestSellingMobile.quantity}</p>--%>
+<%--                    <p>Sold: ${bestSellingMobile.sold}</p>--%>
+<%--                    <p><small class="text-muted">Created:--%>
+<%--                        <fmt:parseDate value="${bestSellingMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
+<%--                        <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
+<%--                    </small></p>--%>
                 </div>
                 <div class="row">
                     <button href="#" class="buyNow bg-primary">Buy Now</button>
@@ -324,7 +327,9 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="${tablet.images[0].url}" alt="">
+                            <a href="${pageContext.request.contextPath}/client/productsDetail/${tablet.id}"> <%-- click vào sản phẩm chi tiết--%>
+                                <img src="${tablet.images[0].url}" alt="">
+                            </a>
                         </div>
                         <div class="col-md-6 p-4">
                             <h2>${tablet.productName}</h2>
@@ -332,12 +337,12 @@
                             <div class="detail">
                                 <p>Color: ${tablet.color}</p>
 
-                                <p>Quantity: ${tablet.quantity}</p>
-                                <p>Sold: ${tablet.sold}</p>
-                                <p><small>Created:
-                                    <fmt:parseDate value="${tablet.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
-                                </small></p>
+<%--                                <p>Quantity: ${tablet.quantity}</p>--%>
+<%--                                <p>Sold: ${tablet.sold}</p>--%>
+<%--                                <p><small>Created:--%>
+<%--                                    <fmt:parseDate value="${tablet.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
+<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
+<%--                                </small></p>--%>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>

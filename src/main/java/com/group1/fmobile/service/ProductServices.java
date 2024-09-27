@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,11 @@ public class ProductServices {
         return categoryCounts;
     }
 
+    public Page<Product> findByCategory(String categoryName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findByCategoryName(categoryName, pageable);
+    }
+
     public String determineViewName(Set<String> categories) {
         if (categories.size() != 1) {
             return "guest/searchPage/allProduct";
@@ -76,10 +83,10 @@ public class ProductServices {
         }
     }
 
-    public List<Product> filterProduct(String brands, String minPriceStr, String maxPriceStr, String rams) {
+    public List<Product> filterProduct(String brands, String minPriceStr, String maxPriceStr, String rams, int productCategoryId) {
 
         // Tạo query ban đầu
-        String query = "SELECT p FROM Product p WHERE 1=1";
+        String query = "SELECT p FROM Product p WHERE p.productCategory.id = :productCategoryId";
 
         // Xử lý brands
         List<String> brandList = null;
@@ -129,6 +136,9 @@ public class ProductServices {
 
         // Sau khi hoàn tất việc xây dựng query, tạo TypedQuery
         TypedQuery<Product> typedQuery = entityManager.createQuery(query, Product.class);
+
+        // Gán các tham số vào query
+        typedQuery.setParameter("productCategoryId", productCategoryId);
 
         // Gán các tham số vào query
         if (brandList != null) {

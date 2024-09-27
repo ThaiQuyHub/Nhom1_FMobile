@@ -30,15 +30,11 @@ import java.util.Map;
  *
  * @author [Ha Van Dat]
  */
-
+@Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
+
     @Autowired
     private UserService userService;
-
-
-
-
-
 
     /**
      * Xác định URL đích chuyển hướng dựa trên vai trò của người dùng.
@@ -51,10 +47,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         // Ánh xạ giữa vai trò và URL đích
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
-
-        roleTargetUrlMap.put("ROLE_ADMIN", "/admin/home");
         roleTargetUrlMap.put("ROLE_USER", "/client/homepage");
-
+        roleTargetUrlMap.put("ROLE_ADMIN", "/admin/home");
 
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {

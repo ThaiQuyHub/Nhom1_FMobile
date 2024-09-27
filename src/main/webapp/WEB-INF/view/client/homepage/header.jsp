@@ -1,7 +1,7 @@
 
 <%--
   Created by IntelliJ IDEA.
-  User: Hieu
+  User: Quy
   Date: 13/09/2024
   Time: 09:24 am
   To change this template use File | Settings | File Templates.
@@ -11,7 +11,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -161,6 +162,7 @@
         <label class="form-check-label" style="width: 100px;" for="darkModeToggle">Dark Mode</label>
     </div>
     </div>
+    </div>
 </nav>
 
 <!-- Header -->
@@ -210,6 +212,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Hàm để kiểm tra trạng thái đăng nhập

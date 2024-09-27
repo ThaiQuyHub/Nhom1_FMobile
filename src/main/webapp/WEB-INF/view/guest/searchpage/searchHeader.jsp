@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Hieu
-  Date: 13/09/2024
-  Time: 09:24 am
+  User: Admin
+  Date: 16/09/2024
+  Time: 3:09 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -20,13 +20,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="">
 <!-- Nav -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a href="#">
+        <a href="/">
             <img class="logo-nav" src="/images/product/FMobileLogo.png" alt="" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -41,7 +42,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
                     </svg>
-                    <a class="nav-link menu" aria-current="page" href="#">Home</a>
+                    <a class="nav-link menu" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -51,11 +52,11 @@
                               d="M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4Zm12 12V5H7v11h10Zm-5 1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
                               clip-rule="evenodd" />
                     </svg>
-                    <a class="nav-link menu" href="#">Mobile</a>
+                    <a class="nav-link menu" href="/guest/search?query=mobile">Mobile</a>
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-laptop"></i>
-                    <a class="nav-link menu" href="#">Laptop</a>
+                    <a class="nav-link menu" href="/guest/search?query=laptop">Laptop</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -63,7 +64,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M11 18h2M5.875 3h12.25c.483 0 .875.448.875 1v16c0 .552-.392 1-.875 1H5.875C5.392 21 5 20.552 5 20V4c0-.552.392-1 .875-1Z" />
                     </svg>
-                    <a class="nav-link menu" href="#">Tablet</a>
+                    <a class="nav-link menu" href="/guest/search?query=tablet">Tablet</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -73,9 +74,9 @@
                               d="M12 5a7 7 0 0 0-7 7v1.17c.313-.11.65-.17 1-.17h2a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H6a3 3 0 0 1-3-3v-6a9 9 0 0 1 18 0v6a3 3 0 0 1-3 3h-2a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h2c.35 0 .687.06 1 .17V12a7 7 0 0 0-7-7Z"
                               clip-rule="evenodd" />
                     </svg>
-                    <a class="nav-link menu" href="#">Accessories</a>
+                    <a class="nav-link menu" href="/guest/search?query=acccessories">Accessories</a>
                 </li>
-                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/search" method="GET">
+                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/guest/search" method="GET">
                     <div class="search-icon">
                         <input class="form-control search_nav" type="search" name = "query" placeholder="Search"
                                aria-label="Search"/>
@@ -99,17 +100,64 @@
         <div class="icon-user">
             <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />
         </div>
-        <button class="btn signin_btn" style="font-size: 1.3rem" onclick="window.location.href='/login'">
+        <a href="/login" class="btn signin_btn" style="font-size: 1.3rem">
             Log In
-        </button>
-        <button class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">
+        </a>
+        <a href="/register" class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">
             Register
-        </button>
+        </a>
+
         <div class="form-check form-switch dark-mode-toggle mx-5">
             <input class="form-check-input" type="checkbox" id="darkModeToggle" />
             <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
         </div>
     </div>
 </nav>
-<div style="padding-top: 50px"></div>
+
 <!-- Header -->
+<div class="container">
+    <div class="row header">
+        <div class="col-md-6 header_baner">
+            <h1 style="font-size: 6rem">
+                Let's go to store. You have what you need.
+            </h1>
+            <a class="btn btn_header btn-primary">Get Started</a>
+        </div>
+        <!-- Anh truoc ngang -->
+        <div id="bannerCarousel" class="carousel slide col-md-6" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/images/product/galaxy z fold 4.jpg" class="d-block w-100 img-fluid" alt="Galaxy Z Fold 4" />
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/product/iphone-16-pro-fi.webp" class="d-block w-100 img-fluid" alt="Iphone 16" />
+                </div>
+                <div class="carousel-item">
+                    <img src="/images/product/huaweinew.png" class="d-block w-100 img-fluid" alt="Huawei" />
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+            </div>
+        </div>
+    </div>
+</div>

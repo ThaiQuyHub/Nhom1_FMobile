@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <jsp:include page="header.jsp" />
 
 <div class="categories">
@@ -12,7 +13,7 @@
         <div class="col-3">
             <div class="filter-container">
                 <!-- Form lọc sản phẩm -->
-                <form id="searchForm" action="/filter" method="get">
+                <form id="searchForm" action="/client/filter" method="get">
                     <!-- Lọc theo Brand -->
                     <div class="row">
                         <section class="mb-4">
@@ -125,7 +126,10 @@
                         <c:forEach items="${allProducts}" var="product">
                             <div data-id="${product.id}" class="item">
                                 <div style="width: 50%; height: 300px; overflow: hidden;">
-                                    <img style="width: 100%; height: 100%; object-fit: cover;" src="${product.images[0].url}" alt="${product.productName}">
+                                    <!-- Liên kết hình ảnh đến trang chi tiết sản phẩm -->
+                                    <a href="${pageContext.request.contextPath}/client/productsDetail/${product.id}">
+                                        <img style="width: 100%; height: 100%; object-fit: cover;" src="${product.images[0].url}" alt="${product.productName}">
+                                    </a>
                                 </div>
                                 <div class="item-info">
                                     <h2>${product.productName}</h2>
@@ -134,12 +138,6 @@
                                         <p>Brand: ${product.brand.brandName}</p>
                                         <p>RAM: ${product.ram}</p>
                                         <p>Color: ${product.color}</p>
-                                        <p>Quantity: ${product.quantity}</p>
-                                        <p>Sold: ${product.sold}</p>
-                                        <p><small class="text-muted">Created:
-                                            <fmt:parseDate value="${product.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-                                            <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />
-                                        </small></p>
                                     </div>
                                     <div class="row">
                                         <button class="buyNow bg-primary">Buy Now</button>
@@ -187,7 +185,7 @@
             $('#searchForm').submit();
         });
 
-        // Xử lý sự kiện thêm vào giỏ hàng
+        // Xử lý sự kiện khi click vào Add To Cart
         $('.addCart').click(function () {
             var productId = $(this).closest('.item').data('id');
             $.ajax({
