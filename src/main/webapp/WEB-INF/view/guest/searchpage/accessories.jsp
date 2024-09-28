@@ -8,19 +8,6 @@
         <div class="col-3">
             <div class="filter-container">
                 <div class="row">
-                    <label>BRAND</label>
-                    <div class="row brand-container">
-                        <c:forEach items="${['Dell', 'Asus', 'Lenovo', 'Acer', 'HP', 'MSI', 'Apple']}" var="brand">
-                            <div class="col-4">
-                                <input type="checkbox" class="brand-checkbox" name="brand" value="${brand}" id="brand-${brand}">
-                                <label for="brand-${brand}">
-                                    <img src="/images/product/${brand}.png">
-                                </label>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </div>
-                <div class="row">
                     <label>PRICE</label>
                     <div class="row price-container">
                         <div class="col-6">
@@ -43,17 +30,6 @@
                             <input type="checkbox" class="price-checkbox" data-min="1000" data-max="9999999999" id="price-1000-9999999999">
                             <label for="price-1000-9999999999">Above 1000$</label>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <label>RAM</label>
-                    <div class="row ram-container">
-                        <c:forEach items="${['4GB', '6GB', '8GB', '12GB', '16GB']}" var="ram">
-                            <div class="col-3">
-                                <input type="checkbox" class="ram-checkbox" name="ram" value="${ram}" id="ram-${ram}">
-                                <label for="ram-${ram}">${ram}</label>
-                            </div>
-                        </c:forEach>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 
 let filterCurrentPage = 1;
-const filterItemsPerPage = 2; // Số sản phẩm trên mỗi trang
+const filterItemsPerPage = 16; // Số sản phẩm trên mỗi trang
 let filterTotalProducts = 0;
 let isFiltering = false;
 let wasFiltering = false; // Biến để theo dõi trạng thái lọc trước đó

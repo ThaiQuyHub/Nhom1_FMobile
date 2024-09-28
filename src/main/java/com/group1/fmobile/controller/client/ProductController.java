@@ -1,6 +1,8 @@
 package com.group1.fmobile.controller.client;
 
 import com.group1.fmobile.domain.Product;
+import com.group1.fmobile.repository.PaymentMethodRepository;
+import com.group1.fmobile.repository.UserRepository;
 import com.group1.fmobile.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +21,20 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private PaymentMethodRepository paymentMethodRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("/homepage")
     public String listProducts(Model model) {
         List<Product> products = productService.getTop4SmartPhones(); // Lấy top 4 sản phẩm
         model.addAttribute("products", products); // Truyền danh sách sản phẩm sang trang JSP
-//
+
         List<Product> bestSellingProducts = productService.getTop4BestSellingProducts(); // Top 4 best Selling
         model.addAttribute("bestSellingProducts", bestSellingProducts);
-//
+
         List<Product> tabletProducts = productService.getTabletProducts(4);
         model.addAttribute("tabletProducts", tabletProducts);
 
@@ -65,23 +74,31 @@ public class ProductController {
         return "client/homepage/productsDetail";
     }
 
-    @GetMapping("/checkout")
-    public String checkout(@RequestParam Long productId, Model model) {
-        List<Product> products = new ArrayList<>();
+//    @GetMapping("/checkout")
+//    public String checkout(@RequestParam Long productId, Model model) {
+//        List<Product> products = new ArrayList<>();
+//
+//        // Lấy thông tin sản phẩm theo Id;
+//        Product product = productService.getProductById(productId);
+//        Product productBuy = new Product();
+//        productBuy.setId(product.getId());
+//        productBuy.setProductName(product.getProductName());
+//        productBuy.setPrice(product.getPrice());
+//        productBuy.setQuantity(1);
+//        products.add(productBuy);
+//        if (productBuy != null) {
+//            model.addAttribute("products", products);
+//            return "client/searchPage/checkout";
+//        } else {
+//            return "redirect:/client/homepage/index";
+//        }
+//    }
 
-        // Lấy thông tin sản phẩm theo Id;
+    @GetMapping("/checkout")
+    public String checkout(@RequestParam Long productId, Model model, Principal principal) {
+        List<Product> products = new ArrayList<>();
         Product product = productService.getProductById(productId);
-        Product productBuy = new Product();
-        productBuy.setId(product.getId());
-        productBuy.setProductName(product.getProductName());
-        productBuy.setPrice(product.getPrice());
-        productBuy.setQuantity(1);
-        products.add(productBuy);
-        if (productBuy != null) {
-            model.addAttribute("products", products);
-            return "client/searchPage/checkout";
-        } else {
-            return "redirect:/client/homepage/index";
-        }
+        return "redirect:/checkout?productId%5B%5D="+productId+"&productQuantity%5B%5D=1&totalAmount="+product.getPrice();
+
     }
 }

@@ -69,7 +69,7 @@
     </style>
 </head>
 <body>
-<jsp:include page="searchHeader.jsp"/>
+
 
 <div class="container mt-5">
     <h1 class="mb-4"><i class="fas fa-shopping-cart fa-lg mr-2"></i>Checkout</h1>
@@ -88,14 +88,41 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${cart}" var="item">
-                            <tr>
-                                <td>${item.key.productName}</td>
-                                <td class="prices">$${item.key.price}</td>
-                                <td>${item.value}</td>
-                                <td><fmt:formatNumber value="${item.key.price * item.value}" type="number" maxFractionDigits="0" /></td>
-                            </tr>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${not empty cart}">
+                                <c:set var="total" value="0" />
+                                <c:forEach items="${cart}" var="item">
+                                    <tr>
+                                        <td>${item.key.productName}</td>
+                                        <td class="prices">$${item.key.price}</td>
+                                        <td>${item.value}</td>
+                                        <td><fmt:formatNumber value="${item.key.price * item.value}" type="number" maxFractionDigits="0" /></td>
+                                    </tr>
+                                    <c:set var="total" value="${total + (item.key.price * item.value)}" />
+                                </c:forEach>
+                                <tr>
+                                    <td colspan="3"><strong>Total:</strong></td>
+                                    <td><strong>$<fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" minFractionDigits="2"/></strong></td>
+                                </tr>
+                            </c:when>
+                            <c:when test="${not empty product}">
+                                <tr>
+                                    <td>${product.productName}</td>
+                                    <td class="prices">$<fmt:formatNumber value="${product.price}" type="number" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                    <td>1</td>
+                                    <td>$<fmt:formatNumber value="${product.price}" type="number" maxFractionDigits="2" minFractionDigits="2"/></td>
+                                </tr>
+                                <%--                                    <tr>--%>
+                                <%--                                        <td colspan="3"><strong>Total:</strong></td>--%>
+                                <%--                                        <td><strong>$<fmt:formatNumber value="${total}" type="number" maxFractionDigits="2" minFractionDigits="2"/></strong></td>--%>
+                                <%--                                    </tr>--%>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="4">No items in the order.</td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
                         </tbody>
                     </table>
                     <div class="d-flex justify-content-between">
@@ -106,7 +133,7 @@
             </div>
             <div class="card mb-4">
                 <div class="card-body">
-                    <h2 class="card-title"><i class="fas fa-info-circle fa-lg mr-2"></i>Order Information</h2>
+                    <h2 class="card-title"><i class="fas fa-info-circle fa-lg mr-2"></i>Order Informationss</h2>
                     <c:if test="${not empty orderError}">
                         <div class="alert alert-danger" role="alert">
                                 ${orderError}
@@ -133,9 +160,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="lbform"><i class="fas fa-credit-card mr-2"></i>Payment Method</label>
-                                    <form:select path="paymentId" class="form-select">
-                                        <form:options items="${payment}" itemValue="id" itemLabel="paymentName"/>
-                                    </form:select>
+                                    <select name="payment" class="form-control">
+                                        <c:forEach items="${payment}" var="payment">
+                                            <option value="${payment.id}">${payment.paymentName}</option>
+                                        </c:forEach>
+                                    </select>
                                     <button class="btn btn-primary btn-lg w-100 mt-4"><i class="fas fa-check mr-2"></i>Place Order</button>
                                 </div>
                             </form:form>
@@ -219,7 +248,7 @@
     </div>
 </div>
 
-<jsp:include page="searchFooter.jsp"/>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -294,6 +323,7 @@
         }
         return isValid;
     }
+
 </script>
 </body>
 </html>

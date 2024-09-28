@@ -86,10 +86,10 @@
                                     <h2>${products.productName}</h2>
                                     <div class="price">$${products.price}</div>
                                     <div class="detail">
-                                        <p>${products.description}</p>
+                                        <p>Chip: ${products.description}</p>
                                         <p>RAM: ${products.ram}</p>
                                         <c:if test="${not empty products.color}">
-                                            <p>Màu sắc: ${products.color}</p>
+                                            <p>Color: ${products.color}</p>
                                         </c:if>
                                     </div>
                                     <div class="row">

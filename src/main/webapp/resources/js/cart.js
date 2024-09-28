@@ -40,6 +40,19 @@ const initApp = () => {
     }
 }
 
+// Lắng nghe sự kiện BUY NOW khi DOM đã tải xong
+document.addEventListener('DOMContentLoaded', function() {
+    const buyNowButtons = document.querySelectorAll('.buyNow');
+
+    buyNowButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const productId = this.closest('.item').getAttribute('data-id');
+            window.location.href = '/client/checkout?productId=' + productId;
+        });
+    });
+});
+
 const saveCartToSession = () => {
     sessionStorage.setItem('cart', JSON.stringify(cart));
 }

@@ -1,36 +1,35 @@
-
 <!-- Magazine -->
 <div class="container">
     <h1 class="text-center" id="Advertisement">iMagazine</h1>
     <div class="grid-wrapper">
         <div class="tall">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPJnlCWVDNbIdugReKYHgvAxIrknt1fGi7nQ&s"
-                 alt="" />
+                 alt=""/>
         </div>
         <div class="big">
-            <img src="https://cdn.tgdd.vn/Files/2023/03/29/1522048/1-290323-145232.jpg" alt="" />
+            <img src="https://cdn.tgdd.vn/Files/2023/03/29/1522048/1-290323-145232.jpg" alt=""/>
         </div>
         <div class="tall">
-            <img src="https://news.khangz.com/wp-content/uploads/2022/09/ngay-ra-mat-oppo-reno8-pro-1.png" alt="" />
+            <img src="https://news.khangz.com/wp-content/uploads/2022/09/ngay-ra-mat-oppo-reno8-pro-1.png" alt=""/>
         </div>
         <div class="big">
-            <img src="https://bloganchoi.com/wp-content/uploads/2023/05/motorola-razr-z-flip4.jpg" alt="" />
+            <img src="https://bloganchoi.com/wp-content/uploads/2023/05/motorola-razr-z-flip4.jpg" alt=""/>
         </div>
         <div class="tall">
             <img src="https://cdn.xtmobile.vn/vnt_upload/news/07_2023/05/Tong-hop-bo-hinh-nen-4k-cho-iphone-15-va-iphone-15-pro-max-xtmobile.jpg"
-                 alt="" />
+                 alt=""/>
         </div>
         <div class="wide">
             <img src="https://dienthoaihay.vn/upload_images/images/2024/06/19/8357071_8eb72837cea785ce183cd364.jpg"
-                 alt="" />
+                 alt=""/>
         </div>
         <div class="wide">
             <img src="https://images.kienthuc.net.vn/w730/Uploaded/2024/zagtrt/2024_08_05/167999c61171b42fed60-7492.jpg"
-                 alt="" />
+                 alt=""/>
         </div>
         <div class="tall">
             <img src="https://cdn.tgdd.vn/Files/2022/11/05/1484486/cach-tai-hinh-nen-qua-tao-cho-iphone-0.png"
-                 alt="" />
+                 alt=""/>
         </div>
     </div>
 </div>
@@ -40,7 +39,7 @@
     <h1 class="text-center" id="Review">Thank You</h1>
     <div class="row">
         <div class="col-md-6 mt-5">
-            <img src="/images/product/airport.jpg" class="img-fluid" style="border-radius: 30px" alt="AirPods Pro" />
+            <img src="/images/product/airport.jpg" class="img-fluid" style="border-radius: 30px" alt="AirPods Pro"/>
         </div>
         <div class="col-md-6" style="
                 display: flex;
@@ -146,7 +145,7 @@
 <!-- Footer -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-5">
     <div class="container-fluid">
-        <img class="logo" src="/images/product/FMobileLogo.png" alt="" />
+        <img class="logo" src="/images/product/FMobileLogo.png" alt=""/>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -204,23 +203,24 @@
 </nav>
 <div class="cartTab">
     <h1>Shopping Cart</h1>
-    <form action = "/checkout" method = "post" id="cartForm">
+    <form action="/checkout" method="get" id="cartForm">
         <div class="listCart">
 
-        </div>
-        <div class="cartTotal">
-            <div class="totalText">Total:</div>
-            <div class="totalAmount">$0.00</div>
         </div>
         <div id="hiddenInputs">
             <!-- Input ẩn sẽ được thêm vào đây bởi JavaScript -->
         </div>
         <input type="hidden" name="total_amount" id="total_amount" value="0.00">
-        <div class="btn">
-            <button class="close">CLOSE</button>
-            <button class="checkOut">CHECK OUT</button>
-        </div>
     </form>
+    <div class="cartTotal">
+        <div class="totalText">Total:</div>
+        <div class="totalAmount">$0.00</div>
+    </div>
+
+    <div class="btn">
+        <button class="close">CLOSE</button>
+        <button class="checkOut">CHECK OUT</button>
+    </div>
 </div>
 <script src="/js/cart.js"></script>
 <script src="/js/search.js"></script>

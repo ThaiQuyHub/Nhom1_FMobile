@@ -22,6 +22,6 @@ public class CheckOutController {
         model.addAttribute("cart", cart);
         model.addAttribute("totalAmount", totalAmount);
 
-        return "client/searchPage/checkout";
+        return "guest/searchpage/checkout";
     }
 }

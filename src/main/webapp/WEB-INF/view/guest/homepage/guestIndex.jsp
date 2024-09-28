@@ -22,9 +22,9 @@
                             <h2>${newMobile.productName}</h2>
                             <div class="price">$${newMobile.price}</div>
                             <div class="detail">
-                                <p>A18 Pro chip with 6-core GPU</p>
+                                <p>Chip: ${newMobile.description}</p>
                                 <p>RAM: ${newMobile.ram}</p>
-                                <p>Camera: 48 MP</p>
+                                <p>Color: ${newMobile.color}</p>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>
@@ -46,15 +46,15 @@
     <div class="listProduct">
         <c:forEach items="${bestSellingMobileProducts}" var="bestSellingMobile">
             <div data-id = ${bestSellingMobile.id} class="item">
-                <a href="${pageContext.request.contextPath}/client/productsDetail/${bestSellingMobile.id}"> <!-- Liên kết hình ảnh đến trang chi tiết sản phẩm -->
+                <a href="${pageContext.request.contextPath}/client/productsDetail/${bestSellingMobile.id}">
                     <img src="${bestSellingMobile.images[0].url}" alt="">
                 </a>
                 <h2>${bestSellingMobile.productName}</h2>
                 <div class="price">$${bestSellingMobile.price}</div>
                 <div class="detail">
-                    <p>A18 Pro chip with 6-core GPU</p>
+                    <p>Chip: ${bestSellingMobile.description} </p>
                     <p>RAM: ${bestSellingMobile.ram}</p>
-                    <p>Camera: 48 MP</p>
+                    <p>Color: ${bestSellingMobile.color}</p>
                 </div>
                 <div class="row">
                     <button class="buyNow bg-primary">Buy Now</button>
@@ -84,9 +84,9 @@
                             <h2>${tablet.productName}</h2>
                             <div class="price">$${tablet.price}</div>
                             <div class="detail">
-                                <p>A18 Pro chip with 6-core GPU</p>
+                                <p>Chip: ${tablet.description}</p>
                                 <p>RAM: ${tablet.ram}</p>
-                                <p>Camera: 48 MP</p>
+                                <p>Color: ${tablet.color}</p>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>

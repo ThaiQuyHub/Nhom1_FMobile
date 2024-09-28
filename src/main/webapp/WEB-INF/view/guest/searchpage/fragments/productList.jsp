@@ -18,15 +18,13 @@
                 <div class="listProduct">
                     <c:forEach items="${products}" var="product">
                         <div data-id="${product.id}" class="item">
-                            <img src="${product.images[0].url}" alt="${product.productName}">
+                            <img src="${product.images[0].url}">
                             <h2>${product.productName}</h2>
                             <div class="price">$${product.price}</div>
                             <div class="detail">
-                                <p>${product.description}</p>
+                                <p>Chip: ${product.description}</p>
                                 <p>RAM: ${product.ram}</p>
-                                <c:if test="${not empty product.color}">
-                                    <p>Màu sắc: ${product.color}</p>
-                                </c:if>
+                                <p>Color: ${product.color}</p>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>

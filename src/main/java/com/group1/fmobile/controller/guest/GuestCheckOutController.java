@@ -1,4 +1,3 @@
-
 package com.group1.fmobile.controller.guest;
 
 import com.group1.fmobile.domain.*;
@@ -11,14 +10,12 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -27,244 +24,165 @@ import java.util.*;
 @Transactional
 public class GuestCheckOutController {
 
-    @Autowired
-    private ProductServices productServices;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PaymentMethodService paymentMethodService;
-    @Autowired
-    private PaymentMethodRepository paymentMethodRepository;
-    @Autowired
-    private DiscountRepository discountRepository;
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private OrdersDetailRepository orderDetailRepository;
-    @Autowired
-    private MailService mailService;
+    private final ProductServices productServices;
+    private final UserRepository userRepository;
+    private final PaymentMethodService paymentMethodService;
+    private final PaymentMethodRepository paymentMethodRepository;
+    private final DiscountRepository discountRepository;
+    private final OrderRepository orderRepository;
+    private final OrdersDetailRepository orderDetailRepository;
+    private final MailService mailService;
+    private final ProductRepository productRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(GuestCheckOutController.class);
+
+    public GuestCheckOutController(ProductServices productServices, UserRepository userRepository,
+                                   PaymentMethodService paymentMethodService, PaymentMethodRepository paymentMethodRepository,
+                                   DiscountRepository discountRepository, OrderRepository orderRepository,
+                                   OrdersDetailRepository orderDetailRepository, MailService mailService,
+                                   ProductRepository productRepository) {
+        this.productServices = productServices;
+        this.userRepository = userRepository;
+        this.paymentMethodService = paymentMethodService;
+        this.paymentMethodRepository = paymentMethodRepository;
+        this.discountRepository = discountRepository;
+        this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
+        this.mailService = mailService;
+        this.productRepository = productRepository;
+    }
 
     @GetMapping
     public String checkout(HttpSession session,
                            @RequestParam(value = "productId[]", required = false) String[] productIds,
                            @RequestParam(value = "productQuantity[]", required = false) String[] quantities,
                            @RequestParam(value = "totalAmount", required = false) String total,
-                           Model model) {
-//        if (productIds == null || productIds.length == 0) {
-//            model.addAttribute("error", "Cart is empty. Please add products to cart before checkout.");
-//            return "redirect:/home";
-//        }
-
-        Map<Product, Long> cartProducts = new HashMap<>();
+                           Model model, Principal principal) {
+        Map<Product, Long> cartProducts = createCartProducts(productIds, quantities);
         Double totalAmount = Double.parseDouble(total);
 
-        for (int i = 0; i < productIds.length; i++) {
-            Product product = productServices.getProductById(Long.parseLong(productIds[i]));
-            if (product != null) {
-                cartProducts.put(product, Long.parseLong(quantities[i]));
+        setSessionAttributes(session, cartProducts, totalAmount);
+
+        if (principal != null) {
+            String username = principal.getName();
+            User user = userRepository.findByEmail(username);
+            if (user != null) {
+                OrderDTO orderDTO = new OrderDTO();
+                orderDTO.setFullName(user.getFullName());
+                orderDTO.setAddress(user.getAddress());
+                orderDTO.setPhone(user.getPhone());
+                orderDTO.setEmail(user.getEmail());
+                model.addAttribute("orderDTO", orderDTO);
+                model.addAttribute("user", user);
+
+                // Áp dụng giảm giá chỉ cho người dùng đã đăng nhập
+                Discount discount = applyDiscount(totalAmount);
+                if (discount != null) {
+                    model.addAttribute("discount", discount);
+                    model.addAttribute("discountedAmount", totalAmount - discount.getDiscountValue());
+                }
+
+                // Tính tổng tiền mua từ trước đến giờ
+                double totalSpent = calculateTotalSpent(user);
+                model.addAttribute("totalSpent", totalSpent);
             }
         }
 
-//        List<Discount> discounts = discountRepository.findByAmount(totalAmount);
-//        if (discounts.size() > 0) {
-//            Discount applicableDiscount = discounts.get(0);
-//            model.addAttribute("discount", applicableDiscount);
-//            model.addAttribute("discountedAmount", totalAmount - applicableDiscount.getDiscountValue());
-//        }
-        System.out.println("cartproducts: "+cartProducts.size());
-        session.setAttribute("cartProducts", cartProducts);
-        session.setAttribute("totalAmount", totalAmount);
-        model.addAttribute("cart", cartProducts);
-        model.addAttribute("totalAmount", totalAmount);
-        model.addAttribute("payment", paymentMethodService.findAll());
-//
-        List<PaymentMethod> paymentMethods = paymentMethodService.findAll();
-        model.addAttribute("paymentMethods", paymentMethods);
-
-        OrderDTO orderDTO = createOrderDTO(session);
-        model.addAttribute("orderDTO", orderDTO);
-
-        User user = getUser(session);
-        model.addAttribute("user", user);
-
-//        logger.info("Checkout method called. User: " + (user != null ? user.getEmail() : "null"));
-
+        setModelAttributes(model, cartProducts, totalAmount, principal);
         return "guest/searchpage/checkout";
     }
 
-
     @PostMapping("/checkout-not-login")
+    @Transactional
     public String createOrderNotLogin(HttpSession session, Model model,
-                                      @RequestParam(value = "payment") Long payment,@RequestParam(value = "phone") String phone,
-                                      @RequestParam(value = "address") String address,@RequestParam(value = "fullName") String fullName,@RequestParam(value = "email") String email){
-        PaymentMethod paymentMethod = paymentMethodRepository.findById(payment).get();
-        HashMap<Product, Long> cartProducts = (HashMap<Product, Long>) session.getAttribute("cartProducts");
-        if(cartProducts.size() == 0){
-            model.addAttribute("errorQuantityCart", "Quantity of cart must > 0");
+                                      @RequestParam(value = "payment") Long payment,
+                                      @RequestParam(value = "phone") String phone,
+                                      @RequestParam(value = "address") String address,
+                                      @RequestParam(value = "fullName") String fullName,
+                                      @RequestParam(value = "email") String email) {
+        Map<Product, Long> cartProducts = getCartProducts(session);
+        if (isCartEmpty(cartProducts, model)) {
             return "guest/searchpage/checkout";
         }
 
-        Double total = 0D;
-        for (Map.Entry<Product, Long> entry : cartProducts.entrySet()) {
-            Product product = entry.getKey();
-            Long quantity = entry.getValue();
-            total += product.getPrice() * quantity;
-        }
-        Orders orders = new Orders();
-        orders.setOrderDate(LocalDateTime.now());
-        orders.setStatus("Watting");
-        orders.setPaymentMethod(paymentMethod);
-        orders.setShippingAddress(address);
-        orders.setTotalPayment(total);
-        orders.setFullName(fullName);
-        orders.setPhone(phone);
-        orders.setEmail(email);
+        PaymentMethod paymentMethod = paymentMethodRepository.findById(payment).orElseThrow();
+        Double total = calculateTotal(cartProducts);
 
-        List<Discount> discounts = discountRepository.findByAmount(total);
+        if (!updateProductQuantities(cartProducts, model)) {
+            return "guest/searchpage/checkout";
+        }
 
-        if (discounts.size() > 0){
-            orders.setDiscount(discounts.get(0));
-        }
-        Orders result = orderRepository.save(orders);
-        for (Map.Entry<Product, Long> entry : cartProducts.entrySet()) {
-            Product product = entry.getKey();
-            Long quantity = entry.getValue();
-            OrdersDetail ordersDetail = new OrdersDetail();
-            ordersDetail.setOrders(result);
-            ordersDetail.setPrice(product.getPrice());
-            ordersDetail.setProduct(product);
-            ordersDetail.setQuantity(Integer.valueOf(quantity.toString()));
-            orderDetailRepository.save(ordersDetail);
-        }
-        mailService.sendMail(email, "Thông báo đặt hàng thành công",
-                "Cảm ơn bạn đã đặt hàng của chúng tôi, Mã đơn hàng của bạn là: "+orders.getId());
-        return "redirect:/";
+        Orders order = createOrder(null, paymentMethod, address, total, fullName, phone, email);
+        saveOrderDetails(order, cartProducts);
+        sendConfirmationEmail(order, email);
+
+        clearCart(session);
+        logger.info("After clearCart - Session attributes: {}", safeToString(Collections.list(session.getAttributeNames())));
+        return "redirect:/?orderSuccess=true";
     }
 
     @PostMapping
-    public String createOrder(@Valid @ModelAttribute("orderDTO") OrderDTO orderDTO, BindingResult bindingResult,
-                              HttpSession session, Model model) {
-        User user = getUser(session);
-        logger.info("CreateOrder method called. User: " + (user != null ? user.getEmail() : "null"));
-
-        if (bindingResult.hasErrors()) {
-            addAttributesForCheckoutForm(model, session);
-            model.addAttribute("user", user);
-            return "guest/searchpage/checkout";
+    @Transactional
+    public String createOrder(@Valid @ModelAttribute("orderDTO") OrderDTO orderDTO,
+                              HttpSession session, Model model, Principal principal,
+                              @RequestParam(value = "payment") Long payment,
+                              @RequestParam(value = "phone") String phone,
+                              @RequestParam(value = "address") String address,
+                              @RequestParam(value = "fullName") String fullName) {
+        if (principal == null) {
+            return "redirect:/login";  // Redirect to login if not authenticated
         }
 
+        String username = principal.getName();
+        User user = userRepository.findByEmail(username);
         try {
-            if (user == null) {
-                logger.info("User is null, redirecting to not-login checkout");
-                return "redirect:/checkout/not-login";
-            }
-
-            // Đảm bảo sử dụng email của user đã đăng nhập
-            String userEmail = user.getEmail();
-            if (userEmail == null || userEmail.isEmpty()) {
-                logger.error("Logged in user has no email address");
-                model.addAttribute("emailError", "User email not found. Please update your profile.");
-                return "guest/searchpage/checkout";
-            }
-
-            PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDTO.getPaymentId()).orElseThrow();
             Map<Product, Long> cartProducts = getCartProducts(session);
+            if (isCartEmpty(cartProducts, model)) {
+                return "guest/searchpage/checkout";
+            }
+            PaymentMethod paymentMethod = paymentMethodRepository.findById(payment).orElseThrow();
+            Double total = calculateTotal(cartProducts);
 
-            if (cartProducts.isEmpty()) {
-                model.addAttribute("errorQuantityCart", "Cart quantity must be > 0");
+            // Áp dụng giảm giá chỉ cho người dùng đã đăng nhập
+            Discount discount = applyDiscount(total);
+            if (discount != null) {
+                total -= discount.getDiscountValue();
+            }
+
+            if (!updateProductQuantities(cartProducts, model)) {
                 return "guest/searchpage/checkout";
             }
 
-            Double total = calculateTotal(cartProducts);
-            Orders order = createAndSaveOrder(user, paymentMethod, orderDTO.getAddress(), total);
+            Orders order = createOrder(user, paymentMethod, address, total, fullName, phone, user.getEmail());
+            order.setDiscount(discount);  // Lưu thông tin giảm giá vào đơn hàng
+
             saveOrderDetails(order, cartProducts);
+            sendConfirmationEmail(order, user.getEmail());
 
-            updateUserAmount(user, order);
+            // Cập nhật tổng tiền mua của user
+            updateUserAmount(user, total);
 
-            // Sử dụng email của user để gửi xác nhận
-            try {
-                sendConfirmationEmail(order, userEmail);
-                logger.info("Confirmation email sent to: " + userEmail);
-            } catch (Exception e) {
-                logger.error("Failed to send confirmation email to " + userEmail, e);
-                model.addAttribute("emailError", "We couldn't send a confirmation email. Please check your order details in your account.");
-            }
-
-            clearSessionAttributes(session);
-            clearSessionErrorMessage(session);
-
-            setSuccessMessage(model, session);
+            clearCart(session);
+            logger.info("After clearCart - Session attributes: {}", safeToString(Collections.list(session.getAttributeNames())));
+            return "redirect:/?orderSuccess=true";
         } catch (Exception e) {
             logger.error("Error in createOrder: ", e);
-            setErrorMessage(model, session);
+            setMessage(model, session, "An error occurred while processing your order. Please try again.", "orderError");
             return "guest/searchpage/checkout";
         }
-
-        return "redirect:/order";
     }
 
-    @PostMapping("/not-login")
-    public String createOrderNotLogin(@Valid @ModelAttribute("orderDTO") OrderDTO orderDTO, BindingResult bindingResult,
-                                      HttpSession session, Model model) {
-        logger.info("CreateOrderNotLogin method called");
-
-        if (bindingResult.hasErrors()) {
-            addAttributesForCheckoutForm(model, session);
-            return "guest/searchpage/checkout";
-        }
-
-        try {
-            User existingUser = userRepository.findByEmail(orderDTO.getEmail());
-            if (existingUser != null) {
-                model.addAttribute("emailError", "This email is already registered. Please use a different email to receive notifications or log in to get discounts.");
-                addAttributesForCheckoutForm(model, session);
-                return "guest/searchpage/checkout";
+    private Map<Product, Long> createCartProducts(String[] productIds, String[] quantities) {
+        Map<Product, Long> cartProducts = new HashMap<>();
+        if (productIds != null && quantities != null) {
+            for (int i = 0; i < productIds.length; i++) {
+                Product product = productServices.getProductById(Long.parseLong(productIds[i]));
+                if (product != null) {
+                    cartProducts.put(product, Long.parseLong(quantities[i]));
+                }
             }
-
-            PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDTO.getPaymentId()).orElseThrow();
-            Map<Product, Long> cartProducts = getCartProducts(session);
-
-            if (cartProducts.isEmpty()) {
-                model.addAttribute("errorQuantityCart", "Cart quantity must be > 0");
-                return "guest/searchpage/checkout";
-            }
-
-            Double total = calculateTotal(cartProducts);
-
-            Orders order = createAndSaveOrderForGuestWithoutEmail(orderDTO, paymentMethod, total);
-            saveOrderDetails(order, cartProducts);
-
-            updateUserAmount(order.getUser(), order);
-
-            try {
-                sendConfirmationEmail(order, orderDTO);
-                logger.info("Sent email to: " + orderDTO.getEmail());
-            } catch (Exception e) {
-                logger.error("Failed to send confirmation email to: " + orderDTO.getEmail(), e);
-            }
-
-
-            clearSessionAttributes(session);
-            clearSessionErrorMessage(session);
-            setSuccessMessage(model, session);
-        } catch (Exception e) {
-            logger.error("Error in createOrderNotLogin: ", e);
-            setErrorMessage(model, session);
-            return "guest/searchpage/checkout";
         }
-
-        return "redirect:/home";
-    }
-
-    private void applyDiscount(Double totalAmount, Model model) {
-        List<Discount> discounts = discountRepository.findByAmount(totalAmount);
-        if (!discounts.isEmpty()) {
-            Discount applicableDiscount = discounts.get(0);
-            model.addAttribute("discount", applicableDiscount);
-            model.addAttribute("discountedAmount", totalAmount - applicableDiscount.getDiscountValue());
-        }
+        return cartProducts;
     }
 
     private void setSessionAttributes(HttpSession session, Map<Product, Long> cartProducts, Double totalAmount) {
@@ -272,32 +190,39 @@ public class GuestCheckOutController {
         session.setAttribute("totalAmount", totalAmount);
     }
 
-    private void setModelAttributes(Model model, Map<Product, Long> cartProducts, Double totalAmount) {
+    private void setModelAttributes(Model model, Map<Product, Long> cartProducts, Double totalAmount, Principal principal) {
         model.addAttribute("cart", cartProducts);
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("payment", paymentMethodService.findAll());
+        model.addAttribute("paymentMethods", paymentMethodService.findAll());
+        model.addAttribute("orderDTO", createOrderDTO(cartProducts, principal));
     }
 
-    private OrderDTO createOrderDTO(HttpSession session) {
+    private OrderDTO createOrderDTO(Map<Product, Long> cartProducts, Principal principal) {
         OrderDTO orderDTO = new OrderDTO();
-        User user = getUser(session);
-        if (user != null) {
-            orderDTO.setFullName(user.getFullName());
-            orderDTO.setAddress(user.getAddress());
-            orderDTO.setPhone(user.getPhone());
-            orderDTO.setEmail(user.getEmail());
+        if (principal != null) {
+            User user = userRepository.findByEmail(principal.getName());
+            if (user != null) {
+                orderDTO.setFullName(user.getFullName());
+                orderDTO.setAddress(user.getAddress());
+                orderDTO.setPhone(user.getPhone());
+                orderDTO.setEmail(user.getEmail());
+            }
         }
         return orderDTO;
-    }
-
-    private User getUser(HttpSession session) {
-        String email = session.getAttribute("loggedInUser") != null ? session.getAttribute("loggedInUser").toString() : null;
-        return email != null ? userRepository.findByEmail(email) : null;
     }
 
     @SuppressWarnings("unchecked")
     private Map<Product, Long> getCartProducts(HttpSession session) {
         return (Map<Product, Long>) session.getAttribute("cartProducts");
+    }
+
+    private boolean isCartEmpty(Map<Product, Long> cartProducts, Model model) {
+        if (cartProducts == null || cartProducts.isEmpty()) {
+            model.addAttribute("errorQuantityCart", "Cart quantity must be > 0");
+            return true;
+        }
+        return false;
     }
 
     private Double calculateTotal(Map<Product, Long> cartProducts) {
@@ -306,7 +231,8 @@ public class GuestCheckOutController {
                 .sum();
     }
 
-    private Orders createAndSaveOrder(User user, PaymentMethod paymentMethod, String address, Double total) {
+    private Orders createOrder(User user, PaymentMethod paymentMethod, String address, Double total,
+                               String fullName, String phone, String email) {
         Orders order = new Orders();
         order.setOrderDate(LocalDateTime.now());
         order.setStatus("Waiting");
@@ -314,27 +240,11 @@ public class GuestCheckOutController {
         order.setUser(user);
         order.setShippingAddress(address);
         order.setTotalPayment(total);
-
-        List<Discount> discounts = discountRepository.findByAmount(total);
-        if (!discounts.isEmpty()) {
-            order.setDiscount(discounts.get(0));
-        }
+        order.setFullName(fullName);
+        order.setPhone(phone);
+        order.setEmail(email);
 
         return orderRepository.save(order);
-    }
-
-    private Orders createAndSaveOrderForGuestWithoutEmail(OrderDTO orderDTO, PaymentMethod paymentMethod, Double total) {
-        User user = new User();
-        user.setFullName(orderDTO.getFullName());
-        user.setPhone(orderDTO.getPhone());
-        user.setAddress(orderDTO.getAddress());
-        user.setEmail(null);
-        user.setCreationDate(LocalDate.now());
-        user.setRoles(new HashSet<>(List.of(new Role(3, RoleType.GUEST))));
-        user.setAmount(0);
-        user = userRepository.save(user);
-
-        return createAndSaveOrder(user, paymentMethod, orderDTO.getAddress(), total);
     }
 
     private void saveOrderDetails(Orders order, Map<Product, Long> cartProducts) {
@@ -348,70 +258,104 @@ public class GuestCheckOutController {
         }
     }
 
-    private void updateUserAmount(User user, Orders order) {
-        if (user != null) {
-            double newOrderAmount = calculateTotalAfterDiscount(order);
-            user.setAmount(user.getAmount() + (long) newOrderAmount);
-            userRepository.save(user);
-        }
-    }
-
-    private double calculateTotalAfterDiscount(Orders order) {
-        double totalBeforeDiscount = order.getTotalPayment();
-        if (order.getDiscount() != null) {
-            return totalBeforeDiscount - order.getDiscount().getDiscountValue();
-        }
-        return totalBeforeDiscount;
-    }
-
-    private void sendConfirmationEmail(Orders order, OrderDTO orderDTO) {
-        String emailContent = String.format(
-                "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
-                orderDTO.getFullName(),
-                order.getId(),
-                order.getShippingAddress(),
-                orderDTO.getPhone()
-        );
-        mailService.sendMail(orderDTO.getEmail(), "Order Confirmation", emailContent);
-    }
-    // Cập nhật phương thức sendConfirmationEmail để nhận email trực tiếp
     private void sendConfirmationEmail(Orders order, String email) {
         String emailContent = String.format(
                 "Thank you for your order: [ %s ].\n\nOrder Details\nOrder ID: %s\nShipping Address: %s\nPhone: %s\n",
-                order.getUser().getFullName(),
+                order.getUser() != null ? order.getUser().getFullName() : order.getFullName(),
                 order.getId(),
                 order.getShippingAddress(),
-                order.getUser().getPhone()
+                order.getUser() != null ? order.getUser().getPhone() : order.getPhone()
         );
         mailService.sendMail(email, "Order Confirmation", emailContent);
     }
 
-    private void clearSessionAttributes(HttpSession session) {
-        session.removeAttribute("cartProducts");
-        session.removeAttribute("totalAmount");
+    private void clearCart(HttpSession session) {
+        logger.info("Clearing cart from session...");
+
+        logger.info("Before clearing - Session attributes: {}",
+                Collections.list(session.getAttributeNames()));
+
+        logger.info("Before clearing - Cart products: {}", safeToString(session.getAttribute("cartProducts")));
+        logger.info("Before clearing - Total amount: {}", session.getAttribute("totalAmount"));
+
+        List<String> attributesToKeep = Arrays.asList(
+                "org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN",
+                "SPRING_SECURITY_CONTEXT"
+        );
+
+        Collections.list(session.getAttributeNames()).stream()
+                .filter(attr -> !attributesToKeep.contains(attr))
+                .forEach(session::removeAttribute);
+
+        List<String> remainingAttributes = Collections.list(session.getAttributeNames());
+        logger.info("After clearing - Session attributes: {}", remainingAttributes);
+
+        for (String attr : remainingAttributes) {
+            logger.info("Remaining attribute: {} - Type: {}", attr,
+                    session.getAttribute(attr) != null ? session.getAttribute(attr).getClass().getSimpleName() : "null");
+        }
+
+        if (session.getAttribute("cartProducts") == null) {
+            logger.info("Cart products successfully removed from session");
+        } else {
+            logger.warn("Cart products still present in session");
+        }
+
+        if (session.getAttribute("totalAmount") == null) {
+            logger.info("Total amount successfully removed from session");
+        } else {
+            logger.warn("Total amount still present in session");
+        }
+
+        logger.info("Cart cleared after successful order creation");
     }
 
-    private void clearSessionErrorMessage(HttpSession session) {
-        session.removeAttribute("orderError");
+    private void setMessage(Model model, HttpSession session, String message, String attributeName) {
+        model.addAttribute(attributeName, message);
+        session.setAttribute(attributeName, message);
     }
 
-    private void setSuccessMessage(Model model, HttpSession session) {
-        String successMessage = "Order placed successfully! Thank you for your purchase.";
-        model.addAttribute("orderSuccess", successMessage);
-        session.setAttribute("orderSuccess", successMessage);
+    private boolean updateProductQuantities(Map<Product, Long> cartProducts, Model model) {
+        for (Map.Entry<Product, Long> entry : cartProducts.entrySet()) {
+            Product product = entry.getKey();
+            Long quantityToReduce = entry.getValue();
+
+            if (product.getQuantity() < quantityToReduce) {
+                setMessage(model, null, "Not enough stock available for " + product.getProductName(), "stockError");
+                return false;
+            }
+
+            product.setQuantity(product.getQuantity() - quantityToReduce.intValue());
+            product.setSold(product.getSold() + quantityToReduce.intValue());
+            productRepository.save(product);
+        }
+        return true;
     }
 
-    private void setErrorMessage(Model model, HttpSession session) {
-        String errorMessage = "An error occurred while processing your order. Please try again.";
-        model.addAttribute("orderError", errorMessage);
-        session.setAttribute("orderError", errorMessage);
+    private String safeToString(Object obj) {
+        if (obj instanceof Map) {
+            return "Map with " + ((Map<?, ?>) obj).size() + " entries";
+        }
+        if (obj instanceof Collection) {
+            return "Collection with " + ((Collection<?>) obj).size() + " items";
+        }
+        return String.valueOf(obj);
     }
 
-    private void addAttributesForCheckoutForm(Model model, HttpSession session) {
-        model.addAttribute("cart", session.getAttribute("cartProducts"));
-        model.addAttribute("totalAmount", session.getAttribute("totalAmount"));
-        model.addAttribute("payment", paymentMethodService.findAll());
-        User user = getUser(session);
-        model.addAttribute("user", user);
+    private Discount applyDiscount(Double totalAmount) {
+        List<Discount> discounts = discountRepository.findByAmount(totalAmount);
+        return discounts.isEmpty() ? null : discounts.get(0);
+    }
+
+    private double calculateTotalSpent(User user) {
+        List<Orders> userOrders = orderRepository.findByUser(user);
+        return userOrders.stream()
+                .mapToDouble(Orders::getTotalPayment)
+                .sum();
+    }
+
+    private void updateUserAmount(User user, Double orderTotal) {
+        user.setAmount(user.getAmount() + orderTotal);
+        userRepository.save(user);
     }
 }
