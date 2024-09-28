@@ -14,7 +14,6 @@ import lombok.experimental.FieldDefaults;
 @RegisterChecked
 public class RegisterDTO {
 
-
     @NotBlank(message = "Email là bắt buộc")
     @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     String email;

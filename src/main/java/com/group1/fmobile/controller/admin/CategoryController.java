@@ -1,6 +1,7 @@
 package com.group1.fmobile.controller.admin;
 
 import com.group1.fmobile.domain.ProductCategory;
+import com.group1.fmobile.repository.CategoryRepository;
 import com.group1.fmobile.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,46 +16,56 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
-    // Hiển thị danh sách thương hiệu và form thêm mới
+
+    @Autowired
+    private CategoryRepository categoryRepository; // Tiêm CategoryRepository
+
+    // Hiển thị danh sách danh mục và form thêm mới
     @RequestMapping("/category")
     public String listCategory(Model model) {
         List<ProductCategory> list = categoryService.getAll();
         model.addAttribute("categories", list);
-        model.addAttribute("isEdit", false);  // Đặt biến cho trường hợp thêm mới
-        model.addAttribute("category", new ProductCategory());  // Tạo đối tượng trống cho thêm mới
-        return "admin/category/category";  // Luôn hiển thị form thêm mới mặc định
+        model.addAttribute("isEdit", false);
+        model.addAttribute("category", new ProductCategory());
+        return "admin/category/category";
     }
 
-    // Xử lý thêm mới hoặc cập nhật thương hiệu
+    // Xử lý thêm mới hoặc cập nhật danh mục
     @PostMapping("/category/saveOrUpdate")
     public String saveOrUpdateCategory(@ModelAttribute("category") @Valid ProductCategory category,
-                                       BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
-            System.out.println(bindingResult);
-            return "admin/category/category";
+                                       BindingResult bindingResult, Model model) {
+        // Kiểm tra xem tên danh mục đã tồn tại chưa
+        if (categoryRepository.findByCategoryName(category.getCategoryName()) != null) {
+            bindingResult.rejectValue("categoryName", "error.categoryName", "Category name already exists!");
         }
-        categoryService.saveOrUpdate(category);  // Lưu thương hiệu (thêm mới hoặc cập nhật)
-        return "redirect:/admin/category";  // Quay lại trang quản lý sau khi lưu
+
+        // Kiểm tra lỗi từ Validation
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.getAll()); // Cập nhật lại danh sách danh mục
+            return "admin/category/category";  // Trả về trang form nếu có lỗi
+        }
+
+        categoryService.saveOrUpdate(category); // Lưu danh mục (thêm mới hoặc cập nhật)
+        return "redirect:/admin/category"; // Quay lại trang quản lý sau khi lưu
     }
 
-    // Chỉnh sửa thương hiệu (lấy thông tin để đưa lên form)
+    // Chỉnh sửa danh mục (lấy thông tin để đưa lên form)
     @GetMapping("/category/edit/{id}")
     public String editCategory(@PathVariable("id") Long id, Model model) {
         ProductCategory category = categoryService.getById(id);
-        model.addAttribute("category", category);  // Đối tượng category được điền vào form để cập nhật
-        List<ProductCategory> list = categoryService.getAll();
-        model.addAttribute("isEdit", true);  // Đặt biến để phân biệt cập nhật
-        model.addAttribute("categories", list);  // Hiển thị lại danh sách thương hiệu
-        return "admin/category/category";  // Hiển thị form với thông tin cập nhật
+        model.addAttribute("category", category);
+        model.addAttribute("isEdit", true);
+        model.addAttribute("categories", categoryService.getAll());
+        return "admin/category/category";
     }
 
-    // Xóa thương hiệu
+    // Xóa danh mục
     @GetMapping("/category/delete/{id}")
     public String deleteCategory(@PathVariable("id") Long id) {
         categoryService.delete(id);
-        return "redirect:/admin/category";  // Quay lại trang quản lý sau khi xóa
+        return "redirect:/admin/category"; // Quay lại trang quản lý sau khi xóa
     }
-
 }

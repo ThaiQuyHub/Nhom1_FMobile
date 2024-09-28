@@ -35,14 +35,12 @@ public class Brand implements Serializable {
     @Column(name = "brand_name", nullable = false)
     String brandName;
 
-    @NotBlank
-    @Size(min = 1, max = 255)
-    @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
-    @Column(name = "description", nullable = false)
+
+    @Size(max = 255)
+    @Column(name = "description")
     String description;
 
     // LK Product
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Product> products ;
-
 }

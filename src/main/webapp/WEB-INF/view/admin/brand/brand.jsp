@@ -109,7 +109,7 @@
                         <div class="form-group">
                             <label for="brand_name">Brand Name:</label>
                             <input class="form-control" type="text" id="brand_name" name="brandName" value="${brand.brandName}">
-                            <div class="error-message" id="brandNameError" style="color: red; display: none;"></div>
+                            <div class="error-message" id="brandNameError" style="color: red"></div>
                             <p style="color: red"><form:errors path="brandName"></form:errors></p>
                         </div>
                     </div>
@@ -210,58 +210,53 @@
         crossorigin="anonymous"></script>
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
-<%--validate--%>
-<%--<script>--%>
-<%--    document.getElementById("submit-button").onclick = function(event) {--%>
-<%--        // Lấy giá trị của brandName và description--%>
-<%--        var brandName = document.getElementById("brand_name").value;--%>
-<%--        var description = document.getElementById("brand_description").value;--%>
 
-<%--        // Reset thông báo lỗi--%>
-<%--        document.getElementById("brandNameError").style.display = "none";--%>
-<%--        document.getElementById("descriptionError").style.display = "none";--%>
+<script>
+    document.getElementById("submit-button").onclick = function(event) {
+        // Lấy giá trị của brandName và description
+        var brandName = document.getElementById("brand_name").value.trim();
+        var description = document.getElementById("brand_description").value.trim();
 
-<%--        // Kiểm tra xem brandName có rỗng không--%>
-<%--        if (!brandName || !description) {--%>
-<%--            if (!brandName) {--%>
-<%--                document.getElementById("brandNameError").innerText = "Brand Name cannot be empty!";--%>
-<%--                document.getElementById("brandNameError").style.display = "block";--%>
-<%--            }--%>
-<%--            if (!description) {--%>
-<%--                document.getElementById("descriptionError").innerText = "Description cannot be empty!";--%>
-<%--                document.getElementById("descriptionError").style.display = "block";--%>
-<%--            }--%>
-<%--            event.preventDefault(); // Ngăn chặn gửi biểu mẫu--%>
-<%--            return;--%>
-<%--        }--%>
+        // Reset thông báo lỗi
+        document.getElementById("brandNameError").style.display = "none";
+        document.getElementById("descriptionError").style.display = "none";
 
-<%--        // Kiểm tra độ dài--%>
-<%--        if (brandName.length > 255 || description.length > 255) {--%>
-<%--            if (brandName.length > 255) {--%>
-<%--                document.getElementById("brandNameError").innerText = "Brand Name cannot exceed 255 characters!";--%>
-<%--                document.getElementById("brandNameError").style.display = "block";--%>
-<%--            }--%>
-<%--            if (description.length > 255) {--%>
-<%--                document.getElementById("descriptionError").innerText = "Description cannot exceed 255 characters!";--%>
-<%--                document.getElementById("descriptionError").style.display = "block";--%>
-<%--            }--%>
-<%--            event.preventDefault();--%>
-<%--            return;--%>
-<%--        }--%>
-<%--        // Kiểm tra ký tự đặc biệt--%>
-<%--        var regex = /^[a-zA-Z0-9\s]+$/;--%>
-<%--        if (!regex.test(brandName) || !regex.test(description)) {--%>
-<%--            if (!regex.test(brandName)) {--%>
-<%--                document.getElementById("brandNameError").innerText = "Brand Name can only contain letters, numbers, and spaces!";--%>
-<%--                document.getElementById("brandNameError").style.display = "block";--%>
-<%--            }--%>
-<%--            if (!regex.test(description)) {--%>
-<%--                document.getElementById("descriptionError").innerText = "Description can only contain letters, numbers, and spaces!";--%>
-<%--                document.getElementById("descriptionError").style.display = "block";--%>
-<%--            }--%>
-<%--            event.preventDefault();--%>
-<%--        }--%>
-<%--    };--%>
-<%--</script>--%>
+        // Kiểm tra nếu brandName rỗng hoặc chỉ chứa khoảng trắng
+        if (!brandName) {
+            document.getElementById("brandNameError").innerText = "Brand Name cannot be empty!";
+            document.getElementById("brandNameError").style.display = "block";
+            event.preventDefault(); // Ngăn chặn gửi biểu mẫu
+            return;
+        }
+
+        // Kiểm tra độ dài của brandName
+        if (brandName.length > 255) {
+            document.getElementById("brandNameError").innerText = "Brand Name cannot exceed 255 characters!";
+            document.getElementById("brandNameError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra ký tự đặc biệt trong brandName
+        var regex = /^[a-zA-Z0-9\s]+$/;
+        if (!regex.test(brandName)) {
+            document.getElementById("brandNameError").innerText = "Brand Name can only contain letters, numbers, and spaces!";
+            document.getElementById("brandNameError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra độ dài của description (cho phép null nhưng không vượt quá 255 ký tự)
+        if (description.length > 255) {
+            document.getElementById("descriptionError").innerText = "Description cannot exceed 255 characters!";
+            document.getElementById("descriptionError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Nếu tất cả kiểm tra đều hợp lệ, biểu mẫu sẽ được gửi
+    };
+</script>
+
 </body>
 </html>

@@ -74,28 +74,25 @@ public class Product implements Serializable {
     @Column(name = "color")
     String color;
 
-    @NotBlank
-    @Size(min = 1, max = 255)
-    @Pattern(regexp = "^(?=.*\\d)(?=.*GB)[a-zA-Z0-9 ]*$")
+    @Size( max = 255)
+    @Pattern(regexp = "^$|^(?=.*\\d)(?=.*GB)[a-zA-Z0-9 ]*$")
     @Column(name = "ram")
     String ram;
 
-    @NotBlank
-    @Size(min = 1, max = 255)
-    @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
+
+    @Size(max = 255)
     @Lob
     @Column(name = "description")
     String description;
 
-    @NotNull
-    @PastOrPresent
+
     @Column(name = "created_at")
     LocalDate createdAt;
 
-    @NotNull
-    @PastOrPresent
+
     @Column(name = "updated_at")
     LocalDate updatedAt;
+
 
     // LK Image
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -104,5 +101,19 @@ public class Product implements Serializable {
     // LK Orders Detail
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<OrdersDetail> ordersDetails;
+
+    // Gọi hàm trước khi lưu đối tượng
+    @PrePersist
+    public void prePersist() {
+        LocalDate now = LocalDate.now();
+        this.createdAt = now;
+        this.updatedAt = now; // Gán ngày tạo cho ngày cập nhật
+    }
+
+    // Gọi hàm trước khi cập nhật đối tượng
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDate.now();
+    }
 
 }

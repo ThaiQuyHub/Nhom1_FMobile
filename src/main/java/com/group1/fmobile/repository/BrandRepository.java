@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
     Brand findByBrandName(String brandName);
+    // Phương thức kiểm tra tính duy nhất của tên thương hiệu
+
 }

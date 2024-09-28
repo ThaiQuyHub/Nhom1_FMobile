@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="navbar-nav w-100">
-                <a href="/admin" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="/admin/home" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                 <a href="/admin/user" class="nav-item nav-link"><i class="fa fa-user me-2"></i>User</a>
                 <a href="/admin/order" class="nav-item nav-link"><i class="fa fa-shopping-cart me-2"></i>Order</a>
                 <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-tag me-2"></i>Product</a>
@@ -106,14 +106,15 @@
             <h5 class="mb-4"><c:choose><c:when test="${isEdit}">Update Product</c:when>
                 <c:otherwise>Add new product</c:otherwise></c:choose></h5>
             <form:form action="/admin/product/saveOrUpdate" modelAttribute="product" method="post">
-<%--                Ten sp--%>
                 <div class="row">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <input type="hidden" name="id" value="${product.id}" />
+
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_name">Product Name</label>
-                            <input class="form-control" type="text" class="form-control" id="product_name" name="productName" value="${product.productName}" />
+                            <input class="form-control" type="text" id="product_name" name="productName" value="${product.productName}" />
+                            <div class="error-message" id="productNameError" style="color: red; display: none;"></div>
                             <p style="color: red"><form:errors path="productName"></form:errors></p>
                         </div>
                     </div>
@@ -121,7 +122,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_price">Product Price</label>
-                            <input class="form-control" type="number" class="form-control" id="product_price" name="price" step="1" value="${product.price}"  />
+                            <input class="form-control" type="number" id="product_price" name="price" step="1" value="${product.price}" />
+                            <div class="error-message" id="priceError" style="color: red; display: none;"></div>
                             <p style="color: red"><form:errors path="price"></form:errors></p>
                         </div>
                     </div>
@@ -129,7 +131,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_quantity">Product Quantity</label>
-                            <input class="form-control" type="number" class="form-control" id="product_quantity" name="quantity" value="${product.quantity}"  />
+                            <input class="form-control" type="number" id="product_quantity" name="quantity" value="${product.quantity}" />
+                            <div class="error-message" id="quantityError" style="color: red; display: none;"></div>
                             <p style="color: red"><form:errors path="quantity"></form:errors></p>
                         </div>
                     </div>
@@ -137,7 +140,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_sold">Product Sold</label>
-                            <input class="form-control" type="number" class="form-control" id="product_sold" name="sold" value="${product.sold}" />
+                            <input class="form-control" type="number" id="product_sold" name="sold" value="${product.sold}" />
+                            <div class="error-message" id="soldError" style="color: red; display: none;"></div>
                             <p style="color: red"><form:errors path="sold"></form:errors></p>
                         </div>
                     </div>
@@ -145,7 +149,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_color">Product Color</label>
-                            <input class="form-control" type="text" class="form-control" id="product_color" name="color" value="${product.color}" />
+                            <input class="form-control" type="text" placeholder="Example: Black" id="product_color" name="color" value="${product.color}" />
+                            <div class="error-message" id="colorError" style="color: red; display: none;"></div>
                             <p style="color: red"><form:errors path="color"></form:errors></p>
                         </div>
                     </div>
@@ -153,7 +158,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_ram">RAM</label>
-                            <input class="form-control" type="text" class="form-control" id="product_ram" name="ram" value="${product.ram}" />
+                            <input class="form-control" type="text" placeholder="Example: 8GB" id="product_ram" name="ram" value="${product.ram}" />
+                            <div class="error-message" id="ramError" style="color: red; display: none;"></div>
                             <p style="color: red"><form:errors path="ram"></form:errors></p>
                         </div>
                     </div>
@@ -161,7 +167,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="product_description">Description</label>
-                            <input class="form-control" id="product_description" name="description" value="${product.description}">
+                            <input class="form-control" type="text" id="product_description" name="description" value="${product.description}" />
+                            <div class="error-message" id="descriptionError" style="color: red; display: none;"></div>
                             <p style="color: red"><form:errors path="description"></form:errors></p>
                         </div>
                     </div>
@@ -171,11 +178,10 @@
                         <select class="form-control" id="brand" name="brand.id" required>
                             <option value="">-- Choose Brand --</option>
                             <c:forEach var="brand" items="${brands}">
-                                <option value="${brand.id}" <c:if test="${brand.id == product.brand.id}">selected</c:if>>
-                                        ${brand.brandName}
-                                </option>
+                                <option value="${brand.id}" <c:if test="${brand.id == product.brand.id}">selected</c:if>>${brand.brandName}</option>
                             </c:forEach>
                         </select>
+                        <div class="error-message" id="brandError" style="color: red; display: none;"></div>
                     </div>
 
                     <div class="form-group col-md-3">
@@ -183,39 +189,26 @@
                         <select class="form-control" id="category" name="productCategory.id" required>
                             <option value="">-- Choose Category --</option>
                             <c:forEach var="category" items="${categories}">
-                                <option value="${category.id}" <c:if test="${category.id == product.productCategory.id}">selected</c:if>>
-                                        ${category.categoryName}
-                                </option>
+                                <option value="${category.id}" <c:if test="${category.id == product.productCategory.id}">selected</c:if>>${category.categoryName}</option>
                             </c:forEach>
                         </select>
+                        <div class="error-message" id="categoryError" style="color: red; display: none;"></div>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="create_day">Create Day</label>
-                            <input class="form-control" type="date" class="form-control" id="create_day" name="createdAt" value="${product.createdAt}" />
-                            <p style="color: red"><form:errors path="createdAt"></form:errors></p>
-                        </div>
-                    </div>
+                    <input class="form-control" type="hidden" id="create_day" name="createdAt" value="${product.createdAt}" />
+                    <input class="form-control" type="hidden" id="update_day" name="updatedAt" value="${product.updatedAt}" readonly />
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="update_day">Update Day</label>
-                            <input class="form-control" type="date" class="form-control" id="update_day" name="updatedAt" value="${product.updatedAt}" />
-                            <p style="color: red"><form:errors path="updatedAt"></form:errors></p>
-                        </div>
-                    </div>
                     <div>
                         <button type="submit" id="submit-button" class="btn btn-primary">
-                            <c:choose> <c:when test="${isEdit}">Update Product</c:when>
-                                <c:otherwise>
-                                    Add new Product
-                                </c:otherwise>
+                            <c:choose>
+                                <c:when test="${isEdit}">Update Product</c:when>
+                                <c:otherwise>Add New Product</c:otherwise>
                             </c:choose>
                         </button>
                     </div>
                 </div>
             </form:form>
+
         </div>
         <!-- Bảng product -->
         <div class="row">
@@ -336,5 +329,127 @@
         crossorigin="anonymous"></script>
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
+<script>
+    document.getElementById("submit-button").onclick = function(event) {
+        // Lấy giá trị của các trường
+        var productName = document.getElementById("product_name").value.trim();
+        var price = document.getElementById("product_price").value.trim();
+        var quantity = document.getElementById("product_quantity").value.trim();
+        var sold = document.getElementById("product_sold").value.trim();
+        var color = document.getElementById("product_color").value.trim();
+        var ram = document.getElementById("product_ram").value.trim();
+        var description = document.getElementById("product_description").value.trim();
+        var brand = document.getElementById("brand").value;
+        var category = document.getElementById("category").value;
+
+        // Reset thông báo lỗi
+        document.getElementById("productNameError").style.display = "none";
+        document.getElementById("priceError").style.display = "none";
+        document.getElementById("quantityError").style.display = "none";
+        document.getElementById("soldError").style.display = "none";
+        document.getElementById("colorError").style.display = "none";
+        document.getElementById("ramError").style.display = "none";
+        document.getElementById("descriptionError").style.display = "none";
+        document.getElementById("brandError").style.display = "none";
+        document.getElementById("categoryError").style.display = "none";
+
+        // Kiểm tra Product Name
+        if (!productName) {
+            document.getElementById("productNameError").innerText = "Product Name cannot be empty!";
+            document.getElementById("productNameError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+        if (productName.length > 255) {
+            document.getElementById("productNameError").innerText = "Product Name cannot exceed 255 characters!";
+            document.getElementById("productNameError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+        var regex = /^[a-zA-Z0-9\s]+$/; // Không chứa ký tự đặc biệt
+        if (!regex.test(productName)) {
+            document.getElementById("productNameError").innerText = "Product Name can only contain letters, numbers, and spaces!";
+            document.getElementById("productNameError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra Price
+        if (!price) {
+            document.getElementById("priceError").innerText = "Product Price cannot be empty!";
+            document.getElementById("priceError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra Quantity
+        if (!quantity) {
+            document.getElementById("quantityError").innerText = "Product Quantity cannot be empty!";
+            document.getElementById("quantityError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra Sold
+        if (!sold) {
+            document.getElementById("soldError").innerText = "Product Sold cannot be empty!";
+            document.getElementById("soldError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra Color
+        if (!color) {
+            document.getElementById("colorError").innerText = "Product Color cannot be empty!";
+            document.getElementById("colorError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+        if (color.length > 255) {
+            document.getElementById("colorError").innerText = "Product Color cannot exceed 255 characters!";
+            document.getElementById("colorError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+        if (!regex.test(color)) {
+            document.getElementById("colorError").innerText = "Product Color can only contain letters, numbers, and spaces!";
+            document.getElementById("colorError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra RAM
+        if (ram && !/^(?=.*\d)(?=.*GB)[a-zA-Z0-9 ]*$/.test(ram)) {
+            document.getElementById("ramError").innerText = "RAM must match the format: 'number' + 'GB' (e.g. 8GB)!";
+            document.getElementById("ramError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra Description
+        if (description.length > 255) {
+            document.getElementById("descriptionError").innerText = "Description cannot exceed 255 characters!";
+            document.getElementById("descriptionError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra Brand
+        if (!brand) {
+            document.getElementById("brandError").innerText = "Brand must be selected!";
+            document.getElementById("brandError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+
+        // Kiểm tra Category
+        if (!category) {
+            document.getElementById("categoryError").innerText = "Category must be selected!";
+            document.getElementById("categoryError").style.display = "block";
+            event.preventDefault();
+            return;
+        }
+    };
+</script>
 </body>
 </html>
