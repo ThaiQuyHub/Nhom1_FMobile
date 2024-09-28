@@ -40,7 +40,7 @@ public class ProductService {
 
     // Lấy 4 sản phẩm bán chạy nhất
     public List<Product> getTop4BestSellingProducts() {
-        return productRepository.findTop4ByOrderBySoldDesc();
+        return productRepository.findTop8ByProductCategoryIdOrderBySoldDesc(1L);
     }
 
     public List<Product> getTabletProducts(int limit){

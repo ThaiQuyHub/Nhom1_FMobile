@@ -20,11 +20,126 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>s
+    <style>
+
+        body.dark-mode .login_username {
+            color: #0d6efd;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, input {
+            margin-bottom: 10px;
+        }
+
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>s\
 </head>
 
 <body class="">
 <!-- Nav -->
+<%--<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">--%>
+<%--    <div class="container-fluid">--%>
+<%--        <a href="/">--%>
+<%--            <img class="logo-nav" src="/images/product/FMobileLogo.png" alt="" />--%>
+<%--        </a>--%>
+<%--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"--%>
+<%--                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">--%>
+<%--            <span class="navbar-toggler-icon"></span>--%>
+<%--        </button>--%>
+<%--        <div class="collapse navbar-collapse ml-5" id="navbarNav">--%>
+<%--            <ul class="navbar-nav">--%>
+<%--                <li class="nav-item">--%>
+<%--                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"--%>
+<%--                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">--%>
+<%--                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"--%>
+<%--                              d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />--%>
+<%--                    </svg>--%>
+<%--                    <a class="nav-link menu" aria-current="page" href="/">Home</a>--%>
+<%--                </li>--%>
+<%--                <li class="nav-item">--%>
+<%--                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"--%>
+<%--                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"--%>
+<%--                         viewBox="0 0 24 24">--%>
+<%--                        <path fill-rule="evenodd"--%>
+<%--                              d="M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4Zm12 12V5H7v11h10Zm-5 1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"--%>
+<%--                              clip-rule="evenodd" />--%>
+<%--                    </svg>--%>
+<%--                    <a class="nav-link menu" href="/guest/search?query=mobile">Mobile</a>--%>
+<%--                </li>--%>
+<%--                <li class="nav-item">--%>
+<%--                    <i class="fas fa-laptop"></i>--%>
+<%--                    <a class="nav-link menu" href="/guest/search?query=laptop">Laptop</a>--%>
+<%--                </li>--%>
+<%--                <li class="nav-item">--%>
+<%--                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"--%>
+<%--                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">--%>
+<%--                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"--%>
+<%--                              d="M11 18h2M5.875 3h12.25c.483 0 .875.448.875 1v16c0 .552-.392 1-.875 1H5.875C5.392 21 5 20.552 5 20V4c0-.552.392-1 .875-1Z" />--%>
+<%--                    </svg>--%>
+<%--                    <a class="nav-link menu" href="/guest/search?query=tablet">Tablet</a>--%>
+<%--                </li>--%>
+<%--                <li class="nav-item">--%>
+<%--                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"--%>
+<%--                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"--%>
+<%--                         viewBox="0 0 24 24">--%>
+<%--                        <path fill-rule="evenodd"--%>
+<%--                              d="M12 5a7 7 0 0 0-7 7v1.17c.313-.11.65-.17 1-.17h2a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H6a3 3 0 0 1-3-3v-6a9 9 0 0 1 18 0v6a3 3 0 0 1-3 3h-2a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h2c.35 0 .687.06 1 .17V12a7 7 0 0 0-7-7Z"--%>
+<%--                              clip-rule="evenodd" />--%>
+<%--                    </svg>--%>
+<%--                    <a class="nav-link menu" href="/guest/search?query=accessories">Accessories</a>--%>
+<%--                </li>--%>
+<%--                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/guest/search" method="GET">--%>
+<%--                    <div class="search-icon">--%>
+<%--                        <input class="form-control search_nav" type="search" name = "query" placeholder="Search"--%>
+<%--                               aria-label="Search"/>--%>
+<%--                        <svg id="searchIcon" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"--%>
+<%--                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"--%>
+<%--                             viewBox="0 0 24 24">--%>
+<%--                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"--%>
+<%--                                  d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />--%>
+<%--                        </svg>--%>
+<%--                    </div>--%>
+<%--                </form>--%>
+<%--            </ul>--%>
+<%--        </div>--%>
+<%--        <div class="icon-cart">--%>
+<%--            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">--%>
+<%--                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"--%>
+<%--                      d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />--%>
+<%--            </svg>--%>
+<%--            <span>0</span>--%>
+<%--        </div>--%>
+<%--        <div class="icon-user">--%>
+<%--            <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />--%>
+<%--        </div>--%>
+<%--        <a href="/login" class="btn signin_btn" style="font-size: 1.3rem">--%>
+<%--            Log In--%>
+<%--        </a>--%>
+<%--        <a href="/register" class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">--%>
+<%--            Register--%>
+<%--        </a>--%>
+
+<%--        <div class="form-check form-switch dark-mode-toggle mx-5">--%>
+<%--            <input class="form-check-input" type="checkbox" id="darkModeToggle" />--%>
+<%--            <label class="form-check-label" for="darkModeToggle">Dark Mode</label>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</nav>--%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
         <a href="/">
@@ -34,7 +149,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse ml-5" id="navbarNav">
+        <div class="collapse navbar-collapse ml-5" id="navbarNav" style="width: 850px">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -42,7 +157,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
                     </svg>
-                    <a class="nav-link menu" aria-current="page" href="/">Home</a>
+                    <a class="nav-link menu" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -52,11 +167,11 @@
                               d="M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4Zm12 12V5H7v11h10Zm-5 1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
                               clip-rule="evenodd" />
                     </svg>
-                    <a class="nav-link menu" href="/guest/search?query=mobile">Mobile</a>
+                    <a class="nav-link menu" href="#">Mobile</a>
                 </li>
                 <li class="nav-item">
                     <i class="fas fa-laptop"></i>
-                    <a class="nav-link menu" href="/guest/search?query=laptop">Laptop</a>
+                    <a class="nav-link menu" href="#">Laptop</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -64,7 +179,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M11 18h2M5.875 3h12.25c.483 0 .875.448.875 1v16c0 .552-.392 1-.875 1H5.875C5.392 21 5 20.552 5 20V4c0-.552.392-1 .875-1Z" />
                     </svg>
-                    <a class="nav-link menu" href="/guest/search?query=tablet">Tablet</a>
+                    <a class="nav-link menu" href="#">Tablet</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -74,13 +189,19 @@
                               d="M12 5a7 7 0 0 0-7 7v1.17c.313-.11.65-.17 1-.17h2a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H6a3 3 0 0 1-3-3v-6a9 9 0 0 1 18 0v6a3 3 0 0 1-3 3h-2a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h2c.35 0 .687.06 1 .17V12a7 7 0 0 0-7-7Z"
                               clip-rule="evenodd" />
                     </svg>
-                    <a class="nav-link menu" href="/guest/search?query=accessories">Accessories</a>
+                    <a class="nav-link menu" href="#">Accessories</a>
                 </li>
-                <form id="searchForm" class="d-flex ml-5" action="${pageContext.request.contextPath}/guest/search" method="GET">
-                    <div class="search-icon">
-                        <input class="form-control search_nav" type="search" name = "query" placeholder="Search"
-                               aria-label="Search"/>
-                        <svg id="searchIcon" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                <form class="d-flex ml-5 mb-2">
+                    <div class="search-icon" style="width: 330px">
+                        <input class="form-control search_nav" style="height: 40px; padding-top: 10px;margin-top: 20px" type="search" placeholder="Search"
+                               aria-label="Search"
+                               style="font-size: 1.5rem;
+                                        height: 40px;
+                                        padding-top: 5px;
+                                        border-radius: 5px;
+                                        "/>
+                        <svg style="right: 105px;
+                                    top: 60%;" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                              viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -90,27 +211,45 @@
                 </form>
             </ul>
         </div>
-        <div class="icon-cart">
+        <div class="icon-cart" style="margin-left: 20px">
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
             </svg>
             <span>0</span>
         </div>
-        <div class="icon-user">
-            <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />
-        </div>
-        <a href="/login" class="btn signin_btn" style="font-size: 1.3rem">
-            Log In
-        </a>
-        <a href="/register" class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">
-            Register
-        </a>
+<%--        <div class="icon-user">--%>
+<%--                        <img class="logo-nav" src="/client/img/avatar.jpg" alt="" />--%>
+<%--                    </div>--%>
+<%--                    <a href="/login" class="btn signin_btn" style="font-size: 1.3rem">--%>
+<%--                        Log In--%>
+<%--                    </a>--%>
+<%--                    <a href="/register" class="btn btn-primary" style="margin-left: 5px; height: 34px; font-size: 1.3rem">--%>
+<%--                        Register--%>
+<%--                    </a>--%>
 
-        <div class="form-check form-switch dark-mode-toggle mx-5">
-            <input class="form-check-input" type="checkbox" id="darkModeToggle" />
-            <label class="form-check-label" for="darkModeToggle">Dark Mode</label>
+<%--                    <div class="form-check form-switch dark-mode-toggle mx-5">--%>
+<%--                        <input class="form-check-input" type="checkbox" id="darkModeToggle" />--%>
+<%--                        <label class="form-check-label" for="darkModeToggle">Dark Mode</label>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </nav>--%>
+        <div class="navbar-nav" style="margin-left: 15px">
+                <a href="/login" style="font-size: 1.5rem;
+                                        height: 30px;
+                                        width: 55px;"
+                   class="btn btn-outline-primary me-2">Login</a>
+                <a href="/register" style="font-size: 1.5rem;
+                                        height: 30px;
+                                        width: 75px;"
+                   class="btn btn-outline-secondary">Register</a>
         </div>
+
+    </div>
+    <div class="form-check form-switch dark-mode-toggle mx-3" style="margin-top: 15px">
+        <input class="form-check-input" type="checkbox" id="darkModeToggle" />
+        <label class="form-check-label" style="width: 100px;" for="darkModeToggle">Dark Mode</label>
+    </div>
     </div>
 </nav>
 

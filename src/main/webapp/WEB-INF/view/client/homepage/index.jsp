@@ -16,14 +16,6 @@
           rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        #guestButtons, #userInfo {
-            display: none;
-        }
-
-        .login_username {
-            color: #0d6efd;
-            font-size: 15px;
-        }
 
         body.dark-mode .login_username {
             color: #0d6efd;
@@ -48,23 +40,6 @@
             margin-bottom: 10px;
         }
 
-        .icon-user {
-            display: flex;
-            align-items: center;
-            background-color: #f8f9fa;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .login_username {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .btn-outline-danger {
-            padding: 2px 10px;
-            font-size: 0.875rem;
-        }
 
     </style>
 </head>
@@ -89,7 +64,7 @@
 <!-- Nav -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a href="#">
+        <a href="/">
             <img class="logo-nav" src="/images/product/FMobileLogo.png" alt="" />
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -140,12 +115,13 @@
                 </li>
                 <form class="d-flex ml-5 mb-2">
                     <div class="search-icon" style="width: 330px">
-                        <input class="form-control search_nav" style="line-height: 20px; padding-top: 5px" type="search" placeholder="Search"
+                        <input class="form-control search_nav" style="height: 40px; padding-top: 10px;margin-top: 20px" type="search" placeholder="Search"
                                aria-label="Search"
                                style="font-size: 1.5rem;
                                         height: 40px;
                                         padding-top: 5px;
-                                        border-radius: 5px;"/>
+                                        border-radius: 5px;
+                                        "/>
                         <svg style="right: 105px;
                                     top: 60%;" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -265,12 +241,12 @@
                             <div class="detail">
                                 <p>Color: ${newMobile.color}</p>
                                 <p>RAM: ${newMobile.ram}</p>
-<%--                                <p>Quantity: ${newMobile.quantity}</p>--%>
-<%--                                <p>Sold: ${newMobile.sold}</p>--%>
-<%--                                <p><small class="text-muted">Created:--%>
-<%--                                    <fmt:parseDate value="${newMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                                </small></p>--%>
+                                    <%--                                <p>Quantity: ${newMobile.quantity}</p>--%>
+                                    <%--                                <p>Sold: ${newMobile.sold}</p>--%>
+                                    <%--                                <p><small class="text-muted">Created:--%>
+                                    <%--                                    <fmt:parseDate value="${newMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
+                                    <%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
+                                    <%--                                </small></p>--%>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>
@@ -300,12 +276,12 @@
                 <div class="detail">
                     <p>Color: ${bestSellingMobile.color}</p>
                     <p>RAM: ${bestSellingMobile.ram}</p>
-<%--                    <p>Quantity: ${bestSellingMobile.quantity}</p>--%>
-<%--                    <p>Sold: ${bestSellingMobile.sold}</p>--%>
-<%--                    <p><small class="text-muted">Created:--%>
-<%--                        <fmt:parseDate value="${bestSellingMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                        <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                    </small></p>--%>
+                        <%--                    <p>Quantity: ${bestSellingMobile.quantity}</p>--%>
+                        <%--                    <p>Sold: ${bestSellingMobile.sold}</p>--%>
+                        <%--                    <p><small class="text-muted">Created:--%>
+                        <%--                        <fmt:parseDate value="${bestSellingMobile.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
+                        <%--                        <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
+                        <%--                    </small></p>--%>
                 </div>
                 <div class="row">
                     <button href="#" class="buyNow bg-primary">Buy Now</button>
@@ -337,12 +313,12 @@
                             <div class="detail">
                                 <p>Color: ${tablet.color}</p>
 
-<%--                                <p>Quantity: ${tablet.quantity}</p>--%>
-<%--                                <p>Sold: ${tablet.sold}</p>--%>
-<%--                                <p><small>Created:--%>
-<%--                                    <fmt:parseDate value="${tablet.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
-<%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
-<%--                                </small></p>--%>
+                                    <%--                                <p>Quantity: ${tablet.quantity}</p>--%>
+                                    <%--                                <p>Sold: ${tablet.sold}</p>--%>
+                                    <%--                                <p><small>Created:--%>
+                                    <%--                                    <fmt:parseDate value="${tablet.createdAt}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />--%>
+                                    <%--                                    <fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDateTime}" />--%>
+                                    <%--                                </small></p>--%>
                             </div>
                             <div class="row">
                                 <button class="buyNow bg-primary">Buy Now</button>
@@ -369,7 +345,7 @@
             },
             body: new URLSearchParams(new FormData(document.getElementById('logoutForm'))),
         }).then(() => {
-            window.location.href = '/client/homepage';  // Redirect to homepage after logout
+            window.location.href = '/';  // Redirect to homepage after logout
         }).catch(error => {
             console.error('Logout error:', error);
         });

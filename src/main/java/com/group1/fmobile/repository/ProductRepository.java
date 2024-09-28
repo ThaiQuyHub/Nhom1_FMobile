@@ -33,12 +33,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findProductsByQuery(@Param("query") String query);
 
     // Lấy 4 sản phẩm mới nhất dựa trên product_category_id
-    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 1 ORDER BY p.createdAt DESC")
     List<Product> findTop4ByProductCategoryIdOrderByCreatedAtDesc(Long productCategoryId);
 
-    // Lấy 4 sản phẩm bán chạy nhất
-    @Query("SELECT p FROM Product p WHERE p.productCategory.id = 1 ORDER BY p.sold DESC")
-    List<Product> findTop4ByOrderBySoldDesc();
+    List<Product> findTop8ByProductCategoryIdOrderBySoldDesc(Long productCategoryId);
 
     // Lấy 4 table bán chạy nhất
     @Query("SELECT p FROM Product p WHERE p.productCategory.id = 3 ORDER BY p.sold DESC")
