@@ -145,27 +145,6 @@
             font-size: 14px;
         }
 
-        .form-floating > .form-control:focus,
-        .form-floating > .form-control:not(:placeholder-shown) {
-            padding-top: 1.625rem;
-            padding-bottom: 0.625rem;
-        }
-        .form-floating > .form-control:focus ~ label,
-        .form-floating > .form-control:not(:placeholder-shown) ~ label {
-            opacity: .65;
-            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
-        }
-        .btn-floating {
-            width: 2.3125rem;
-            height: 2.3125rem;
-            padding: 0;
-            margin: 0.25rem;
-            line-height: 2.3125rem;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            border-radius: 50%;
-        }
     </style>
 </head>
 <body>
@@ -188,18 +167,12 @@
             </div>
         </c:if>
 
-        <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+        <div class="mb-5 field">
+            <input class="form-control" type="email"
+                    name="username" />
+            <label>Email address</label>
             <form:errors path="email" cssClass="error" />
         </div>
-
-<%--        <div class="mb-5 field">--%>
-<%--            <input class="form-control" type="email"--%>
-<%--                    name="username" />--%>
-<%--            <label>Email address</label>--%>
-<%--            <form:errors path="email" cssClass="error" />--%>
-<%--        </div>--%>
         <div class="mb-5 field">
             <input class="form-control" type="password"
                    placeholder="Password" name="password" />

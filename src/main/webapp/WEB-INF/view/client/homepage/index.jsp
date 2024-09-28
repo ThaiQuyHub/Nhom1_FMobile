@@ -345,7 +345,7 @@
             },
             body: new URLSearchParams(new FormData(document.getElementById('logoutForm'))),
         }).then(() => {
-            window.location.href = '/client/homepage';  // Redirect to homepage after logout
+            window.location.href = '/';  // Redirect to homepage after logout
         }).catch(error => {
             console.error('Logout error:', error);
         });
