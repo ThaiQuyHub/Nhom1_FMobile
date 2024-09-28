@@ -35,6 +35,8 @@ public class Brand implements Serializable {
     @Column(name = "brand_name", nullable = false)
     String brandName;
 
+
+    @Size(max = 255)
     @Column(name = "description")
     String description;
 

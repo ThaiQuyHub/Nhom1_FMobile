@@ -75,6 +75,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.color LIKE %:keyword% OR " +
             "p.ram LIKE %:keyword%")
     List<Product> searchProduct(String keyword);
+    // tim product de validaton
+    Product findByProductName(String productName);
 
 }
 

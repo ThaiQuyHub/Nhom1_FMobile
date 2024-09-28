@@ -107,7 +107,7 @@
                     <input type="hidden" name="id" value="${image.id}" />
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <!-- Chọn Sản phẩm -->
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="product">Choose Product:</label>
                         <select class="form-control" id="product" name="product.id" required>
                             <option value="">-- Choose Product --</option>
@@ -119,14 +119,15 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="image_name">Image Name:</label>
                             <form:input path="image_name" class="form-control" placeholder="Enter Image Name" />
+                            <div class="error-message" id="imageNameError" style="color: red; display: none;"></div> <!-- Thêm thông báo lỗi -->
                             <p style="color: red"><form:errors path="image_name"></form:errors></p>
                         </div>
                     </div>
-                    <div class="col-md-4 form-group">
+                    <div class="col-md-3 form-group">
                         <label for="image_url">Choose Image:</label>
                         <input type="file" class="form-control" id="image_url" name="image_url" required />
                     </div>
@@ -137,7 +138,6 @@
                         </button>
                     </div>
                 </div>
-
             </form:form>
         </div>
 
@@ -264,5 +264,43 @@
         crossorigin="anonymous"></script>
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
+
+<script>
+    document.getElementById("submit-button").onclick = function(event) {
+        // Lấy giá trị của imageName
+        var imageName = document.getElementById("image_name").value.trim();
+
+        // Reset thông báo lỗi
+        var errorMessageElement = document.getElementById("imageNameError");
+        errorMessageElement.style.display = "none"; // Ẩn thông báo lỗi ban đầu
+
+        // Kiểm tra nếu imageName rỗng hoặc chỉ chứa khoảng trắng
+        if (!imageName) {
+            errorMessageElement.innerText = "Image Name cannot be empty!";
+            errorMessageElement.style.display = "block"; // Hiện thông báo lỗi
+            event.preventDefault(); // Ngăn chặn gửi biểu mẫu
+            return;
+        }
+
+        // Kiểm tra độ dài của imageName
+        if (imageName.length > 255) {
+            errorMessageElement.innerText = "Image Name cannot exceed 255 characters!";
+            errorMessageElement.style.display = "block"; // Hiện thông báo lỗi
+            event.preventDefault(); // Ngăn chặn gửi biểu mẫu
+            return;
+        }
+
+        // Kiểm tra ký tự đặc biệt trong imageName
+        var regex = /^[a-zA-Z0-9\s]+$/; // Chỉ cho phép chữ cái, số và khoảng trắng
+        if (!regex.test(imageName)) {
+            errorMessageElement.innerText = "Image Name can only contain letters, numbers, and spaces!";
+            errorMessageElement.style.display = "block"; // Hiện thông báo lỗi
+            event.preventDefault(); // Ngăn chặn gửi biểu mẫu
+            return;
+        }
+        // Nếu tất cả kiểm tra đều hợp lệ, biểu mẫu sẽ được gửi
+    };
+</script>
+
 </body>
 </html>

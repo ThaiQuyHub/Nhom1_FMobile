@@ -106,20 +106,23 @@
         <div class="row">
           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
           <input type="hidden" name="id" value="${category.id}" />
+
           <div class="col-md-4">
             <div class="form-group">
               <label for="category_name">Category Name</label>
-              <input class="form-control" type="text" id="category_name" name="categoryName" value="${category.categoryName}">
-              <div class="error-message" id="categoryNameError" style="color: red; display: none;"></div>
-              <p style="color: red"><form:errors path="categoryName"></form:errors></p>
+              <input class="form-control" type="text" id="category_name" name="categoryName" value="${category.categoryName}" />
+              <div class="error-message" id="categoryNameError" style="color: red; display: none;"></div> <!-- Thêm thông báo lỗi -->
+              <p style="color: red">
+                <form:errors path="categoryName" cssClass="error-message" />
+              </p>
             </div>
           </div>
+
           <div>
             <button type="submit" id="submit-button" class="btn btn-primary">
-              <c:choose> <c:when test="${isEdit}">Update Category</c:when>
-                <c:otherwise>
-                  Add new Category
-                </c:otherwise>
+              <c:choose>
+                <c:when test="${isEdit}">Update Category</c:when>
+                <c:otherwise>Add new Category</c:otherwise>
               </c:choose>
             </button>
           </div>
@@ -200,39 +203,41 @@
         crossorigin="anonymous"></script>
 <!-- Template Javascript -->
 <script src="/js/admin.js"></script>
-<%--<script>--%>
-<%--  document.getElementById("submit-button").onclick = function(event) {--%>
-<%--    // Lấy giá trị của categoryName--%>
-<%--    var categoryName = document.getElementById("category_name").value;--%>
+<script>
+  document.getElementById("submit-button").onclick = function(event) {
+    // Lấy giá trị của categoryName
+    var categoryName = document.getElementById("category_name").value.trim();
 
-<%--    // Reset thông báo lỗi--%>
-<%--    document.getElementById("categoryNameError").style.display = "none";--%>
+    // Reset thông báo lỗi
+    var errorMessageElement = document.getElementById("categoryNameError");
+    errorMessageElement.style.display = "none"; // Ẩn thông báo lỗi ban đầu
 
-<%--    // Kiểm tra xem categoryName có rỗng không--%>
-<%--    if (!categoryName) {--%>
-<%--      document.getElementById("categoryNameError").innerText = "Category Name cannot be empty!";--%>
-<%--      document.getElementById("categoryNameError").style.display = "block";--%>
-<%--      event.preventDefault(); // Ngăn chặn gửi biểu mẫu--%>
-<%--      return;--%>
-<%--    }--%>
+    // Kiểm tra nếu categoryName rỗng hoặc chỉ chứa khoảng trắng
+    if (!categoryName) {
+      errorMessageElement.innerText = "Category Name cannot be empty!";
+      errorMessageElement.style.display = "block"; // Hiện thông báo lỗi
+      event.preventDefault(); // Ngăn chặn gửi biểu mẫu
+      return;
+    }
 
-<%--    // Kiểm tra độ dài--%>
-<%--    if (categoryName.length > 255) {--%>
-<%--      document.getElementById("categoryNameError").innerText = "Category Name cannot exceed 255 characters!";--%>
-<%--      document.getElementById("categoryNameError").style.display = "block";--%>
-<%--      event.preventDefault();--%>
-<%--      return;--%>
-<%--    }--%>
+    // Kiểm tra độ dài của categoryName
+    if (categoryName.length > 255) {
+      errorMessageElement.innerText = "Category Name cannot exceed 255 characters!";
+      errorMessageElement.style.display = "block"; // Hiện thông báo lỗi
+      event.preventDefault(); // Ngăn chặn gửi biểu mẫu
+      return;
+    }
 
-<%--    // Kiểm tra ký tự đặc biệt và số--%>
-<%--    var regex = /^[^\d!@#$%^&*()_+=[\]{};':"\\|,.<>/?]*$/;--%>
-<%--    if (!regex.test(categoryName)) {--%>
-<%--      document.getElementById("categoryNameError").innerText = "Category Name cannot contain numbers or special characters!";--%>
-<%--      document.getElementById("categoryNameError").style.display = "block";--%>
-<%--      event.preventDefault();--%>
-<%--    }--%>
-<%--  };--%>
-<%--</script>--%>
+    // Kiểm tra ký tự đặc biệt trong categoryName
+    var regex = /^[a-zA-Z0-9\s]+$/; // Chỉ cho phép chữ cái, số và khoảng trắng
+    if (!regex.test(categoryName)) {
+      errorMessageElement.innerText = "Category Name can only contain letters, numbers, and spaces!";
+      errorMessageElement.style.display = "block"; // Hiện thông báo lỗi
+      event.preventDefault(); // Ngăn chặn gửi biểu mẫu
+      return;
+    }
+  };
+</script>
 
 </body>
 </html>

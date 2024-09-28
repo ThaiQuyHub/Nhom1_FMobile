@@ -3,6 +3,7 @@ package com.group1.fmobile.controller.admin;
 import com.group1.fmobile.domain.Brand;
 import com.group1.fmobile.domain.ProductCategory;
 import com.group1.fmobile.domain.Product;
+import com.group1.fmobile.repository.ProductRepository;
 import com.group1.fmobile.service.BrandService;
 import com.group1.fmobile.service.CategoryService;
 import com.group1.fmobile.service.IProductService;
@@ -29,6 +30,8 @@ public class AdminProductController {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ProductRepository productRepository;
     // Hiển thị danh sách san pham và form thêm mới
     @RequestMapping("/product")
     public String listProduct(Model model, @Param("keyword") String keyword,
@@ -57,6 +60,11 @@ public class AdminProductController {
         // Lấy danh sách thương hiệu và danh mục để truyền lại nếu có lỗi
         List<Brand> brands = brandService.getAll();
         List<ProductCategory> categories = categoryService.getAll();
+
+        // Kiểm tra xem tên sản phẩm đã tồn tại chưa
+        if (productRepository.findByProductName(product.getProductName()) != null) {
+            bindingResult.rejectValue("productName", "error.productName", "Product name already exists!");
+        }
 
         if (bindingResult.hasErrors()) {
             // Truyền lại thông tin nếu form không hợp lệ
