@@ -35,10 +35,7 @@ public class Brand implements Serializable {
     @Column(name = "brand_name", nullable = false)
     String brandName;
 
-    @NotBlank
-    @Size(min = 1, max = 255)
-    @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     String description;
 
     // LK Product

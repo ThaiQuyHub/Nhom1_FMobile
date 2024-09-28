@@ -66,7 +66,7 @@
 </nav>
 <div class="cartTab">
     <h1>Shopping Cart</h1>
-    <form id = "cartForm" action ="/checkout" method="post">
+    <form id = "cartForm" action ="/checkout" method="get">
     <div class="listCart">
 
     </div>
