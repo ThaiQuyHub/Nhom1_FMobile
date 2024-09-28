@@ -16,14 +16,6 @@
           rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        #guestButtons, #userInfo {
-            display: none;
-        }
-
-        .login_username {
-            color: #0d6efd;
-            font-size: 15px;
-        }
 
         body.dark-mode .login_username {
             color: #0d6efd;
@@ -48,23 +40,6 @@
             margin-bottom: 10px;
         }
 
-        .icon-user {
-            display: flex;
-            align-items: center;
-            background-color: #f8f9fa;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .login_username {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .btn-outline-danger {
-            padding: 2px 10px;
-            font-size: 0.875rem;
-        }
 
     </style>
 </head>
@@ -140,12 +115,13 @@
                 </li>
                 <form class="d-flex ml-5 mb-2">
                     <div class="search-icon" style="width: 330px">
-                        <input class="form-control search_nav" style="line-height: 20px; padding-top: 5px" type="search" placeholder="Search"
+                        <input class="form-control search_nav" style="height: 40px; padding-top: 10px;margin-top: 20px" type="search" placeholder="Search"
                                aria-label="Search"
                                style="font-size: 1.5rem;
                                         height: 40px;
                                         padding-top: 5px;
-                                        border-radius: 5px;"/>
+                                        border-radius: 5px;
+                                        "/>
                         <svg style="right: 105px;
                                     top: 60%;" class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"

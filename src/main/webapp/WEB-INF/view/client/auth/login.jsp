@@ -13,6 +13,7 @@
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
+
         html,body{
             display: grid;
             height: 100%;
@@ -21,6 +22,7 @@
             background: #ada7a7;
             background: url("https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg");
         }
+
         ::selection{
             background: #4158d0;
             color: #fff;
@@ -143,6 +145,27 @@
             font-size: 14px;
         }
 
+        .form-floating > .form-control:focus,
+        .form-floating > .form-control:not(:placeholder-shown) {
+            padding-top: 1.625rem;
+            padding-bottom: 0.625rem;
+        }
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            opacity: .65;
+            transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+        }
+        .btn-floating {
+            width: 2.3125rem;
+            height: 2.3125rem;
+            padding: 0;
+            margin: 0.25rem;
+            line-height: 2.3125rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
@@ -156,18 +179,27 @@
     <div class="title">
         Login
     </div>
+
+
     <%--@elvariable id="login" type="com.group1.fmobile.domain.dto.LoginDTO"--%>
     <form id="loginform" action="/login" method="post" >
         <c:if test="${param.error != null}">
             <div class="my-2" style="color: red;">Invalid email or password.
             </div>
         </c:if>
-        <div class="mb-5 field">
-            <input class="form-control" type="email"
-                    name="username" />
-            <label>Email address</label>
+
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
             <form:errors path="email" cssClass="error" />
         </div>
+
+<%--        <div class="mb-5 field">--%>
+<%--            <input class="form-control" type="email"--%>
+<%--                    name="username" />--%>
+<%--            <label>Email address</label>--%>
+<%--            <form:errors path="email" cssClass="error" />--%>
+<%--        </div>--%>
         <div class="mb-5 field">
             <input class="form-control" type="password"
                    placeholder="Password" name="password" />
@@ -232,57 +264,6 @@
             $("input[name='remember-me']").prop("disabled", true);
         }});
     });
-
-    /**
-     * Nguyen Ngoc Quy Su kien login va register form
-     * */
-
-    <%--document.addEventListener('DOMContentLoaded', function() { // Lang nghe su kien trinh duyet duoc tai--%>
-    <%--    const loginForm = document.getElementById('loginform'); // tim kiem id va luu tru vao bien loginForm--%>
-    <%--    loginForm.addEventListener('submit', function(event) { // nghe su kien submit tren loginForm va kich hoat--%>
-    <%--        event.preventDefault(); // ngan hanh vi mac dinh cua submit form--%>
-    <%--        // Lay du lieu--%>
-    <%--        const email = loginForm.querySelector('input[name="username"]').value;--%>
-    <%--        const password = loginForm.querySelector('input[name="password"]').value;--%>
-    <%--        const rememberMe = loginForm.querySelector('input[name="remember-me"]').checked;--%>
-    <%--        const csrfToken = loginForm.querySelector('input[name="${_csrf.parameterName}"]').value;--%>
-
-    <%--        // Send login request to server--%>
-    <%--        fetch('/login', { // object cau hinh yeu cau--%>
-    <%--            method: 'POST', // gui du lieu len server--%>
-    <%--            headers: {--%>
-    <%--                'Content-Type': 'application/x-www-form-urlencoded', // gui du lieu tu form--%>
-    <%--                'X-CSRF-TOKEN': csrfToken // tang cuong bao mat--%>
-    <%--            },--%>
-    <%--            body: new URLSearchParams({ // object query string chua cac cap key value tuong ung--%>
-    <%--                'username': email,--%>
-    <%--                'password': password,--%>
-    <%--                'remember-me': rememberMe,--%>
-    <%--                [csrfToken.name]: csrfToken.value--%>
-    <%--            })--%>
-    <%--        })--%>
-    <%--            // Phan xu ly ket qua tra ve--%>
-    <%--            .then(response => {--%>
-    <%--                if (response.ok) {--%>
-    <%--                    // Login successful--%>
-    <%--                    sessionStorage.setItem('isLoggedIn', 'true'); // session bo nho tam thoi trinh duyet--%>
-    <%--                    window.location.href = '/client/homepage';--%>
-    <%--                } else {--%>
-    <%--                    // Login failed--%>
-    <%--                    throw new Error('Login failed'); // loi xu ly ben duoi--%>
-    <%--                }--%>
-    <%--            })--%>
-    <%--            .catch(error => {--%>
-    <%--                console.error('Error:', error);--%>
-    <%--                // Display error message on the page instead of using an alert--%>
-    <%--                const errorDiv = document.createElement('div');--%>
-    <%--                errorDiv.className = 'my-2';--%>
-    <%--                errorDiv.style.color = 'red';--%>
-    <%--                errorDiv.textContent = 'Invalid email or password.';--%>
-    <%--                loginForm.insertBefore(errorDiv, loginForm.firstChild);--%>
-    <%--            });--%>
-    <%--    });--%>
-    <%--});--%>
 </script>
 </body>
 </html>

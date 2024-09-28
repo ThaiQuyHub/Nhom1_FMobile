@@ -44,7 +44,6 @@ public class ProductController {
                          @RequestParam(value = "page", defaultValue = "1") int page,
                          @RequestParam(value = "size", defaultValue = "6") int pageSize,
                          Model model) {
-        System.out.println(">>> run here");
         Page<Product> products = productService.search(name, page, pageSize);
         model.addAttribute("allProducts", products.getContent()); //'products' phai trung với index.jsp
 
