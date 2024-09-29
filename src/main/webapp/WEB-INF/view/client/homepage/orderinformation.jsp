@@ -118,7 +118,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5" />
                     </svg>
-                    <a class="nav-link menu" aria-current="page" href="/client/homepage/">Home</a>
+                    <a class="nav-link menu" aria-current="page" href="/client/homepage">Home</a>
                 </li>
                 <li class="nav-item">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -258,7 +258,7 @@
                                 <div class="card-footer border-0 px-4 py-5"
                                      style="background-color: #0d6efd; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
                                     <div class="d-flex align-content-center justify-content-between text-white text-uppercase mb-0">
-                                        <a class="btn mt-1 button_return" style="color: #FFFFFF; font-size: 1.7rem"><i class="fa-solid fa-cart-shopping mx-2"></i>Buy Back</a>
+                                        <a href="${pageContext.request.contextPath}/client/productsDetail/${order.id}" class="btn mt-1 button_return" style="color: #FFFFFF; font-size: 1.7rem"><i class="fa-solid fa-cart-shopping mx-2"></i>Buy Back</a>
                                         <h5 class="mt-3">Total paid: <span class="">$${order.totalPayment}</span></h5>
                                     </div>
                                 </div>
